@@ -49,20 +49,22 @@ jobs:
 
       - name: Scaffold Android WebView Project
         run: |
-          mkdir -p app/src/main/assets/web
-          mkdir -p app/src/main/res/values
-          mkdir -p app/src/main/res/mipmap-hdpi
-          mkdir -p app/src/main/java/com/template/app
+          python3 - << 'PYEOF'
+          import os, base64
 
-          # Root build.gradle
-          cat << 'EOF' > build.gradle
-          buildscript {
+          os.makedirs("app/src/main/java/com/template/app", exist_ok=True)
+          os.makedirs("app/src/main/res/values", exist_ok=True)
+          os.makedirs("app/src/main/res/mipmap-hdpi", exist_ok=True)
+          os.makedirs("app/src/main/assets/web", exist_ok=True)
+
+          with open("build.gradle", "w", encoding="utf-8") as f:
+              f.write("""buildscript {
               repositories {
                   google()
                   mavenCentral()
               }
               dependencies {
-                  classpath 'com.android.tools.build:gradle:8.2.2'
+                  classpath "com.android.tools.build:gradle:8.2.2"
               }
           }
           allprojects {
@@ -71,29 +73,26 @@ jobs:
                   mavenCentral()
               }
           }
-          EOF
+          """)
 
-          # settings.gradle
-          cat << 'EOF' > settings.gradle
-          rootProject.name = "html2aab-app"
-          include ':app'
-          EOF
+          with open("settings.gradle", "w", encoding="utf-8") as f:
+              f.write("rootProject.name = \"html2aab-app\"
+include \":app\"
+")
 
-          # gradle.properties
-          cat << 'EOF' > gradle.properties
-          org.gradle.jvmargs=-Xmx2048m -XX:MaxMetaspaceSize=512m
-          org.gradle.daemon=false
-          android.useAndroidX=true
-          android.enableJetifier=false
-          EOF
+          with open("gradle.properties", "w", encoding="utf-8") as f:
+              f.write("org.gradle.jvmargs=-Xmx2048m -XX:MaxMetaspaceSize=512m
+org.gradle.daemon=false
+android.useAndroidX=true
+android.enableJetifier=false
+")
 
-          # app/build.gradle
-          cat << 'EOF' > app/build.gradle
-          plugins {
-              id 'com.android.application'
+          with open("app/build.gradle", "w", encoding="utf-8") as f:
+              f.write("""plugins {
+              id "com.android.application"
           }
           android {
-              namespace 'com.template.app'
+              namespace "com.template.app"
               compileSdk 34
               defaultConfig {
                   applicationId project.findProperty("android.defaultConfig.applicationId") ?: "com.template.app"
@@ -104,9 +103,10 @@ jobs:
               }
               signingConfigs {
                   release {
-                      def ksPath = System.getenv("KEYSTORE_PATH") ?: "release.keystore"
-                      if (file(ksPath).exists()) {
-                          storeFile file(ksPath)
+                      def ksPath = System.getenv("KEYSTORE_PATH") ?: "../release.keystore"
+                      def ksFile = file(ksPath).isAbsolute() ? file(ksPath) : rootProject.file(ksPath.replaceFirst("^\.\./", ""))
+                      if (ksFile.exists()) {
+                          storeFile ksFile
                           storePassword System.getenv("KEYSTORE_PASSWORD") ?: "storepass123"
                           keyAlias System.getenv("KEY_ALIAS") ?: "upload"
                           keyPassword System.getenv("KEY_PASSWORD") ?: "storepass123"
@@ -128,14 +128,13 @@ jobs:
               }
           }
           dependencies {
-              implementation 'androidx.appcompat:appcompat:1.6.1'
-              implementation 'androidx.webkit:webkit:1.10.0'
+              implementation "androidx.appcompat:appcompat:1.6.1"
+              implementation "androidx.webkit:webkit:1.10.0"
           }
-          EOF
+          """)
 
-          # AndroidManifest.xml
-          cat << 'EOF' > app/src/main/AndroidManifest.xml
-          <?xml version="1.0" encoding="utf-8"?>
+          with open("app/src/main/AndroidManifest.xml", "w", encoding="utf-8") as f:
+              f.write("""<?xml version="1.0" encoding="utf-8"?>
           <manifest xmlns:android="http://schemas.android.com/apk/res/android">
               <uses-permission android:name="android.permission.INTERNET" />
               <application
@@ -156,31 +155,27 @@ jobs:
                   </activity>
               </application>
           </manifest>
-          EOF
+          """)
 
-          # strings.xml & styles.xml
-          cat << 'EOF' > app/src/main/res/values/strings.xml
-          <resources>
-              <string name="app_name">App</string>
-          </resources>
-          EOF
+          with open("app/src/main/res/values/strings.xml", "w", encoding="utf-8") as f:
+              f.write("<resources><string name=\"app_name\">App</string></resources>
+")
 
-          cat << 'EOF' > app/src/main/res/values/styles.xml
-          <resources>
+          with open("app/src/main/res/values/styles.xml", "w", encoding="utf-8") as f:
+              f.write("""<resources>
               <style name="Theme.HTMLApp" parent="Theme.AppCompat.Light.NoActionBar">
                   <item name="android:windowNoTitle">true</item>
                   <item name="android:windowActionBar">false</item>
                   <item name="android:windowFullscreen">false</item>
               </style>
           </resources>
-          EOF
+          """)
 
-          # Launcher Icon
-          echo "iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAAALklEQVR42u3BAQ0AAADCoPdPbQ43oAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABuBn4AAAF94hG6AAAAAElFTkSuQmCC" | base64 --decode > app/src/main/res/mipmap-hdpi/ic_launcher.png
+          with open("app/src/main/res/mipmap-hdpi/ic_launcher.png", "wb") as f:
+              f.write(base64.b64decode("iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAAALklEQVR42u3BAQ0AAADCoPdPbQ43oAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABuBn4AAAF94hG6AAAAAElFTkSuQmCC"))
 
-          # MainActivity.java
-          cat << 'EOF' > app/src/main/java/com/template/app/MainActivity.java
-          package com.template.app;
+          with open("app/src/main/java/com/template/app/MainActivity.java", "w", encoding="utf-8") as f:
+              f.write("""package com.template.app;
           import android.annotation.SuppressLint;
           import android.os.Bundle;
           import android.webkit.WebResourceRequest;
@@ -224,7 +219,9 @@ jobs:
                   }
               }
           }
-          EOF
+          """)
+          print("Android project scaffold written successfully.")
+          PYEOF
 
       - name: Stage Web Assets
         run: |
