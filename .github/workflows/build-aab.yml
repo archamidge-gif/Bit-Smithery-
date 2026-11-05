@@ -37,6 +37,11 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
 
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '8.2.2'
+
       - name: Accept Android SDK Licenses
         run: |
           yes | ${ANDROID_HOME}/cmdline-tools/latest/bin/sdkmanager --licenses 2>/dev/null || true
@@ -220,9 +225,6 @@ jobs:
           }
           EOF
 
-          # Initialize Gradle Wrapper
-          gradle wrapper --gradle-version 8.2
-
       - name: Stage Web Assets
         run: |
           if [ -f uploaded_asset.bin ]; then
@@ -253,8 +255,7 @@ jobs:
           KEY_ALIAS: upload
           KEY_PASSWORD: storepass123
         run: |
-          chmod +x gradlew
-          ./gradlew bundleRelease --no-daemon             -Pandroid.defaultConfig.applicationId="${{ github.event.inputs.package_id }}"             -Pandroid.defaultConfig.versionCode=${{ github.event.inputs.version_code }}             -Pandroid.defaultConfig.versionName="${{ github.event.inputs.version_name }}"
+          gradle bundleRelease --no-daemon             -Pandroid.defaultConfig.applicationId="${{ github.event.inputs.package_id }}"             -Pandroid.defaultConfig.versionCode=${{ github.event.inputs.version_code }}             -Pandroid.defaultConfig.versionName="${{ github.event.inputs.version_name }}"
 
       - name: Upload Signed Bundle Artifact
         uses: actions/upload-artifact@v4
