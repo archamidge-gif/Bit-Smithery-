@@ -24,6 +24,10 @@ on:
         required: false
         default: 'STAGED_IN_REPO'
 
+permissions:
+  contents: write
+  actions: write
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -73,25 +77,56 @@ jobs:
           fi
           ls -lh app/src/main/assets/web/
 
-      - name: Generate Release Keystore
+      - name: Generate or Reuse Persistent Keystore (.jks)
         run: |
-          if [ ! -f release.keystore ]; then
+          if [ -f signing/release-key.jks ]; then
+            echo "Reusing existing persistent upload keystore from repository (signing/release-key.jks)..."
+            cp signing/release-key.jks release.keystore
+            cp signing/release-key.jks release-key.jks
+          elif [ -f release.keystore ]; then
+            cp release.keystore release-key.jks
+          else
+            echo "Generating new 2048-bit RSA Upload Keystore (release-key.jks)..."
+            mkdir -p signing
             keytool -genkeypair -v -noprompt \
-              -keystore release.keystore \
+              -keystore release-key.jks \
               -alias upload \
               -keyalg RSA -keysize 2048 \
               -validity 10000 \
               -storepass storepass123 \
               -keypass storepass123 \
               -dname "CN=Publisher, OU=Mobile, O=Creator, L=City, ST=State, C=US"
+            cp release-key.jks release.keystore
+            cp release-key.jks signing/release-key.jks
+            git config user.name "PlayBundle Studio Bot"
+            git config user.email "bot@playbundlestudio.local"
+            git add signing/release-key.jks
+            git commit -m "Persist official Google Play upload keystore (release-key.jks)" || true
+            git push || true
           fi
+          echo "=== PlayBundle Studio Upload Keystore (.jks) Details ===" > keystore-info.txt
+          echo "Keystore File: release-key.jks" >> keystore-info.txt
+          echo "Keystore Password: storepass123" >> keystore-info.txt
+          echo "Key Alias: upload" >> keystore-info.txt
+          echo "Key Password: storepass123" >> keystore-info.txt
+          echo "" >> keystore-info.txt
+          echo "=== Certificate Fingerprints (SHA-1 & SHA-256) ===" >> keystore-info.txt
+          keytool -list -v -keystore release-key.jks -storepass storepass123 >> keystore-info.txt || true
 
       - name: Build Signed Android App Bundle (.aab)
         run: |
           gradle bundleRelease --no-daemon --stacktrace
 
-      - name: Upload Signed Bundle Artifact
+      - name: Stage Final Output Files (.aab + .jks + credentials)
+        run: |
+          mkdir -p bundle-output
+          cp app/build/outputs/bundle/release/*.aab bundle-output/
+          cp release-key.jks bundle-output/release-key.jks
+          cp keystore-info.txt bundle-output/keystore-info.txt
+          ls -lh bundle-output/
+
+      - name: Upload Signed Bundle & Keystore (.jks) Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: app-bundle
-          path: app/build/outputs/bundle/release/*.aab
+          name: app-bundle-and-keystore
+          path: bundle-output/*
