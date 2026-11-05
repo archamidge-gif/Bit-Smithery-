@@ -1,0 +1,80 @@
+name: Build Google Play AAB
+
+on:
+  workflow_dispatch:
+    inputs:
+      app_name:
+        description: 'Application Display Name'
+        required: true
+        default: 'HTML Game'
+      package_id:
+        description: 'Android Package ID'
+        required: true
+        default: 'com.erik.mygame'
+      version_code:
+        description: 'Version Code Integer'
+        required: true
+        default: '1'
+      version_name:
+        description: 'Version Name String'
+        required: true
+        default: '1.0.0'
+      html_base64:
+        description: 'Base64 Encoded HTML or ZIP bundle'
+        required: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v3
+
+      - name: Stage Web Assets
+        run: |
+          mkdir -p app/src/main/assets/web
+          echo "${{ github.event.inputs.html_base64 }}" | base64 --decode > uploaded_asset.bin
+          if file uploaded_asset.bin | grep -q "Zip archive"; then
+            unzip -o uploaded_asset.bin -d app/src/main/assets/web/
+          else
+            mv uploaded_asset.bin app/src/main/assets/web/index.html
+          fi
+
+      - name: Generate Release Keystore
+        run: |
+          keytool -genkeypair -v \
+            -keystore release.keystore \
+            -alias upload \
+            -keyalg RSA -keysize 2048 \
+            -validity 10000 \
+            -storepass storepass123 \
+            -keypass storepass123 \
+            -dname "CN=${{ github.event.inputs.app_name }}, OU=Mobile, O=Publisher, L=City, ST=State, C=US"
+
+      - name: Build Signed Android App Bundle (.aab)
+        env:
+          KEYSTORE_PATH: release.keystore
+          KEYSTORE_PASSWORD: storepass123
+          KEY_ALIAS: upload
+          KEY_PASSWORD: storepass123
+        run: |
+          chmod +x gradlew
+          ./gradlew bundleRelease --no-daemon \
+            -Pandroid.defaultConfig.applicationId="${{ github.event.inputs.package_id }}" \
+            -Pandroid.defaultConfig.versionCode=${{ github.event.inputs.version_code }} \
+            -Pandroid.defaultConfig.versionName="${{ github.event.inputs.version_name }}"
+
+      - name: Upload Signed Bundle Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: app-bundle
+          path: app/build/outputs/bundle/release/*.aab
