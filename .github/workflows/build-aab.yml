@@ -40,9 +40,190 @@ jobs:
       - name: Setup Android SDK
         uses: android-actions/setup-android@v3
 
-      - name: Stage Web Assets
+      - name: Scaffold Android WebView Project
         run: |
           mkdir -p app/src/main/assets/web
+          mkdir -p app/src/main/res/values
+          mkdir -p app/src/main/res/mipmap-hdpi
+          mkdir -p app/src/main/java/com/template/app
+
+          # Root build.gradle
+          cat << 'EOF' > build.gradle
+          buildscript {
+              repositories {
+                  google()
+                  mavenCentral()
+              }
+              dependencies {
+                  classpath 'com.android.tools.build:gradle:8.2.2'
+              }
+          }
+          allprojects {
+              repositories {
+                  google()
+                  mavenCentral()
+              }
+          }
+          EOF
+
+          # settings.gradle
+          cat << 'EOF' > settings.gradle
+          rootProject.name = "html2aab-app"
+          include ':app'
+          EOF
+
+          # gradle.properties
+          cat << 'EOF' > gradle.properties
+          org.gradle.jvmargs=-Xmx2048m -XX:MaxMetaspaceSize=512m
+          org.gradle.daemon=false
+          android.useAndroidX=true
+          android.enableJetifier=false
+          EOF
+
+          # app/build.gradle
+          cat << 'EOF' > app/build.gradle
+          plugins {
+              id 'com.android.application'
+          }
+          android {
+              namespace 'com.template.app'
+              compileSdk 34
+              defaultConfig {
+                  applicationId project.findProperty("android.defaultConfig.applicationId") ?: "com.template.app"
+                  minSdk 24
+                  targetSdk 34
+                  versionCode (project.findProperty("android.defaultConfig.versionCode") ?: "1").toInteger()
+                  versionName project.findProperty("android.defaultConfig.versionName") ?: "1.0.0"
+              }
+              signingConfigs {
+                  release {
+                      def ksPath = System.getenv("KEYSTORE_PATH") ?: "release.keystore"
+                      if (file(ksPath).exists()) {
+                          storeFile file(ksPath)
+                          storePassword System.getenv("KEYSTORE_PASSWORD") ?: "storepass123"
+                          keyAlias System.getenv("KEY_ALIAS") ?: "upload"
+                          keyPassword System.getenv("KEY_PASSWORD") ?: "storepass123"
+                      }
+                  }
+              }
+              buildTypes {
+                  release {
+                      minifyEnabled false
+                      shrinkResources false
+                      if (signingConfigs.release.storeFile != null && signingConfigs.release.storeFile.exists()) {
+                          signingConfig signingConfigs.release
+                      }
+                  }
+              }
+              compileOptions {
+                  sourceCompatibility JavaVersion.VERSION_17
+                  targetCompatibility JavaVersion.VERSION_17
+              }
+          }
+          dependencies {
+              implementation 'androidx.appcompat:appcompat:1.6.1'
+              implementation 'androidx.webkit:webkit:1.10.0'
+          }
+          EOF
+
+          # AndroidManifest.xml
+          cat << 'EOF' > app/src/main/AndroidManifest.xml
+          <?xml version="1.0" encoding="utf-8"?>
+          <manifest xmlns:android="http://schemas.android.com/apk/res/android">
+              <uses-permission android:name="android.permission.INTERNET" />
+              <application
+                  android:allowBackup="true"
+                  android:icon="@mipmap/ic_launcher"
+                  android:label="@string/app_name"
+                  android:roundIcon="@mipmap/ic_launcher"
+                  android:supportsRtl="true"
+                  android:theme="@style/Theme.HTMLApp">
+                  <activity
+                      android:name=".MainActivity"
+                      android:exported="true"
+                      android:configChanges="orientation|screenSize|keyboardHidden|screenLayout">
+                      <intent-filter>
+                          <action android:name="android.intent.action.MAIN" />
+                          <category android:name="android.intent.category.LAUNCHER" />
+                      </intent-filter>
+                  </activity>
+              </application>
+          </manifest>
+          EOF
+
+          # strings.xml & styles.xml
+          cat << 'EOF' > app/src/main/res/values/strings.xml
+          <resources>
+              <string name="app_name">App</string>
+          </resources>
+          EOF
+
+          cat << 'EOF' > app/src/main/res/values/styles.xml
+          <resources>
+              <style name="Theme.HTMLApp" parent="Theme.AppCompat.Light.NoActionBar">
+                  <item name="android:windowNoTitle">true</item>
+                  <item name="android:windowActionBar">false</item>
+                  <item name="android:windowFullscreen">false</item>
+              </style>
+          </resources>
+          EOF
+
+          # Launcher Icon
+          echo "iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAAALklEQVR42u3BAQ0AAADCoPdPbQ43oAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABuBn4AAAF94hG6AAAAAElFTkSuQmCC" | base64 --decode > app/src/main/res/mipmap-hdpi/ic_launcher.png
+
+          # MainActivity.java
+          cat << 'EOF' > app/src/main/java/com/template/app/MainActivity.java
+          package com.template.app;
+          import android.annotation.SuppressLint;
+          import android.os.Bundle;
+          import android.webkit.WebResourceRequest;
+          import android.webkit.WebResourceResponse;
+          import android.webkit.WebSettings;
+          import android.webkit.WebView;
+          import androidx.appcompat.app.AppCompatActivity;
+          import androidx.webkit.WebViewAssetLoader;
+          import androidx.webkit.WebViewClientCompat;
+
+          public class MainActivity extends AppCompatActivity {
+              private WebView webView;
+              @SuppressLint("SetJavaScriptEnabled")
+              @Override
+              protected void onCreate(Bundle savedInstanceState) {
+                  super.onCreate(savedInstanceState);
+                  webView = new WebView(this);
+                  setContentView(webView);
+                  WebSettings settings = webView.getSettings();
+                  settings.setJavaScriptEnabled(true);
+                  settings.setDomStorageEnabled(true);
+                  settings.setDatabaseEnabled(true);
+                  settings.setMediaPlaybackRequiresUserGesture(false);
+                  final WebViewAssetLoader assetLoader = new WebViewAssetLoader.Builder()
+                          .addPathHandler("/assets/", new WebViewAssetLoader.AssetsPathHandler(this))
+                          .build();
+                  webView.setWebViewClient(new WebViewClientCompat() {
+                      @Override
+                      public WebResourceResponse shouldInterceptRequest(WebView view, WebResourceRequest request) {
+                          return assetLoader.shouldInterceptRequest(request.getUrl());
+                      }
+                  });
+                  webView.loadUrl("https://appassets.androidplatform.net/assets/web/index.html");
+              }
+              @Override
+              public void onBackPressed() {
+                  if (webView != null && webView.canGoBack()) {
+                      webView.goBack();
+                  } else {
+                      super.onBackPressed();
+                  }
+              }
+          }
+          EOF
+
+          # Initialize Gradle Wrapper
+          gradle wrapper --gradle-version 8.2
+
+      - name: Stage Web Assets
+        run: |
           if [ -f uploaded_asset.bin ]; then
             if file uploaded_asset.bin | grep -q "Zip archive"; then
               unzip -o uploaded_asset.bin -d app/src/main/assets/web/
@@ -62,14 +243,7 @@ jobs:
 
       - name: Generate Release Keystore
         run: |
-          keytool -genkeypair -v \
-            -keystore release.keystore \
-            -alias upload \
-            -keyalg RSA -keysize 2048 \
-            -validity 10000 \
-            -storepass storepass123 \
-            -keypass storepass123 \
-            -dname "CN=${{ github.event.inputs.app_name }}, OU=Mobile, O=Publisher, L=City, ST=State, C=US"
+          keytool -genkeypair -v             -keystore release.keystore             -alias upload             -keyalg RSA -keysize 2048             -validity 10000             -storepass storepass123             -keypass storepass123             -dname "CN=Publisher, OU=Mobile, O=Creator, L=City, ST=State, C=US"
 
       - name: Build Signed Android App Bundle (.aab)
         env:
@@ -79,10 +253,7 @@ jobs:
           KEY_PASSWORD: storepass123
         run: |
           chmod +x gradlew
-          ./gradlew bundleRelease --no-daemon \
-            -Pandroid.defaultConfig.applicationId="${{ github.event.inputs.package_id }}" \
-            -Pandroid.defaultConfig.versionCode=${{ github.event.inputs.version_code }} \
-            -Pandroid.defaultConfig.versionName="${{ github.event.inputs.version_name }}"
+          ./gradlew bundleRelease --no-daemon             -Pandroid.defaultConfig.applicationId="${{ github.event.inputs.package_id }}"             -Pandroid.defaultConfig.versionCode=${{ github.event.inputs.version_code }}             -Pandroid.defaultConfig.versionName="${{ github.event.inputs.version_name }}"
 
       - name: Upload Signed Bundle Artifact
         uses: actions/upload-artifact@v4
