@@ -20,8 +20,9 @@ on:
         required: true
         default: '1.0.0'
       html_base64:
-        description: 'Base64 Encoded HTML or ZIP bundle'
-        required: true
+        description: 'Web Asset Payload (Optional when committed directly)'
+        required: false
+        default: 'STAGED_IN_REPO'
 
 jobs:
   build:
@@ -42,11 +43,21 @@ jobs:
       - name: Stage Web Assets
         run: |
           mkdir -p app/src/main/assets/web
-          echo "${{ github.event.inputs.html_base64 }}" | base64 --decode > uploaded_asset.bin
-          if file uploaded_asset.bin | grep -q "Zip archive"; then
-            unzip -o uploaded_asset.bin -d app/src/main/assets/web/
-          else
-            mv uploaded_asset.bin app/src/main/assets/web/index.html
+          if [ -f uploaded_asset.bin ]; then
+            if file uploaded_asset.bin | grep -q "Zip archive"; then
+              unzip -o uploaded_asset.bin -d app/src/main/assets/web/
+            else
+              cp uploaded_asset.bin app/src/main/assets/web/index.html
+            fi
+          elif [ -n "${{ github.event.inputs.html_base64 }}" ] && [ "${{ github.event.inputs.html_base64 }}" != "STAGED_IN_REPO" ]; then
+            echo "${{ github.event.inputs.html_base64 }}" | base64 --decode > uploaded_asset.bin
+            if file uploaded_asset.bin | grep -q "Zip archive"; then
+              unzip -o uploaded_asset.bin -d app/src/main/assets/web/
+            else
+              cp uploaded_asset.bin app/src/main/assets/web/index.html
+            fi
+          elif [ -f index.html ]; then
+            cp index.html app/src/main/assets/web/index.html
           fi
 
       - name: Generate Release Keystore
