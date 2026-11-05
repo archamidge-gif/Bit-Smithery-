@@ -1,28 +1,28 @@
 name: Build Google Play AAB
 
-on:
+"on":
   workflow_dispatch:
     inputs:
       app_name:
-        description: 'Application Display Name'
+        description: "Application Display Name"
         required: true
-        default: 'HTML Game'
+        default: "HTML Game"
       package_id:
-        description: 'Android Package ID'
+        description: "Android Package ID"
         required: true
-        default: 'com.erik.mygame'
+        default: "com.erik.mygame"
       version_code:
-        description: 'Version Code Integer'
+        description: "Version Code Integer"
         required: true
-        default: '1'
+        default: "1"
       version_name:
-        description: 'Version Name String'
+        description: "Version Name String"
         required: true
-        default: '1.0.0'
+        default: "1.0.0"
       html_base64:
-        description: 'Web Asset Payload (Optional when committed directly)'
+        description: "Web Asset Payload"
         required: false
-        default: 'STAGED_IN_REPO'
+        default: "STAGED_IN_REPO"
 
 jobs:
   build:
@@ -34,8 +34,8 @@ jobs:
       - name: Set up JDK 17
         uses: actions/setup-java@v4
         with:
-          java-version: '17'
-          distribution: 'temurin'
+          java-version: "17"
+          distribution: "temurin"
 
       - name: Install Gradle 8.2
         run: |
@@ -49,179 +49,7 @@ jobs:
 
       - name: Scaffold Android WebView Project
         run: |
-          python3 - << 'PYEOF'
-          import os, base64
-
-          os.makedirs("app/src/main/java/com/template/app", exist_ok=True)
-          os.makedirs("app/src/main/res/values", exist_ok=True)
-          os.makedirs("app/src/main/res/mipmap-hdpi", exist_ok=True)
-          os.makedirs("app/src/main/assets/web", exist_ok=True)
-
-          with open("build.gradle", "w", encoding="utf-8") as f:
-              f.write("""buildscript {
-              repositories {
-                  google()
-                  mavenCentral()
-              }
-              dependencies {
-                  classpath "com.android.tools.build:gradle:8.2.2"
-              }
-          }
-          allprojects {
-              repositories {
-                  google()
-                  mavenCentral()
-              }
-          }
-          """)
-
-          with open("settings.gradle", "w", encoding="utf-8") as f:
-              f.write("rootProject.name = \"html2aab-app\"
-include \":app\"
-")
-
-          with open("gradle.properties", "w", encoding="utf-8") as f:
-              f.write("org.gradle.jvmargs=-Xmx2048m -XX:MaxMetaspaceSize=512m
-org.gradle.daemon=false
-android.useAndroidX=true
-android.enableJetifier=false
-")
-
-          with open("app/build.gradle", "w", encoding="utf-8") as f:
-              f.write("""plugins {
-              id "com.android.application"
-          }
-          android {
-              namespace "com.template.app"
-              compileSdk 34
-              defaultConfig {
-                  applicationId project.findProperty("android.defaultConfig.applicationId") ?: "com.template.app"
-                  minSdk 24
-                  targetSdk 34
-                  versionCode (project.findProperty("android.defaultConfig.versionCode") ?: "1").toInteger()
-                  versionName project.findProperty("android.defaultConfig.versionName") ?: "1.0.0"
-              }
-              signingConfigs {
-                  release {
-                      def ksPath = System.getenv("KEYSTORE_PATH") ?: "../release.keystore"
-                      def ksFile = file(ksPath).isAbsolute() ? file(ksPath) : rootProject.file(ksPath.replaceFirst("^\.\./", ""))
-                      if (ksFile.exists()) {
-                          storeFile ksFile
-                          storePassword System.getenv("KEYSTORE_PASSWORD") ?: "storepass123"
-                          keyAlias System.getenv("KEY_ALIAS") ?: "upload"
-                          keyPassword System.getenv("KEY_PASSWORD") ?: "storepass123"
-                      }
-                  }
-              }
-              buildTypes {
-                  release {
-                      minifyEnabled false
-                      shrinkResources false
-                      if (signingConfigs.release.storeFile != null && signingConfigs.release.storeFile.exists()) {
-                          signingConfig signingConfigs.release
-                      }
-                  }
-              }
-              compileOptions {
-                  sourceCompatibility JavaVersion.VERSION_17
-                  targetCompatibility JavaVersion.VERSION_17
-              }
-          }
-          dependencies {
-              implementation "androidx.appcompat:appcompat:1.6.1"
-              implementation "androidx.webkit:webkit:1.10.0"
-          }
-          """)
-
-          with open("app/src/main/AndroidManifest.xml", "w", encoding="utf-8") as f:
-              f.write("""<?xml version="1.0" encoding="utf-8"?>
-          <manifest xmlns:android="http://schemas.android.com/apk/res/android">
-              <uses-permission android:name="android.permission.INTERNET" />
-              <application
-                  android:allowBackup="true"
-                  android:icon="@mipmap/ic_launcher"
-                  android:label="@string/app_name"
-                  android:roundIcon="@mipmap/ic_launcher"
-                  android:supportsRtl="true"
-                  android:theme="@style/Theme.HTMLApp">
-                  <activity
-                      android:name=".MainActivity"
-                      android:exported="true"
-                      android:configChanges="orientation|screenSize|keyboardHidden|screenLayout">
-                      <intent-filter>
-                          <action android:name="android.intent.action.MAIN" />
-                          <category android:name="android.intent.category.LAUNCHER" />
-                      </intent-filter>
-                  </activity>
-              </application>
-          </manifest>
-          """)
-
-          with open("app/src/main/res/values/strings.xml", "w", encoding="utf-8") as f:
-              f.write("<resources><string name=\"app_name\">App</string></resources>
-")
-
-          with open("app/src/main/res/values/styles.xml", "w", encoding="utf-8") as f:
-              f.write("""<resources>
-              <style name="Theme.HTMLApp" parent="Theme.AppCompat.Light.NoActionBar">
-                  <item name="android:windowNoTitle">true</item>
-                  <item name="android:windowActionBar">false</item>
-                  <item name="android:windowFullscreen">false</item>
-              </style>
-          </resources>
-          """)
-
-          with open("app/src/main/res/mipmap-hdpi/ic_launcher.png", "wb") as f:
-              f.write(base64.b64decode("iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAAALklEQVR42u3BAQ0AAADCoPdPbQ43oAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABuBn4AAAF94hG6AAAAAElFTkSuQmCC"))
-
-          with open("app/src/main/java/com/template/app/MainActivity.java", "w", encoding="utf-8") as f:
-              f.write("""package com.template.app;
-          import android.annotation.SuppressLint;
-          import android.os.Bundle;
-          import android.webkit.WebResourceRequest;
-          import android.webkit.WebResourceResponse;
-          import android.webkit.WebSettings;
-          import android.webkit.WebView;
-          import androidx.appcompat.app.AppCompatActivity;
-          import androidx.webkit.WebViewAssetLoader;
-          import androidx.webkit.WebViewClientCompat;
-
-          public class MainActivity extends AppCompatActivity {
-              private WebView webView;
-              @SuppressLint("SetJavaScriptEnabled")
-              @Override
-              protected void onCreate(Bundle savedInstanceState) {
-                  super.onCreate(savedInstanceState);
-                  webView = new WebView(this);
-                  setContentView(webView);
-                  WebSettings settings = webView.getSettings();
-                  settings.setJavaScriptEnabled(true);
-                  settings.setDomStorageEnabled(true);
-                  settings.setDatabaseEnabled(true);
-                  settings.setMediaPlaybackRequiresUserGesture(false);
-                  final WebViewAssetLoader assetLoader = new WebViewAssetLoader.Builder()
-                          .addPathHandler("/assets/", new WebViewAssetLoader.AssetsPathHandler(this))
-                          .build();
-                  webView.setWebViewClient(new WebViewClientCompat() {
-                      @Override
-                      public WebResourceResponse shouldInterceptRequest(WebView view, WebResourceRequest request) {
-                          return assetLoader.shouldInterceptRequest(request.getUrl());
-                      }
-                  });
-                  webView.loadUrl("https://appassets.androidplatform.net/assets/web/index.html");
-              }
-              @Override
-              public void onBackPressed() {
-                  if (webView != null && webView.canGoBack()) {
-                      webView.goBack();
-                  } else {
-                      super.onBackPressed();
-                  }
-              }
-          }
-          """)
-          print("Android project scaffold written successfully.")
-          PYEOF
+          echo "aW1wb3J0IG9zLCBiYXNlNjQKb3MubWFrZWRpcnMoImFwcC9zcmMvbWFpbi9qYXZhL2NvbS90ZW1wbGF0ZS9hcHAiLCBleGlzdF9vaz1UcnVlKQpvcy5tYWtlZGlycygiYXBwL3NyYy9tYWluL3Jlcy92YWx1ZXMiLCBleGlzdF9vaz1UcnVlKQpvcy5tYWtlZGlycygiYXBwL3NyYy9tYWluL3Jlcy9taXBtYXAtaGRwaSIsIGV4aXN0X29rPVRydWUpCm9zLm1ha2VkaXJzKCJhcHAvc3JjL21haW4vYXNzZXRzL3dlYiIsIGV4aXN0X29rPVRydWUpCgpvcGVuKCJidWlsZC5ncmFkbGUiLCAidyIpLndyaXRlKCcnJ2J1aWxkc2NyaXB0IHsKICAgIHJlcG9zaXRvcmllcyB7CiAgICAgICAgZ29vZ2xlKCkKICAgICAgICBtYXZlbkNlbnRyYWwoKQogICAgfQogICAgZGVwZW5kZW5jaWVzIHsKICAgICAgICBjbGFzc3BhdGggImNvbS5hbmRyb2lkLnRvb2xzLmJ1aWxkOmdyYWRsZTo4LjIuMiIKICAgIH0KfQphbGxwcm9qZWN0cyB7CiAgICByZXBvc2l0b3JpZXMgewogICAgICAgIGdvb2dsZSgpCiAgICAgICAgbWF2ZW5DZW50cmFsKCkKICAgIH0KfQonJycpCgpvcGVuKCJzZXR0aW5ncy5ncmFkbGUiLCAidyIpLndyaXRlKCdyb290UHJvamVjdC5uYW1lID0gImh0bWwyYWFiLWFwcCJcbmluY2x1ZGUgIjphcHAiXG4nKQoKb3BlbigiZ3JhZGxlLnByb3BlcnRpZXMiLCAidyIpLndyaXRlKCdvcmcuZ3JhZGxlLmp2bWFyZ3M9LVhteDIwNDhtIC1YWDpNYXhNZXRhc3BhY2VTaXplPTUxMm1cbm9yZy5ncmFkbGUuZGFlbW9uPWZhbHNlXG5hbmRyb2lkLnVzZUFuZHJvaWRYPXRydWVcbmFuZHJvaWQuZW5hYmxlSmV0aWZpZXI9ZmFsc2VcbicpCgpvcGVuKCJhcHAvYnVpbGQuZ3JhZGxlIiwgInciKS53cml0ZSgnJydwbHVnaW5zIHsKICAgIGlkICJjb20uYW5kcm9pZC5hcHBsaWNhdGlvbiIKfQphbmRyb2lkIHsKICAgIG5hbWVzcGFjZSAiY29tLnRlbXBsYXRlLmFwcCIKICAgIGNvbXBpbGVTZGsgMzQKICAgIGRlZmF1bHRDb25maWcgewogICAgICAgIGFwcGxpY2F0aW9uSWQgcHJvamVjdC5maW5kUHJvcGVydHkoImFuZHJvaWQuZGVmYXVsdENvbmZpZy5hcHBsaWNhdGlvbklkIikgPzogImNvbS50ZW1wbGF0ZS5hcHAiCiAgICAgICAgbWluU2RrIDI0CiAgICAgICAgdGFyZ2V0U2RrIDM0CiAgICAgICAgdmVyc2lvbkNvZGUgKHByb2plY3QuZmluZFByb3BlcnR5KCJhbmRyb2lkLmRlZmF1bHRDb25maWcudmVyc2lvbkNvZGUiKSA/OiAiMSIpLnRvSW50ZWdlcigpCiAgICAgICAgdmVyc2lvbk5hbWUgcHJvamVjdC5maW5kUHJvcGVydHkoImFuZHJvaWQuZGVmYXVsdENvbmZpZy52ZXJzaW9uTmFtZSIpID86ICIxLjAuMCIKICAgIH0KICAgIHNpZ25pbmdDb25maWdzIHsKICAgICAgICByZWxlYXNlIHsKICAgICAgICAgICAgZGVmIGtzUGF0aCA9IFN5c3RlbS5nZXRlbnYoIktFWVNUT1JFX1BBVEgiKSA/OiAiLi4vcmVsZWFzZS5rZXlzdG9yZSIKICAgICAgICAgICAgZGVmIGtzRmlsZSA9IGZpbGUoa3NQYXRoKS5pc0Fic29sdXRlKCkgPyBmaWxlKGtzUGF0aCkgOiByb290UHJvamVjdC5maWxlKGtzUGF0aC5yZXBsYWNlRmlyc3QoIl5cXC5cXC4vIiwgIiIpKQogICAgICAgICAgICBpZiAoa3NGaWxlLmV4aXN0cygpKSB7CiAgICAgICAgICAgICAgICBzdG9yZUZpbGUga3NGaWxlCiAgICAgICAgICAgICAgICBzdG9yZVBhc3N3b3JkIFN5c3RlbS5nZXRlbnYoIktFWVNUT1JFX1BBU1NXT1JEIikgPzogInN0b3JlcGFzczEyMyIKICAgICAgICAgICAgICAgIGtleUFsaWFzIFN5c3RlbS5nZXRlbnYoIktFWV9BTElBUyIpID86ICJ1cGxvYWQiCiAgICAgICAgICAgICAgICBrZXlQYXNzd29yZCBTeXN0ZW0uZ2V0ZW52KCJLRVlfUEFTU1dPUkQiKSA/OiAic3RvcmVwYXNzMTIzIgogICAgICAgICAgICB9CiAgICAgICAgfQogICAgfQogICAgYnVpbGRUeXBlcyB7CiAgICAgICAgcmVsZWFzZSB7CiAgICAgICAgICAgIG1pbmlmeUVuYWJsZWQgZmFsc2UKICAgICAgICAgICAgc2hyaW5rUmVzb3VyY2VzIGZhbHNlCiAgICAgICAgICAgIGlmIChzaWduaW5nQ29uZmlncy5yZWxlYXNlLnN0b3JlRmlsZSAhPSBudWxsICYmIHNpZ25pbmdDb25maWdzLnJlbGVhc2Uuc3RvcmVGaWxlLmV4aXN0cygpKSB7CiAgICAgICAgICAgICAgICBzaWduaW5nQ29uZmlnIHNpZ25pbmdDb25maWdzLnJlbGVhc2UKICAgICAgICAgICAgfQogICAgICAgIH0KICAgIH0KICAgIGNvbXBpbGVPcHRpb25zIHsKICAgICAgICBzb3VyY2VDb21wYXRpYmlsaXR5IEphdmFWZXJzaW9uLlZFUlNJT05fMTcKICAgICAgICB0YXJnZXRDb21wYXRpYmlsaXR5IEphdmFWZXJzaW9uLlZFUlNJT05fMTcKICAgIH0KfQpkZXBlbmRlbmNpZXMgewogICAgaW1wbGVtZW50YXRpb24gImFuZHJvaWR4LmFwcGNvbXBhdDphcHBjb21wYXQ6MS42LjEiCiAgICBpbXBsZW1lbnRhdGlvbiAiYW5kcm9pZHgud2Via2l0OndlYmtpdDoxLjEwLjAiCn0KJycnKQoKb3BlbigiYXBwL3NyYy9tYWluL0FuZHJvaWRNYW5pZmVzdC54bWwiLCAidyIpLndyaXRlKCcnJzw/eG1sIHZlcnNpb249IjEuMCIgZW5jb2Rpbmc9InV0Zi04Ij8+CjxtYW5pZmVzdCB4bWxuczphbmRyb2lkPSJodHRwOi8vc2NoZW1hcy5hbmRyb2lkLmNvbS9hcGsvcmVzL2FuZHJvaWQiPgogICAgPHVzZXMtcGVybWlzc2lvbiBhbmRyb2lkOm5hbWU9ImFuZHJvaWQucGVybWlzc2lvbi5JTlRFUk5FVCIgLz4KICAgIDxhcHBsaWNhdGlvbgogICAgICAgIGFuZHJvaWQ6YWxsb3dCYWNrdXA9InRydWUiCiAgICAgICAgYW5kcm9pZDppY29uPSJAbWlwbWFwL2ljX2xhdW5jaGVyIgogICAgICAgIGFuZHJvaWQ6bGFiZWw9IkBzdHJpbmcvYXBwX25hbWUiCiAgICAgICAgYW5kcm9pZDpyb3VuZEljb249IkBtaXBtYXAvaWNfbGF1bmNoZXIiCiAgICAgICAgYW5kcm9pZDpzdXBwb3J0c1J0bD0idHJ1ZSIKICAgICAgICBhbmRyb2lkOnRoZW1lPSJAc3R5bGUvVGhlbWUuSFRNTEFwcCI+CiAgICAgICAgPGFjdGl2aXR5CiAgICAgICAgICAgIGFuZHJvaWQ6bmFtZT0iLk1haW5BY3Rpdml0eSIKICAgICAgICAgICAgYW5kcm9pZDpleHBvcnRlZD0idHJ1ZSIKICAgICAgICAgICAgYW5kcm9pZDpjb25maWdDaGFuZ2VzPSJvcmllbnRhdGlvbnxzY3JlZW5TaXplfGtleWJvYXJkSGlkZGVufHNjcmVlbkxheW91dCI+CiAgICAgICAgICAgIDxpbnRlbnQtZmlsdGVyPgogICAgICAgICAgICAgICAgPGFjdGlvbiBhbmRyb2lkOm5hbWU9ImFuZHJvaWQuaW50ZW50LmFjdGlvbi5NQUlOIiAvPgogICAgICAgICAgICAgICAgPGNhdGVnb3J5IGFuZHJvaWQ6bmFtZT0iYW5kcm9pZC5pbnRlbnQuY2F0ZWdvcnkuTEFVTkNIRVIiIC8+CiAgICAgICAgICAgIDwvaW50ZW50LWZpbHRlcj4KICAgICAgICA8L2FjdGl2aXR5PgogICAgPC9hcHBsaWNhdGlvbj4KPC9tYW5pZmVzdD4KJycnKQoKb3BlbigiYXBwL3NyYy9tYWluL3Jlcy92YWx1ZXMvc3RyaW5ncy54bWwiLCAidyIpLndyaXRlKCI8cmVzb3VyY2VzPjxzdHJpbmcgbmFtZT1cImFwcF9uYW1lXCI+QXBwPC9zdHJpbmc+PC9yZXNvdXJjZXM+XG4iKQoKb3BlbigiYXBwL3NyYy9tYWluL3Jlcy92YWx1ZXMvc3R5bGVzLnhtbCIsICJ3Iikud3JpdGUoJycnPHJlc291cmNlcz4KICAgIDxzdHlsZSBuYW1lPSJUaGVtZS5IVE1MQXBwIiBwYXJlbnQ9IlRoZW1lLkFwcENvbXBhdC5MaWdodC5Ob0FjdGlvbkJhciI+CiAgICAgICAgPGl0ZW0gbmFtZT0iYW5kcm9pZDp3aW5kb3dOb1RpdGxlIj50cnVlPC9pdGVtPgogICAgICAgIDxpdGVtIG5hbWU9ImFuZHJvaWQ6d2luZG93QWN0aW9uQmFyIj5mYWxzZTwvaXRlbT4KICAgICAgICA8aXRlbSBuYW1lPSJhbmRyb2lkOndpbmRvd0Z1bGxzY3JlZW4iPmZhbHNlPC9pdGVtPgogICAgPC9zdHlsZT4KPC9yZXNvdXJjZXM+CicnJykKCm9wZW4oImFwcC9zcmMvbWFpbi9yZXMvbWlwbWFwLWhkcGkvaWNfbGF1bmNoZXIucG5nIiwgIndiIikud3JpdGUoYmFzZTY0LmI2NGRlY29kZSgiaVZCT1J3MEtHZ29BQUFBTlNVaEVVZ0FBQUVBQUFBQkFDQVlBQUFDcWFYSGVBQUFBTGtsRVFWUjQydTNCQVEwQUFBRENvUGRQYlE0M29BQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFCdUJuNEFBQUY5NGhHNkFBQUFBRWxGVGtTdVFtQ0MiKSkKCm9wZW4oImFwcC9zcmMvbWFpbi9qYXZhL2NvbS90ZW1wbGF0ZS9hcHAvTWFpbkFjdGl2aXR5LmphdmEiLCAidyIpLndyaXRlKCcnJ3BhY2thZ2UgY29tLnRlbXBsYXRlLmFwcDsKaW1wb3J0IGFuZHJvaWQuYW5ub3RhdGlvbi5TdXBwcmVzc0xpbnQ7CmltcG9ydCBhbmRyb2lkLm9zLkJ1bmRsZTsKaW1wb3J0IGFuZHJvaWQud2Via2l0LldlYlJlc291cmNlUmVxdWVzdDsKaW1wb3J0IGFuZHJvaWQud2Via2l0LldlYlJlc291cmNlUmVzcG9uc2U7CmltcG9ydCBhbmRyb2lkLndlYmtpdC5XZWJTZXR0aW5nczsKaW1wb3J0IGFuZHJvaWQud2Via2l0LldlYlZpZXc7CmltcG9ydCBhbmRyb2lkeC5hcHBjb21wYXQuYXBwLkFwcENvbXBhdEFjdGl2aXR5OwppbXBvcnQgYW5kcm9pZHgud2Via2l0LldlYlZpZXdBc3NldExvYWRlcjsKaW1wb3J0IGFuZHJvaWR4LndlYmtpdC5XZWJWaWV3Q2xpZW50Q29tcGF0OwoKcHVibGljIGNsYXNzIE1haW5BY3Rpdml0eSBleHRlbmRzIEFwcENvbXBhdEFjdGl2aXR5IHsKICAgIHByaXZhdGUgV2ViVmlldyB3ZWJWaWV3OwogICAgQFN1cHByZXNzTGludCgiU2V0SmF2YVNjcmlwdEVuYWJsZWQiKQogICAgQE92ZXJyaWRlCiAgICBwcm90ZWN0ZWQgdm9pZCBvbkNyZWF0ZShCdW5kbGUgc2F2ZWRJbnN0YW5jZVN0YXRlKSB7CiAgICAgICAgc3VwZXIub25DcmVhdGUoc2F2ZWRJbnN0YW5jZVN0YXRlKTsKICAgICAgICB3ZWJWaWV3ID0gbmV3IFdlYlZpZXcodGhpcyk7CiAgICAgICAgc2V0Q29udGVudFZpZXcod2ViVmlldyk7CiAgICAgICAgV2ViU2V0dGluZ3Mgc2V0dGluZ3MgPSB3ZWJWaWV3LmdldFNldHRpbmdzKCk7CiAgICAgICAgc2V0dGluZ3Muc2V0SmF2YVNjcmlwdEVuYWJsZWQodHJ1ZSk7CiAgICAgICAgc2V0dGluZ3Muc2V0RG9tU3RvcmFnZUVuYWJsZWQodHJ1ZSk7CiAgICAgICAgc2V0dGluZ3Muc2V0RGF0YWJhc2VFbmFibGVkKHRydWUpOwogICAgICAgIHNldHRpbmdzLnNldE1lZGlhUGxheWJhY2tSZXF1aXJlc1VzZXJHZXN0dXJlKGZhbHNlKTsKICAgICAgICBmaW5hbCBXZWJWaWV3QXNzZXRMb2FkZXIgYXNzZXRMb2FkZXIgPSBuZXcgV2ViVmlld0Fzc2V0TG9hZGVyLkJ1aWxkZXIoKQogICAgICAgICAgICAgICAgLmFkZFBhdGhIYW5kbGVyKCIvYXNzZXRzLyIsIG5ldyBXZWJWaWV3QXNzZXRMb2FkZXIuQXNzZXRzUGF0aEhhbmRsZXIodGhpcykpCiAgICAgICAgICAgICAgICAuYnVpbGQoKTsKICAgICAgICB3ZWJWaWV3LnNldFdlYlZpZXdDbGllbnQobmV3IFdlYlZpZXdDbGllbnRDb21wYXQoKSB7CiAgICAgICAgICAgIEBPdmVycmlkZQogICAgICAgICAgICBwdWJsaWMgV2ViUmVzb3VyY2VSZXNwb25zZSBzaG91bGRJbnRlcmNlcHRSZXF1ZXN0KFdlYlZpZXcgdmlldywgV2ViUmVzb3VyY2VSZXF1ZXN0IHJlcXVlc3QpIHsKICAgICAgICAgICAgICAgIHJldHVybiBhc3NldExvYWRlci5zaG91bGRJbnRlcmNlcHRSZXF1ZXN0KHJlcXVlc3QuZ2V0VXJsKCkpOwogICAgICAgICAgICB9CiAgICAgICAgfSk7CiAgICAgICAgd2ViVmlldy5sb2FkVXJsKCJodHRwczovL2FwcGFzc2V0cy5hbmRyb2lkcGxhdGZvcm0ubmV0L2Fzc2V0cy93ZWIvaW5kZXguaHRtbCIpOwogICAgfQogICAgQE92ZXJyaWRlCiAgICBwdWJsaWMgdm9pZCBvbkJhY2tQcmVzc2VkKCkgewogICAgICAgIGlmICh3ZWJWaWV3ICE9IG51bGwgJiYgd2ViVmlldy5jYW5Hb0JhY2soKSkgewogICAgICAgICAgICB3ZWJWaWV3LmdvQmFjaygpOwogICAgICAgIH0gZWxzZSB7CiAgICAgICAgICAgIHN1cGVyLm9uQmFja1ByZXNzZWQoKTsKICAgICAgICB9CiAgICB9Cn0KJycnKQpwcmludCgiU2NhZmZvbGQgY29tcGxldGUuIik=" | base64 --decode | python3
 
       - name: Stage Web Assets
         run: |
@@ -244,7 +72,14 @@ android.enableJetifier=false
 
       - name: Generate Release Keystore
         run: |
-          keytool -genkeypair -v             -keystore release.keystore             -alias upload             -keyalg RSA -keysize 2048             -validity 10000             -storepass storepass123             -keypass storepass123             -dname "CN=Publisher, OU=Mobile, O=Creator, L=City, ST=State, C=US"
+          keytool -genkeypair -v \
+            -keystore release.keystore \
+            -alias upload \
+            -keyalg RSA -keysize 2048 \
+            -validity 10000 \
+            -storepass storepass123 \
+            -keypass storepass123 \
+            -dname "CN=Publisher, OU=Mobile, O=Creator, L=City, ST=State, C=US"
 
       - name: Build Signed Android App Bundle (.aab)
         env:
@@ -253,7 +88,10 @@ android.enableJetifier=false
           KEY_ALIAS: upload
           KEY_PASSWORD: storepass123
         run: |
-          gradle bundleRelease --no-daemon             -Pandroid.defaultConfig.applicationId="${{ github.event.inputs.package_id }}"             -Pandroid.defaultConfig.versionCode=${{ github.event.inputs.version_code }}             -Pandroid.defaultConfig.versionName="${{ github.event.inputs.version_name }}"
+          gradle bundleRelease --no-daemon \
+            -Pandroid.defaultConfig.applicationId="${{ github.event.inputs.package_id }}" \
+            -Pandroid.defaultConfig.versionCode=${{ github.event.inputs.version_code }} \
+            -Pandroid.defaultConfig.versionName="${{ github.event.inputs.version_name }}"
 
       - name: Upload Signed Bundle Artifact
         uses: actions/upload-artifact@v4
