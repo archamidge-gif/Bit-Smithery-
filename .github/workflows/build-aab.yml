@@ -77,17 +77,18 @@ jobs:
           fi
           ls -lh app/src/main/assets/web/
 
-      - name: Generate or Reuse Persistent Keystore (.jks)
+      - name: Generate or Reuse Persistent Keystore (.jks) & Export .PEM
         run: |
+          mkdir -p signing
           if [ -f signing/release-key.jks ]; then
             echo "Reusing existing persistent upload keystore from repository (signing/release-key.jks)..."
             cp signing/release-key.jks release.keystore
             cp signing/release-key.jks release-key.jks
           elif [ -f release.keystore ]; then
             cp release.keystore release-key.jks
+            cp release.keystore signing/release-key.jks
           else
             echo "Generating new 2048-bit RSA Upload Keystore (release-key.jks)..."
-            mkdir -p signing
             keytool -genkeypair -v -noprompt \
               -keystore release-key.jks \
               -alias upload \
@@ -98,14 +99,24 @@ jobs:
               -dname "CN=Publisher, OU=Mobile, O=Creator, L=City, ST=State, C=US"
             cp release-key.jks release.keystore
             cp release-key.jks signing/release-key.jks
-            git config user.name "PlayBundle Studio Bot"
-            git config user.email "bot@playbundlestudio.local"
-            git add signing/release-key.jks
-            git commit -m "Persist official Google Play upload keystore (release-key.jks)" || true
+          fi
+          echo "Exporting RFC-compliant upload_certificate.pem for Google Play Key Reset..."
+          keytool -export -rfc \
+            -keystore release-key.jks \
+            -alias upload \
+            -file upload_certificate.pem \
+            -storepass storepass123
+          cp upload_certificate.pem signing/upload_certificate.pem
+          git config user.name "PlayBundle Studio Bot"
+          git config user.email "bot@playbundlestudio.local"
+          git add signing/release-key.jks signing/upload_certificate.pem
+          if ! git diff --cached --quiet; then
+            git commit -m "Persist official Google Play upload keystore (.jks) and reset certificate (.pem)" || true
             git push || true
           fi
-          echo "=== PlayBundle Studio Upload Keystore (.jks) Details ===" > keystore-info.txt
+          echo "=== PlayBundle Studio Upload Keystore (.jks & .pem) Details ===" > keystore-info.txt
           echo "Keystore File: release-key.jks" >> keystore-info.txt
+          echo "PEM Certificate (For Google Play Key Reset): upload_certificate.pem" >> keystore-info.txt
           echo "Keystore Password: storepass123" >> keystore-info.txt
           echo "Key Alias: upload" >> keystore-info.txt
           echo "Key Password: storepass123" >> keystore-info.txt
@@ -117,11 +128,12 @@ jobs:
         run: |
           gradle bundleRelease --no-daemon --stacktrace
 
-      - name: Stage Final Output Files (.aab + .jks + credentials)
+      - name: Stage Final Output Files (.aab + .jks + .pem + credentials)
         run: |
           mkdir -p bundle-output
           cp app/build/outputs/bundle/release/*.aab bundle-output/
           cp release-key.jks bundle-output/release-key.jks
+          cp upload_certificate.pem bundle-output/upload_certificate.pem
           cp keystore-info.txt bundle-output/keystore-info.txt
           ls -lh bundle-output/
 
