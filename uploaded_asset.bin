@@ -452,8 +452,10 @@
         </svg>
 
         <div id="selection-box" class="hidden absolute pointer-events-auto cursor-pointer select-none bg-blue-500/10">
+          <!-- Floating Selection Canvas for Unclipped Pre-Stamp Display -->
+          <canvas id="selection-content-canvas" class="pixelated absolute inset-0 w-full h-full pointer-events-none block z-0" style="display: none;"></canvas>
           <!-- Marching Ants SVG Border for Rectangular Selection -->
-          <svg id="selection-rect-svg" class="absolute inset-0 w-full h-full pointer-events-none overflow-visible">
+          <svg id="selection-rect-svg" class="absolute inset-0 w-full h-full pointer-events-none overflow-visible z-10">
             <rect x="0" y="0" width="100%" height="100%" fill="none" stroke="#000000" stroke-width="1.5" class="lasso-ants-path"/>
             <rect x="0" y="0" width="100%" height="100%" fill="none" stroke="#ffffff" stroke-width="1.5" stroke-dasharray="4, 4" stroke-dashoffset="4" class="lasso-ants-path"/>
           </svg>
@@ -611,6 +613,9 @@
               <button id="action-select-all" class="w-full bevel-raised py-2.5 px-3 text-left font-bold text-sm bg-[#c0c0c0] hover:bg-white active:bevel-sunken flex justify-between items-center">
                 <span>🔲 Select All</span><span class="text-xs text-gray-500 font-mono">Ctrl+A</span>
               </button>
+              <button id="action-select-all-fit" class="w-full bevel-raised py-2.5 px-3 text-left font-bold text-sm bg-blue-100 hover:bg-white text-blue-900 active:bevel-sunken flex justify-between items-center">
+                <span>📐 Resize Selection to Canvas</span><span class="text-xs text-blue-800 font-bold">Fit</span>
+              </button>
             </div>
 
             <!-- View Panel -->
@@ -627,11 +632,17 @@
                 <button id="btn-zoom-out" class="bevel-raised py-2 font-bold text-xs bg-[#c0c0c0] hover:bg-white active:bevel-sunken">- Zoom Out</button>
               </div>
               <div class="grid grid-cols-3 gap-2">
+                <button id="action-zoom-fit" class="bevel-raised py-2 font-bold text-xs bg-blue-100 hover:bg-white active:bevel-sunken text-blue-900">Fit to Screen</button>
+                <button id="action-zoom-5" class="bevel-raised py-2 font-bold text-xs bg-[#c0c0c0] hover:bg-white active:bevel-sunken">Zoom 5%</button>
+                <button id="action-zoom-10" class="bevel-raised py-2 font-bold text-xs bg-[#c0c0c0] hover:bg-white active:bevel-sunken">Zoom 10%</button>
+                <button id="action-zoom-25" class="bevel-raised py-2 font-bold text-xs bg-[#c0c0c0] hover:bg-white active:bevel-sunken">Zoom 25%</button>
+                <button id="action-zoom-50" class="bevel-raised py-2 font-bold text-xs bg-[#c0c0c0] hover:bg-white active:bevel-sunken">Zoom 50%</button>
                 <button id="action-zoom-100" class="bevel-raised py-2 font-bold text-xs bg-[#c0c0c0] hover:bg-white active:bevel-sunken">Zoom 100% (1x)</button>
                 <button id="action-zoom-200" class="bevel-raised py-2 font-bold text-xs bg-[#c0c0c0] hover:bg-white active:bevel-sunken">Zoom 200% (2x)</button>
                 <button id="action-zoom-400" class="bevel-raised py-2 font-bold text-xs bg-[#c0c0c0] hover:bg-white active:bevel-sunken">Zoom 400% (4x)</button>
                 <button id="action-zoom-800" class="bevel-raised py-2 font-bold text-xs bg-[#c0c0c0] hover:bg-white active:bevel-sunken">Zoom 800% (8x)</button>
                 <button id="action-zoom-1600" class="bevel-raised py-2 font-bold text-xs bg-[#c0c0c0] hover:bg-white active:bevel-sunken">Zoom 1600% (16x)</button>
+                <button id="action-zoom-3200" class="bevel-raised py-2 font-bold text-xs bg-[#c0c0c0] hover:bg-white active:bevel-sunken">Zoom 3200% (32x)</button>
                 <button id="btn-reset-view" class="bevel-raised py-2 font-bold text-xs bg-blue-100 hover:bg-white active:bevel-sunken text-blue-900">Reset View</button>
               </div>
             </div>
@@ -884,6 +895,18 @@
           </div>
 
           <div class="p-3 bg-[#dfdfdf] bevel-sunken flex-1 overflow-y-auto max-h-[65vh] flex flex-col gap-2.5">
+            <!-- Top Actions: Select All & Resize Selection to Canvas -->
+            <div class="grid grid-cols-2 gap-2">
+              <button id="btn-sel-select-all" type="button" class="bevel-raised py-2.5 px-3 font-bold text-xs sm:text-sm bg-blue-100 hover:bg-white text-blue-900 active:bevel-sunken flex items-center justify-center gap-1.5 shadow-sm cursor-pointer" title="Select the entire canvas">
+                <span>🔲</span>
+                <span>Select All</span>
+              </button>
+              <button id="btn-sel-all-fit" type="button" class="bevel-raised py-2.5 px-3 font-bold text-xs sm:text-sm bg-gradient-to-r from-blue-100 to-yellow-100 text-blue-950 hover:bg-white active:bevel-sunken flex items-center justify-center gap-1.5 shadow-sm cursor-pointer" title="Resize the selection to the size of the canvas">
+                <span>📐</span>
+                <span>Fit to Canvas</span>
+              </button>
+            </div>
+
             <div class="text-xs text-gray-700 font-bold">Manipulate Selected Region:</div>
 
             <!-- Magic / Color Actions (Picker & Recolor Fill) -->
@@ -962,7 +985,8 @@
             <!-- Resize / Scale Quick Controls -->
             <div class="bevel-raised p-2 bg-[#c0c0c0] flex flex-col gap-1.5">
               <div class="text-xs font-bold text-gray-800">🔍 Resize / Scale Selection:</div>
-              <div class="grid grid-cols-3 gap-1.5">
+              <div class="grid grid-cols-2 sm:grid-cols-4 gap-1.5">
+                <button id="btn-sel-scale-fit-canvas" type="button" class="bevel-raised py-1.5 font-bold text-xs bg-blue-100 text-blue-900 hover:bg-white active:bevel-sunken" title="Scale selected region to fit entire canvas">Fit to Canvas</button>
                 <button id="btn-sel-scale-2x" class="bevel-raised py-1.5 font-bold text-xs bg-gray-100 hover:bg-white active:bevel-sunken">200% (2x Size)</button>
                 <button id="btn-sel-scale-half" class="bevel-raised py-1.5 font-bold text-xs bg-gray-100 hover:bg-white active:bevel-sunken">50% (Half Size)</button>
                 <button id="btn-sel-scale-custom" class="bevel-raised py-1.5 font-bold text-xs bg-gray-100 hover:bg-white active:bevel-sunken">Custom Size...</button>
@@ -1066,17 +1090,19 @@
             <button class="preset-btn bevel-raised p-2 text-center hover:bg-gray-200 font-bold" data-w="128" data-h="128">128 x 128</button>
             <button class="preset-btn bevel-raised p-2 text-center hover:bg-gray-200 font-bold" data-w="256" data-h="256">256 x 256</button>
             <button class="preset-btn bevel-raised p-2 text-center hover:bg-gray-200 font-bold" data-w="320" data-h="240">320 x 240</button>
+            <button class="preset-btn bevel-raised p-2 text-center hover:bg-gray-200 font-bold" data-w="1024" data-h="1024">1024 x 1024</button>
+            <button class="preset-btn bevel-raised p-2 text-center hover:bg-gray-200 font-bold text-blue-900 bg-blue-50" data-w="3000" data-h="3000">3000 x 3000</button>
           </div>
         </div>
 
         <div class="grid grid-cols-2 gap-2">
           <div>
             <label for="input-canvas-width" class="block font-bold mb-0.5">Width (px):</label>
-            <input type="number" id="input-canvas-width" value="64" min="4" max="1024" class="w-full bevel-sunken px-2 py-1 bg-white text-right font-mono">
+            <input type="number" id="input-canvas-width" value="64" min="4" max="4096" class="w-full bevel-sunken px-2 py-1 bg-white text-right font-mono">
           </div>
           <div>
             <label for="input-canvas-height" class="block font-bold mb-0.5">Height (px):</label>
-            <input type="number" id="input-canvas-height" value="64" min="4" max="1024" class="w-full bevel-sunken px-2 py-1 bg-white text-right font-mono">
+            <input type="number" id="input-canvas-height" value="64" min="4" max="4096" class="w-full bevel-sunken px-2 py-1 bg-white text-right font-mono">
           </div>
         </div>
 
@@ -1347,11 +1373,11 @@
         <div class="grid grid-cols-2 gap-2">
           <div>
             <label for="input-sel-width" class="block font-bold mb-0.5">Width (px):</label>
-            <input type="number" id="input-sel-width" min="1" max="512" class="w-full bevel-sunken px-2 py-1 bg-white text-right font-mono">
+            <input type="number" id="input-sel-width" min="1" max="4096" class="w-full bevel-sunken px-2 py-1 bg-white text-right font-mono">
           </div>
           <div>
             <label for="input-sel-height" class="block font-bold mb-0.5">Height (px):</label>
-            <input type="number" id="input-sel-height" min="1" max="512" class="w-full bevel-sunken px-2 py-1 bg-white text-right font-mono">
+            <input type="number" id="input-sel-height" min="1" max="4096" class="w-full bevel-sunken px-2 py-1 bg-white text-right font-mono">
           </div>
         </div>
         <div class="flex justify-end gap-2 mt-1">
@@ -1478,6 +1504,7 @@
       const selectionOverlayTitle = document.getElementById('selection-overlay-title');
       const btnCloseSelectionOverlay = document.getElementById('btn-close-selection-overlay');
       const btnSelectionEdit = document.getElementById('btn-selection-edit');
+      const selectionContentCanvas = document.getElementById('selection-content-canvas');
       const floatingMoveBar = document.getElementById('floating-move-bar');
       const btnCommitMove = document.getElementById('btn-commit-move');
       const btnCancelMove = document.getElementById('btn-cancel-move');
@@ -1492,6 +1519,10 @@
       const btnSelFlipH = document.getElementById('btn-sel-flip-h');
       const btnSelFlipV = document.getElementById('btn-sel-flip-v');
       const btnSelRotate = document.getElementById('btn-sel-rotate');
+      const btnSelSelectAll = document.getElementById('btn-sel-select-all');
+      const btnSelAllFit = document.getElementById('btn-sel-all-fit');
+      const btnSelScaleFitCanvas = document.getElementById('btn-sel-scale-fit-canvas');
+      const actionSelectAllFit = document.getElementById('action-select-all-fit');
       const btnSelCopy = document.getElementById('btn-sel-copy');
       const btnSelCut = document.getElementById('btn-sel-cut');
       const btnSelPaste = document.getElementById('btn-sel-paste');
@@ -2175,10 +2206,27 @@
             });
             toolOptionsPanel.appendChild(btn);
           });
-        } else if (state.tool === 'select' || state.tool === 'free-select') {
-          toolOptionsHeader.textContent = 'Selection Background:';
+        } else if (state.tool === 'select' || state.tool === 'free-select' || state.tool === 'magic-select') {
+          toolOptionsHeader.textContent = 'Selection & Canvas Fit:';
+
+          const btnSelAllFitOpt = document.createElement('button');
+          btnSelAllFitOpt.className = 'bevel-raised px-3.5 py-2 font-bold text-xs bg-yellow-100 text-blue-950 border border-blue-500 hover:bg-white active:bevel-sunken flex items-center gap-1.5 cursor-pointer';
+          btnSelAllFitOpt.innerHTML = '<span>📐</span><span>Fit Selection to Canvas</span>';
+          btnSelAllFitOpt.title = 'Resize the selection to the size of the canvas';
+          btnSelAllFitOpt.addEventListener('click', () => {
+            fitSelectionToCanvas();
+          });
+
+          const btnSelAllOpt = document.createElement('button');
+          btnSelAllOpt.className = 'bevel-raised px-3.5 py-2 font-bold text-xs bg-gray-100 text-gray-800 hover:bg-white active:bevel-sunken flex items-center gap-1.5 cursor-pointer';
+          btnSelAllOpt.innerHTML = '<span>🔲</span><span>Select All (Ctrl+A)</span>';
+          btnSelAllOpt.addEventListener('click', () => {
+            closeAllOverlays();
+            createSelection(0, 0, state.width, state.height);
+          });
+
           const btnOpaque = document.createElement('button');
-          btnOpaque.className = `bevel-raised px-4 py-2 font-bold text-xs hover:bg-white active:bevel-sunken ${!state.selectTransparent ? 'bg-blue-100 text-blue-900 border border-blue-500' : 'bg-gray-100'}`;
+          btnOpaque.className = `bevel-raised px-3.5 py-2 font-bold text-xs hover:bg-white active:bevel-sunken ${!state.selectTransparent ? 'bg-blue-100 text-blue-900 border border-blue-500' : 'bg-gray-100'}`;
           btnOpaque.textContent = 'Opaque (Keep All Colors)';
           btnOpaque.addEventListener('click', () => {
             state.selectTransparent = false;
@@ -2187,7 +2235,7 @@
           });
 
           const btnTransparent = document.createElement('button');
-          btnTransparent.className = `bevel-raised px-4 py-2 font-bold text-xs hover:bg-white active:bevel-sunken ${state.selectTransparent ? 'bg-blue-100 text-blue-900 border border-blue-500' : 'bg-gray-100'}`;
+          btnTransparent.className = `bevel-raised px-3.5 py-2 font-bold text-xs hover:bg-white active:bevel-sunken ${state.selectTransparent ? 'bg-blue-100 text-blue-900 border border-blue-500' : 'bg-gray-100'}`;
           btnTransparent.textContent = 'Transparent (Delete Secondary)';
           btnTransparent.addEventListener('click', () => {
             state.selectTransparent = true;
@@ -2195,6 +2243,8 @@
             closeAllOverlays();
           });
 
+          toolOptionsPanel.appendChild(btnSelAllFitOpt);
+          toolOptionsPanel.appendChild(btnSelAllOpt);
           toolOptionsPanel.appendChild(btnOpaque);
           toolOptionsPanel.appendChild(btnTransparent);
         } else if (state.tool === 'brush') {
@@ -2722,19 +2772,36 @@
         gridCanvas.style.width = `${displayW}px`;
         gridCanvas.style.height = `${displayH}px`;
 
-        statusZoom.textContent = `${state.zoom * 100}%`;
+        const pct = state.zoom * 100;
+        let pctStr;
+        if (pct >= 10) {
+          pctStr = `${Math.round(pct)}%`;
+        } else if (pct >= 1) {
+          pctStr = `${Number(pct.toFixed(1))}%`;
+        } else {
+          pctStr = `${Number(pct.toFixed(2))}%`;
+        }
+        statusZoom.textContent = pctStr;
+        if (state.selection) {
+          updateSelectionBoxDisplay();
+        }
+        if (state.stagedShape) {
+          updateShapeHandles();
+        }
         updateCanvasTransform();
       }
 
+      const zoomPresets = [0.01, 0.02, 0.05, 0.1, 0.25, 0.5, 1, 2, 4, 8, 16, 32];
+
       function setZoom(newZoom) {
-        state.zoom = Math.max(1, Math.min(32, newZoom));
+        state.zoom = Math.max(0.01, Math.min(32, newZoom));
         updateCanvasDisplaySize();
         drawGrid();
       }
 
       function zoomAtPoint(newZoom, centerX, centerY) {
-        newZoom = Math.max(1, Math.min(32, Math.round(newZoom)));
-        if (newZoom === state.zoom) return;
+        newZoom = Math.max(0.01, Math.min(32, newZoom));
+        if (Math.abs(newZoom - state.zoom) < 0.0001) return;
 
         const rect = paintCanvas.getBoundingClientRect();
         const px = (centerX - rect.left) / state.zoom;
@@ -2756,27 +2823,27 @@
         state.panX = 0;
         state.panY = 0;
         updateCanvasTransform();
-        const availW = canvasContainer.clientWidth - 30;
-        const availH = canvasContainer.clientHeight - 30;
-        const maxFitZoom = Math.max(1, Math.min(16, Math.floor(Math.min(availW / state.width, availH / state.height))));
-        setZoom(maxFitZoom || 8);
+        const availW = Math.max(50, canvasContainer.clientWidth - 40);
+        const availH = Math.max(50, canvasContainer.clientHeight - 40);
+        const fitRatio = Math.min(availW / state.width, availH / state.height);
+        let fitZoom = fitRatio;
+        if (fitZoom >= 1) {
+          fitZoom = Math.min(16, Math.floor(fitRatio));
+        } else {
+          fitZoom = Math.max(0.01, Math.min(1, Number(fitRatio.toFixed(3))));
+        }
+        setZoom(fitZoom || 1);
       }
 
       quickResetView.addEventListener('click', resetView);
       document.getElementById('btn-zoom-in').addEventListener('click', () => {
-        if (state.zoom < 2) setZoom(2);
-        else if (state.zoom < 4) setZoom(4);
-        else if (state.zoom < 8) setZoom(8);
-        else if (state.zoom < 16) setZoom(16);
-        else setZoom(32);
+        const next = zoomPresets.find(z => z > state.zoom * 1.02);
+        setZoom(next !== undefined ? next : 32);
         closeAllOverlays();
       });
       document.getElementById('btn-zoom-out').addEventListener('click', () => {
-        if (state.zoom > 16) setZoom(16);
-        else if (state.zoom > 8) setZoom(8);
-        else if (state.zoom > 4) setZoom(4);
-        else if (state.zoom > 2) setZoom(2);
-        else setZoom(1);
+        const prev = [...zoomPresets].reverse().find(z => z < state.zoom * 0.98);
+        setZoom(prev !== undefined ? prev : 0.01);
         closeAllOverlays();
       });
       btnResetView.addEventListener('click', () => {
@@ -2793,31 +2860,21 @@
       });
 
       function drawGrid() {
-        gridCtx.clearRect(0, 0, state.width, state.height);
         if (!state.showGrid || state.zoom < 4) {
           gridCanvas.style.display = 'none';
+          gridCanvas.style.backgroundImage = 'none';
           return;
         }
 
         gridCanvas.style.display = 'block';
         const z = state.zoom;
-        gridCanvas.width = state.width * z;
-        gridCanvas.height = state.height * z;
-
-        gridCtx.clearRect(0, 0, gridCanvas.width, gridCanvas.height);
-        gridCtx.strokeStyle = 'rgba(128, 128, 128, 0.35)';
-        gridCtx.lineWidth = 1;
-
-        gridCtx.beginPath();
-        for (let x = 0; x <= state.width; x++) {
-          gridCtx.moveTo(x * z + 0.5, 0);
-          gridCtx.lineTo(x * z + 0.5, state.height * z);
-        }
-        for (let y = 0; y <= state.height; y++) {
-          gridCtx.moveTo(0, y * z + 0.5);
-          gridCtx.lineTo(state.width * z, y * z + 0.5);
-        }
-        gridCtx.stroke();
+        // Using CSS background-image guarantees the grid is always visible at high zoom even for huge 3,000px canvases
+        gridCanvas.style.backgroundImage = `
+          linear-gradient(to right, rgba(128, 128, 128, 0.35) 1px, transparent 1px),
+          linear-gradient(to bottom, rgba(128, 128, 128, 0.35) 1px, transparent 1px)
+        `;
+        gridCanvas.style.backgroundSize = `${z}px ${z}px`;
+        gridCanvas.style.backgroundPosition = '0 0';
       }
 
       // --- Coordinate Mapping ---
@@ -3369,7 +3426,8 @@
           data: imgData
         });
 
-        if (state.history.length > state.maxHistory) {
+        const histLimit = (state.width * state.height >= 1000000) ? 5 : state.maxHistory;
+        if (state.history.length > histLimit) {
           state.history.shift();
         } else {
           state.historyIndex++;
@@ -3613,6 +3671,20 @@
         const selRectSvg = document.getElementById('selection-rect-svg');
         const selHandles = selectionBox.querySelectorAll('.sel-handle');
 
+        if (state.selectionMoving) {
+          selectionBox.classList.remove('bg-blue-500/10');
+          if (selectionContentCanvas) {
+            selectionContentCanvas.style.display = 'none';
+          }
+        } else {
+          if (!s.isMagic && !s.isLasso) {
+            selectionBox.classList.add('bg-blue-500/10');
+          }
+          if (selectionContentCanvas) {
+            selectionContentCanvas.style.display = 'none';
+          }
+        }
+
         if (s.isMagic && (s.selectedMask || s.origMask)) {
           // Conforming SVG contour for magic wand selection (zero collateral damage border)
           if (selRectSvg) selRectSvg.classList.add('hidden');
@@ -3765,9 +3837,24 @@
       }
 
       function renderFloatingSelection() {
-        if (!state.selection) return;
+        if (!state.selection) {
+          previewCtx.clearRect(0, 0, state.width, state.height);
+          if (selectionContentCanvas) {
+            selectionContentCanvas.style.display = 'none';
+          }
+          return;
+        }
         const s = state.selection;
         previewCtx.clearRect(0, 0, state.width, state.height);
+
+        // Hide selectionContentCanvas so no image pixels spill outside the canvas boundary
+        if (selectionContentCanvas) {
+          selectionContentCanvas.style.display = 'none';
+        }
+
+        // Render floating selection onto previewCanvas.
+        // Because previewCanvas is size (state.width x state.height),
+        // only the part of the image within the boundary of the canvas is visible!
         renderSelectionDataToCanvas(previewCtx, s.imgData, s.x, s.y, state.selectTransparent, state.bgColor);
       }
 
@@ -3787,6 +3874,7 @@
         clearSelectionAreaOnActiveLayer(targetCtx, s);
         compositeLayers();
 
+        updateSelectionBoxDisplay();
         renderFloatingSelection();
         floatingMoveBar.classList.remove('hidden');
       }
@@ -3805,7 +3893,16 @@
         if (!state.selection || !state.selectionMoving) return;
         const s = state.selection;
         previewCtx.clearRect(0, 0, state.width, state.height);
+
+        if (selectionContentCanvas) {
+          selectionContentCanvas.style.display = 'none';
+          const sCtx = selectionContentCanvas.getContext('2d');
+          if (sCtx) sCtx.clearRect(0, 0, selectionContentCanvas.width, selectionContentCanvas.height);
+        }
+
         const targetCtx = getActiveLayerCtx();
+        // Stamp only onto targetCtx (which has bounds 0, 0, state.width, state.height).
+        // Anything outside canvas boundaries is cleanly clipped and deleted!
         renderSelectionDataToCanvas(targetCtx, s.imgData, s.x, s.y, state.selectTransparent, state.bgColor);
         compositeLayers();
         state.selectionMoving = false;
@@ -3818,6 +3915,21 @@
         if (!state.selection || !state.selectionMoving) return;
         const s = state.selection;
         previewCtx.clearRect(0, 0, state.width, state.height);
+
+        if (selectionContentCanvas) {
+          selectionContentCanvas.style.display = 'none';
+          const sCtx = selectionContentCanvas.getContext('2d');
+          if (sCtx) sCtx.clearRect(0, 0, selectionContentCanvas.width, selectionContentCanvas.height);
+        }
+
+        if (s.isPasted) {
+          state.selectionMoving = false;
+          floatingMoveBar.classList.add('hidden');
+          clearSelectionBox();
+          statusHint.textContent = 'Pasted image canceled.';
+          return;
+        }
+
         if (s.preMoveState) {
           getActiveLayerCtx().putImageData(s.preMoveState, 0, 0);
           compositeLayers();
@@ -3849,8 +3961,8 @@
 
       function scaleSelection(newW, newH) {
         if (!state.selection) return;
-        newW = Math.max(1, Math.min(512, Math.round(newW)));
-        newH = Math.max(1, Math.min(512, Math.round(newH)));
+        newW = Math.max(1, Math.min(4096, Math.round(newW)));
+        newH = Math.max(1, Math.min(4096, Math.round(newH)));
         const s = state.selection;
 
         const scaledData = scaleImageDataNearestNeighbor(s.imgData, newW, newH);
@@ -3863,6 +3975,11 @@
           renderFloatingSelection();
         } else {
           const targetCtx = getActiveLayerCtx();
+          if (!s.preMoveState) {
+            s.preMoveState = targetCtx.getImageData(0, 0, state.width, state.height);
+            s.origX = s.x;
+            s.origY = s.y;
+          }
           if (state.activeLayerIndex === 0) {
             targetCtx.fillStyle = state.bgColor;
             targetCtx.fillRect(s.x, s.y, s.w, s.h);
@@ -3875,6 +3992,99 @@
           s.imgData = scaledData;
           startMoveSelection();
           updateSelectionBoxDisplay();
+        }
+      }
+
+      function pasteImageData(dataToPaste) {
+        if (!dataToPaste) return;
+        closeAllOverlays();
+
+        if (state.selectionMoving) {
+          commitMoveSelection();
+        }
+
+        const posX = 0;
+        const posY = 0;
+
+        state.selection = {
+          x: posX,
+          y: posY,
+          w: dataToPaste.width,
+          h: dataToPaste.height,
+          imgData: dataToPaste,
+          preMoveState: getActiveLayerCtx().getImageData(0, 0, state.width, state.height),
+          origX: posX,
+          origY: posY,
+          isPasted: true
+        };
+
+        state.selectionMoving = true;
+        updateSelectionBoxDisplay();
+        renderFloatingSelection();
+        floatingMoveBar.classList.remove('hidden');
+
+        statusHint.textContent = `Pasted image (${dataToPaste.width} x ${dataToPaste.height} px). Drag to position; tap ✓ Stamp Down to bake to canvas.`;
+      }
+
+      function selectAllCanvas() {
+        if (state.selectionMoving) {
+          commitMoveSelection();
+        }
+        createSelection(0, 0, state.width, state.height);
+        closeAllOverlays();
+        statusHint.textContent = `Selected all canvas (${state.width} x ${state.height} px).`;
+      }
+
+      function selectAllAndFitToCanvas() {
+        selectAllCanvas();
+      }
+
+      function fitSelectionToCanvas() {
+        if (!state.selection) {
+          createSelection(0, 0, state.width, state.height);
+          closeAllOverlays();
+          statusHint.textContent = `Selected all canvas (${state.width} x ${state.height} px).`;
+          return;
+        }
+
+        const s = state.selection;
+        const targetCtx = getActiveLayerCtx();
+
+        if (state.selectionMoving) {
+          const scaled = scaleImageDataNearestNeighbor(s.imgData, state.width, state.height);
+          s.x = 0;
+          s.y = 0;
+          s.w = state.width;
+          s.h = state.height;
+          s.imgData = scaled;
+          s.isLasso = false;
+          s.isMagic = false;
+          updateSelectionBoxDisplay();
+          renderFloatingSelection();
+          closeAllOverlays();
+          statusHint.textContent = `Selection resized to the size of the canvas (${state.width} x ${state.height} px).`;
+        } else {
+          clearSelectionAreaOnActiveLayer(targetCtx, s);
+
+          const scaled = scaleImageDataNearestNeighbor(s.imgData, state.width, state.height);
+          s.x = 0;
+          s.y = 0;
+          s.w = state.width;
+          s.h = state.height;
+          s.imgData = scaled;
+          s.isLasso = false;
+          s.isMagic = false;
+
+          renderSelectionDataToCanvas(targetCtx, scaled, 0, 0, state.selectTransparent, state.bgColor);
+          compositeLayers();
+          previewCtx.clearRect(0, 0, state.width, state.height);
+          state.selectionMoving = false;
+          if (floatingMoveBar) floatingMoveBar.classList.add('hidden');
+
+          updateSelectionBoxDisplay();
+          saveHistoryState();
+          closeAllOverlays();
+          statusHint.textContent = `Selection resized to the size of the canvas (${state.width} x ${state.height} px).`;
         }
       }
 
@@ -3905,7 +4115,7 @@
           const cx = ev.clientX !== undefined ? ev.clientX : (ev.touches && ev.touches[0] ? ev.touches[0].clientX : 0);
           const cy = ev.clientY !== undefined ? ev.clientY : (ev.touches && ev.touches[0] ? ev.touches[0].clientY : 0);
           const dist = Math.hypot(cx - selBoxTouchStartX, cy - selBoxTouchStartY);
-          if (dist > 6) {
+          if (dist > 3) {
             if (!selBoxIsDrag) {
               if (!state.selectionMoving) {
                 startMoveSelection();
@@ -4008,6 +4218,30 @@
         }
       });
 
+      if (btnSelSelectAll) {
+        btnSelSelectAll.addEventListener('click', () => {
+          selectAllCanvas();
+        });
+      }
+
+      if (btnSelAllFit) {
+        btnSelAllFit.addEventListener('click', () => {
+          fitSelectionToCanvas();
+        });
+      }
+
+      if (btnSelScaleFitCanvas) {
+        btnSelScaleFitCanvas.addEventListener('click', () => {
+          fitSelectionToCanvas();
+        });
+      }
+
+      if (actionSelectAllFit) {
+        actionSelectAllFit.addEventListener('click', () => {
+          selectAllAndFitToCanvas();
+        });
+      }
+
       btnApplySelSize.addEventListener('click', () => {
         const nw = parseInt(inputSelWidth.value, 10);
         const nh = parseInt(inputSelHeight.value, 10);
@@ -4078,14 +4312,9 @@
           closeAllOverlays();
           const dataToPaste = localCopiedData || (state.selection ? state.selection.imgData : null);
           if (dataToPaste) {
-            const targetCtx = getActiveLayerCtx();
-            const posX = state.selection ? Math.min(state.width - dataToPaste.width, Math.max(0, state.selection.x + 4)) : 0;
-            const posY = state.selection ? Math.min(state.height - dataToPaste.height, Math.max(0, state.selection.y + 4)) : 0;
-
-            renderSelectionDataToCanvas(targetCtx, dataToPaste, posX, posY, state.selectTransparent, state.bgColor);
-            createSelection(posX, posY, dataToPaste.width, dataToPaste.height);
-            compositeLayers();
-            saveHistoryState();
+            pasteImageData(dataToPaste);
+          } else {
+            statusHint.textContent = 'Clipboard is empty. Copy a selection first.';
           }
         });
       }
@@ -4355,9 +4584,11 @@
           state.isDrawing = false;
         } else if (state.tool === 'zoom') {
           if (state.mouseButton === 2) {
-            setZoom(state.zoom / 2);
+            const prev = [...zoomPresets].reverse().find(z => z < state.zoom * 0.95);
+            setZoom(prev !== undefined ? prev : Math.max(0.01, state.zoom / 2));
           } else {
-            setZoom(state.zoom * 2);
+            const next = zoomPresets.find(z => z > state.zoom * 1.05);
+            setZoom(next !== undefined ? next : Math.min(32, state.zoom * 2));
           }
           state.isDrawing = false;
         } else if (state.tool === 'text') {
@@ -5039,7 +5270,8 @@
           clearSelectionBox();
           performMagicSelect(cand.x, cand.y);
         } else if (cand.tool === 'zoom') {
-          setZoom(state.zoom * 2);
+          const next = zoomPresets.find(z => z > state.zoom * 1.05);
+          setZoom(next !== undefined ? next : Math.min(32, state.zoom * 2));
         }
       }
 
@@ -5148,7 +5380,7 @@
 
           if (touchState.startDist > 0) {
             const scale = currentDist / touchState.startDist;
-            const targetZoom = Math.max(1, Math.min(32, Math.round(touchState.startZoom * scale)));
+            const targetZoom = Math.max(0.01, Math.min(32, touchState.startZoom * scale));
             if (targetZoom !== state.zoom) {
               zoomAtPoint(targetZoom, currentMidX, currentMidY);
               touchState.startDist = currentDist;
@@ -5246,7 +5478,7 @@
         e.preventDefault();
         if (e.ctrlKey || e.metaKey) {
           const factor = e.deltaY < 0 ? 1.25 : 0.8;
-          const newZoom = Math.max(1, Math.min(32, Math.round(state.zoom * factor)));
+          const newZoom = Math.max(0.01, Math.min(32, state.zoom * factor));
           zoomAtPoint(newZoom, e.clientX, e.clientY);
         } else {
           state.panX -= e.deltaX;
@@ -5261,18 +5493,46 @@
 
         const key = e.key.toLowerCase();
 
-        if (e.ctrlKey && key === 'z') {
+        if (state.selectionMoving && e.key === 'Enter') {
+          e.preventDefault();
+          commitMoveSelection();
+          return;
+        } else if (state.selectionMoving && e.key === 'Escape') {
+          e.preventDefault();
+          cancelMoveSelection();
+          return;
+        }
+
+        if ((e.ctrlKey || e.metaKey) && key === 'z') {
           e.preventDefault();
           undo();
-        } else if ((e.ctrlKey && key === 'y') || (e.ctrlKey && e.shiftKey && key === 'z')) {
+        } else if (((e.ctrlKey || e.metaKey) && key === 'y') || ((e.ctrlKey || e.metaKey) && e.shiftKey && key === 'z')) {
           e.preventDefault();
           redo();
-        } else if (e.ctrlKey && key === 's') {
+        } else if ((e.ctrlKey || e.metaKey) && key === 's') {
           e.preventDefault();
           downloadCanvasPNG(1);
-        } else if (e.ctrlKey && key === 'a') {
+        } else if ((e.ctrlKey || e.metaKey) && key === 'a') {
           e.preventDefault();
           createSelection(0, 0, state.width, state.height);
+        } else if ((e.ctrlKey || e.metaKey) && key === 'v') {
+          if (localCopiedData) {
+            e.preventDefault();
+            pasteImageData(localCopiedData);
+          }
+        } else if ((e.ctrlKey || e.metaKey) && key === 'c') {
+          if (state.selection) {
+            e.preventDefault();
+            localCopiedData = state.selection.imgData;
+            statusHint.textContent = `Copied selection (${state.selection.w} x ${state.selection.h} px).`;
+          }
+        } else if ((e.ctrlKey || e.metaKey) && key === 'x') {
+          if (state.selection) {
+            e.preventDefault();
+            localCopiedData = state.selection.imgData;
+            eraseSelection();
+            statusHint.textContent = 'Cut selection to clipboard.';
+          }
         } else if (key === 'p') {
           selectTool('pencil');
         } else if (key === 'l') {
@@ -5415,8 +5675,8 @@
         reader.onload = (event) => {
           const img = new Image();
           img.onload = () => {
-            const targetW = Math.min(512, img.width);
-            const targetH = Math.min(512, img.height);
+            const targetW = Math.min(4096, img.width);
+            const targetH = Math.min(4096, img.height);
             resizeCanvas(targetW, targetH, 'transparent', false);
             const targetCtx = getActiveLayerCtx();
             targetCtx.imageSmoothingEnabled = false;
@@ -5473,11 +5733,17 @@
         redo();
       });
 
+      document.getElementById('action-zoom-fit').addEventListener('click', () => { closeAllOverlays(); resetView(); });
+      document.getElementById('action-zoom-5').addEventListener('click', () => { closeAllOverlays(); setZoom(0.05); });
+      document.getElementById('action-zoom-10').addEventListener('click', () => { closeAllOverlays(); setZoom(0.1); });
+      document.getElementById('action-zoom-25').addEventListener('click', () => { closeAllOverlays(); setZoom(0.25); });
+      document.getElementById('action-zoom-50').addEventListener('click', () => { closeAllOverlays(); setZoom(0.5); });
       document.getElementById('action-zoom-100').addEventListener('click', () => { closeAllOverlays(); setZoom(1); });
       document.getElementById('action-zoom-200').addEventListener('click', () => { closeAllOverlays(); setZoom(2); });
       document.getElementById('action-zoom-400').addEventListener('click', () => { closeAllOverlays(); setZoom(4); });
       document.getElementById('action-zoom-800').addEventListener('click', () => { closeAllOverlays(); setZoom(8); });
       document.getElementById('action-zoom-1600').addEventListener('click', () => { closeAllOverlays(); setZoom(16); });
+      document.getElementById('action-zoom-3200').addEventListener('click', () => { closeAllOverlays(); setZoom(32); });
 
       document.getElementById('action-flip-h').addEventListener('click', () => { closeAllOverlays(); flipHorizontal(); });
       document.getElementById('action-flip-v').addEventListener('click', () => { closeAllOverlays(); flipVertical(); });
@@ -5525,11 +5791,9 @@
       document.getElementById('action-paste').addEventListener('click', () => {
         closeAllOverlays();
         if (localCopiedData) {
-          const targetCtx = getActiveLayerCtx();
-          renderSelectionDataToCanvas(targetCtx, localCopiedData, 0, 0, state.selectTransparent, state.bgColor);
-          createSelection(0, 0, localCopiedData.width, localCopiedData.height);
-          compositeLayers();
-          saveHistoryState();
+          pasteImageData(localCopiedData);
+        } else {
+          statusHint.textContent = 'Clipboard is empty. Copy a selection first or paste an image from your clipboard (Ctrl+V).';
         }
       });
 
@@ -5552,7 +5816,7 @@
         else if (bgType === 'black') bg = '#000000';
         else if (bgType === 'current') bg = state.bgColor;
 
-        if (w >= 4 && h >= 4 && w <= 1024 && h <= 1024) {
+        if (w >= 4 && h >= 4 && w <= 4096 && h <= 4096) {
           resizeCanvas(w, h, bg, false);
           resetView();
           modalCanvasSize.classList.add('hidden');
@@ -5969,6 +6233,43 @@
         compositeLayers();
         saveHistoryState();
       }
+
+      window.addEventListener('paste', (e) => {
+        if (e.target && (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA')) return;
+        const items = e.clipboardData?.items;
+        if (items) {
+          for (let i = 0; i < items.length; i++) {
+            if (items[i].type.indexOf('image') !== -1) {
+              e.preventDefault();
+              const blob = items[i].getAsFile();
+              if (blob) {
+                const reader = new FileReader();
+                reader.onload = (event) => {
+                  const img = new Image();
+                  img.onload = () => {
+                    const tempC = document.createElement('canvas');
+                    tempC.width = img.width;
+                    tempC.height = img.height;
+                    const tCtx = tempC.getContext('2d');
+                    tCtx.imageSmoothingEnabled = false;
+                    tCtx.drawImage(img, 0, 0);
+                    const imgData = tCtx.getImageData(0, 0, img.width, img.height);
+                    localCopiedData = imgData;
+                    pasteImageData(imgData);
+                  };
+                  img.src = event.target.result;
+                };
+                reader.readAsDataURL(blob);
+                return;
+              }
+            }
+          }
+        }
+        if (localCopiedData) {
+          e.preventDefault();
+          pasteImageData(localCopiedData);
+        }
+      });
 
       drawWelcomeDemo();
 
