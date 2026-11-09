@@ -1,9 +1,17 @@
 <!DOCTYPE html>
+<!-- Bit Smithery - Pixel Art Studio -->
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Bit Smithery - 1-Pixel Precision Pixel Art Studio</title>
+  <title>Bit Smithery</title>
+  <meta name="application-name" content="Bit Smithery">
+  <meta name="apple-mobile-web-app-title" content="Bit Smithery">
+  <link rel="icon" type="image/png" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAIAAAACACAYAAADDPmHLAAAEjUlEQVR4AeyaMY4TQRBFe3YJCDgDIWfhAogzICFiEkSAkAAJEXINAkIyAgICAiQOwDlAZo2mUMls94zXPVXlridR6na33VX1/9N4POxFKWVH5NVgD8CV//zLqgAAZHV+7hsAZiGyDgCQ1fm5bwCYhcg6AEBW5+e+AWAWItsg/QKAKJF0BICkxkvbACBKJB0BIKnx0jYAiBJJRwBIary0DQCiRNIRAJIZf9guABwqkuw1ACQz/LBdADhUJNlrAEhm+GG7AHCoSLLXAJDM8MN2AeBQkWSvASCJ4bU2AaCmTJJ1AEhidK1NAKgpk2QdAJIYXWsTAGrKJFkHgCRG19oEgJoySdYBYHCjl9oDgCWFBt8HgMENXmqvCcDu0d0SOaS5yDVuWZv0f8rYBOCUg/nseSjQBGB6/7Pso1zeKiFDNI5a39Z1Sf8njE0ATjiXj56JAusA+P2rFB0XV1eECCEiR6jFo4a5/92Te+W6mLebwzoAmkewGVGBtTWtAmB/H7CPcvtO+Rtbf7etPV+6XPv+0d631L/sN8ZVADQ+z9aZK3AUANO7H2Uf5eKyhAgRP0o91nUs9S/7jfEoABrnsHWmCtwIgOnt96KjeH23iuhe+b3zLvUv+43xRgA0zmPrzBToAsD05lvRUax+E4vYVvmi5VnqX/YbYxcAGuezZazAsek2AWB69bXo2OweQbr1/i72yr/Uv+w3xk0AaORjK5gCJgBML7+UNXH0vYOIGe272aqepf5lvzGaANDIz5azAqEAmF58LsfEP+28voO984oAtTpkvzGGAqBRJ1sbKTAGAJdX/zeRMQSKWu+y3xjHAKDRYJatm/Y5BgBWd93R8syuT88+leti3m4OYwDQbJHNlgJjAFC7Cx59veXsyr0xAFjZLG/7X4EhAJiefiwZ4387j18ZAoDj2+YTogAAiBJJRwA4c+NPLR8AlIK7dw+LRaiU7lMAcLfAtwAA0PpbPTfQOZ3nAOBsgHd6ANAOWD3r1zmd5wDgbIB3egDQDnAPoNVgHlmBXrVxBdBKcg+g1WCeQQGuANrl2t/W9V7XOZ3nAOBsgHd6ANAOcA+g1WCeQQGuANplngNoNZhHVKB3TVwBtKJcAbQazDMowBVAu8yvAK0G8wwKcAXQLvd+4lc7T+d0ngOAswHe6QFAO8A9gFaDeSQFtqqFK4BSdnrwvFiESuk+BQB3C3wLGAqA3YfXJUP0RGYoAHoKk+WssQCwepbvnacjnWMB0FGYLEeNBYDV73jvPB3pHAuAjsJEOWrrOsYCoPbsfbT1jlSMBUBHYbIcNRQA0/3HJUP0hHMoAHoKk+UsAMjidKVPAKgIk2UZALI4XekTACrCeC9b5QcAK6WD5gGAoMZYlQUAVkoHzQMAQY2xKgsArJQOmgcAghpjVRYAWCkdNA8ABDPGuhwAsFY8WD4ACGaIdTkAYK14sHwAEMwQ63IAwFrxYPkAIJgh1uUAgLXiwfIBQBBDvMoAAC/lg+QFgCBGeJUBAF7KB8kLAEGM8CoDALyUD5IXAIIY4VUGAHgpHyQvADgb4Z3+DwAAAP//g7aqkQAAAAZJREFUAwBsrcifdaE+dQAAAABJRU5ErkJggg==">
+  <link rel="shortcut icon" type="image/png" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAIAAAACACAYAAADDPmHLAAAEjUlEQVR4AeyaMY4TQRBFe3YJCDgDIWfhAogzICFiEkSAkAAJEXINAkIyAgICAiQOwDlAZo2mUMls94zXPVXlridR6na33VX1/9N4POxFKWVH5NVgD8CV//zLqgAAZHV+7hsAZiGyDgCQ1fm5bwCYhcg6AEBW5+e+AWAWItsg/QKAKJF0BICkxkvbACBKJB0BIKnx0jYAiBJJRwBIary0DQCiRNIRAJIZf9guABwqkuw1ACQz/LBdADhUJNlrAEhm+GG7AHCoSLLXAJDM8MN2AeBQkWSvASCJ4bU2AaCmTJJ1AEhidK1NAKgpk2QdAJIYXWsTAGrKJFkHgCRG19oEgJoySdYBYHCjl9oDgCWFBt8HgMENXmqvCcDu0d0SOaS5yDVuWZv0f8rYBOCUg/nseSjQBGB6/7Pso1zeKiFDNI5a39Z1Sf8njE0ATjiXj56JAusA+P2rFB0XV1eECCEiR6jFo4a5/92Te+W6mLebwzoAmkewGVGBtTWtAmB/H7CPcvtO+Rtbf7etPV+6XPv+0d631L/sN8ZVADQ+z9aZK3AUANO7H2Uf5eKyhAgRP0o91nUs9S/7jfEoABrnsHWmCtwIgOnt96KjeH23iuhe+b3zLvUv+43xRgA0zmPrzBToAsD05lvRUax+E4vYVvmi5VnqX/YbYxcAGuezZazAsek2AWB69bXo2OweQbr1/i72yr/Uv+w3xk0AaORjK5gCJgBML7+UNXH0vYOIGe272aqepf5lvzGaANDIz5azAqEAmF58LsfEP+28voO984oAtTpkvzGGAqBRJ1sbKTAGAJdX/zeRMQSKWu+y3xjHAKDRYJatm/Y5BgBWd93R8syuT88+leti3m4OYwDQbJHNlgJjAFC7Cx59veXsyr0xAFjZLG/7X4EhAJiefiwZ4387j18ZAoDj2+YTogAAiBJJRwA4c+NPLR8AlIK7dw+LRaiU7lMAcLfAtwAA0PpbPTfQOZ3nAOBsgHd6ANAOWD3r1zmd5wDgbIB3egDQDnAPoNVgHlmBXrVxBdBKcg+g1WCeQQGuANrl2t/W9V7XOZ3nAOBsgHd6ANAOcA+g1WCeQQGuANplngNoNZhHVKB3TVwBtKJcAbQazDMowBVAu8yvAK0G8wwKcAXQLvd+4lc7T+d0ngOAswHe6QFAO8A9gFaDeSQFtqqFK4BSdnrwvFiESuk+BQB3C3wLGAqA3YfXJUP0RGYoAHoKk+WssQCwepbvnacjnWMB0FGYLEeNBYDV73jvPB3pHAuAjsJEOWrrOsYCoPbsfbT1jlSMBUBHYbIcNRQA0/3HJUP0hHMoAHoKk+UsAMjidKVPAKgIk2UZALI4XekTACrCeC9b5QcAK6WD5gGAoMZYlQUAVkoHzQMAQY2xKgsArJQOmgcAghpjVRYAWCkdNA8ABDPGuhwAsFY8WD4ACGaIdTkAYK14sHwAEMwQ63IAwFrxYPkAIJgh1uUAgLXiwfIBQBBDvMoAAC/lg+QFgCBGeJUBAF7KB8kLAEGM8CoDALyUD5IXAIIY4VUGAHgpHyQvADgb4Z3+DwAAAP//g7aqkQAAAAZJREFUAwBsrcifdaE+dQAAAABJRU5ErkJggg==">
+  <link rel="apple-touch-icon" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAIAAAACACAYAAADDPmHLAAAEjUlEQVR4AeyaMY4TQRBFe3YJCDgDIWfhAogzICFiEkSAkAAJEXINAkIyAgICAiQOwDlAZo2mUMls94zXPVXlridR6na33VX1/9N4POxFKWVH5NVgD8CV//zLqgAAZHV+7hsAZiGyDgCQ1fm5bwCYhcg6AEBW5+e+AWAWItsg/QKAKJF0BICkxkvbACBKJB0BIKnx0jYAiBJJRwBIary0DQCiRNIRAJIZf9guABwqkuw1ACQz/LBdADhUJNlrAEhm+GG7AHCoSLLXAJDM8MN2AeBQkWSvASCJ4bU2AaCmTJJ1AEhidK1NAKgpk2QdAJIYXWsTAGrKJFkHgCRG19oEgJoySdYBYHCjl9oDgCWFBt8HgMENXmqvCcDu0d0SOaS5yDVuWZv0f8rYBOCUg/nseSjQBGB6/7Pso1zeKiFDNI5a39Z1Sf8njE0ATjiXj56JAusA+P2rFB0XV1eECCEiR6jFo4a5/92Te+W6mLebwzoAmkewGVGBtTWtAmB/H7CPcvtO+Rtbf7etPV+6XPv+0d631L/sN8ZVADQ+z9aZK3AUANO7H2Uf5eKyhAgRP0o91nUs9S/7jfEoABrnsHWmCtwIgOnt96KjeH23iuhe+b3zLvUv+43xRgA0zmPrzBToAsD05lvRUax+E4vYVvmi5VnqX/YbYxcAGuezZazAsek2AWB69bXo2OweQbr1/i72yr/Uv+w3xk0AaORjK5gCJgBML7+UNXH0vYOIGe272aqepf5lvzGaANDIz5azAqEAmF58LsfEP+28voO984oAtTpkvzGGAqBRJ1sbKTAGAJdX/zeRMQSKWu+y3xjHAKDRYJatm/Y5BgBWd93R8syuT88+leti3m4OYwDQbJHNlgJjAFC7Cx59veXsyr0xAFjZLG/7X4EhAJiefiwZ4387j18ZAoDj2+YTogAAiBJJRwA4c+NPLR8AlIK7dw+LRaiU7lMAcLfAtwAA0PpbPTfQOZ3nAOBsgHd6ANAOWD3r1zmd5wDgbIB3egDQDnAPoNVgHlmBXrVxBdBKcg+g1WCeQQGuANrl2t/W9V7XOZ3nAOBsgHd6ANAOcA+g1WCeQQGuANplngNoNZhHVKB3TVwBtKJcAbQazDMowBVAu8yvAK0G8wwKcAXQLvd+4lc7T+d0ngOAswHe6QFAO8A9gFaDeSQFtqqFK4BSdnrwvFiESuk+BQB3C3wLGAqA3YfXJUP0RGYoAHoKk+WssQCwepbvnacjnWMB0FGYLEeNBYDV73jvPB3pHAuAjsJEOWrrOsYCoPbsfbT1jlSMBUBHYbIcNRQA0/3HJUP0hHMoAHoKk+UsAMjidKVPAKgIk2UZALI4XekTACrCeC9b5QcAK6WD5gGAoMZYlQUAVkoHzQMAQY2xKgsArJQOmgcAghpjVRYAWCkdNA8ABDPGuhwAsFY8WD4ACGaIdTkAYK14sHwAEMwQ63IAwFrxYPkAIJgh1uUAgLXiwfIBQBBDvMoAAC/lg+QFgCBGeJUBAF7KB8kLAEGM8CoDALyUD5IXAIIY4VUGAHgpHyQvADgb4Z3+DwAAAP//g7aqkQAAAAZJREFUAwBsrcifdaE+dQAAAABJRU5ErkJggg==">
+  <!-- Application: Bit Smithery -->
+  <!-- File: Bit Smithery.html -->
   <script src="https://cdn.tailwindcss.com/3.4.17"></script>
   <style>
     /* Classic Windows 95 / 98 Retro Styles */
@@ -138,6 +146,12 @@
       cursor: pointer;
       position: relative;
       touch-action: manipulation;
+      height: 52px !important;
+      min-height: 52px !important;
+      max-height: 52px !important;
+      box-sizing: border-box !important;
+      overflow: hidden !important;
+      padding: 4px 2px !important;
     }
 
     .tool-btn:hover {
@@ -299,6 +313,80 @@
       animation: ambientAuraPulse 3s ease-in-out infinite;
     }
 
+  
+    .hsv-track-hue {
+      background: linear-gradient(to right, #ff0000 0%, #ffff00 17%, #00ff00 33%, #00ffff 50%, #0000ff 67%, #ff00ff 83%, #ff0000 100%) !important;
+    }
+    .gradient-active-glow {
+      box-shadow: 0 0 0 2px #3b82f6, 0 0 8px rgba(59, 130, 246, 0.7);
+    }
+
+  
+    /* Horizontal Project Gallery & Spinning 3D Showcase Frame */
+    @keyframes projectShowcaseSpin {
+      0% {
+        transform: perspective(700px) rotateY(0deg);
+      }
+      100% {
+        transform: perspective(700px) rotateY(360deg);
+      }
+    }
+
+    .project-spinning-card {
+      animation: projectShowcaseSpin 12s linear infinite;
+      transform-style: preserve-3d;
+      will-change: transform;
+    }
+
+    .project-frame-box {
+      border: 3px solid #000000;
+      background-color: #141419;
+      box-shadow: inset 1px 1px #404040, inset -1px -1px #111111, 0 10px 28px rgba(0,0,0,0.85);
+      position: relative;
+    }
+
+    /* Black Beveled Corners Encapsulating the Project Frame */
+    .corner-bracket {
+      position: absolute;
+      width: 16px;
+      height: 16px;
+      pointer-events: none;
+      z-index: 25;
+      box-sizing: border-box;
+    }
+
+    .corner-tl {
+      top: -4px;
+      left: -4px;
+      border-top: 4px solid #000000;
+      border-left: 4px solid #000000;
+      box-shadow: inset 1px 1px #505050, -1px -1px #111111;
+    }
+
+    .corner-tr {
+      top: -4px;
+      right: -4px;
+      border-top: 4px solid #000000;
+      border-right: 4px solid #000000;
+      box-shadow: inset -1px 1px #505050, 1px -1px #111111;
+    }
+
+    .corner-bl {
+      bottom: -4px;
+      left: -4px;
+      border-bottom: 4px solid #000000;
+      border-left: 4px solid #000000;
+      box-shadow: inset 1px -1px #505050, -1px 1px #111111;
+    }
+
+    .corner-br {
+      bottom: -4px;
+      right: -4px;
+      border-bottom: 4px solid #000000;
+      border-right: 4px solid #000000;
+      box-shadow: inset -1px -1px #505050, 1px 1px #111111;
+    }
+
   </style>
 </head>
 <body class="p-0 sm:p-2 flex items-center justify-center">
@@ -347,13 +435,12 @@
     <div class="bg-gradient-to-r from-[#000080] to-[#1084d0] text-white px-2 py-1.5 flex items-center justify-between font-bold text-xs select-none shrink-0">
       <div class="flex items-center gap-1.5">
         <!-- Bit Smithery Anvil / Forge Icon -->
-        <svg class="w-4 h-4 shrink-0" viewBox="0 0 16 16" fill="currentColor">
-          <path d="M1 4h14v2c-2 0-3 1-4 3h-1v2h2v1H4v-1h2v-2H5C4 7 3 6 1 6V4z" fill="#f59e0b"/>
-          <path d="M4 12h8v1H4z" fill="#d97706"/>
-          <rect x="7" y="1" width="2" height="2" fill="#60a5fa"/>
-        </svg>
+        <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAIAAAACACAYAAADDPmHLAAAEjUlEQVR4AeyaMY4TQRBFe3YJCDgDIWfhAogzICFiEkSAkAAJEXINAkIyAgICAiQOwDlAZo2mUMls94zXPVXlridR6na33VX1/9N4POxFKWVH5NVgD8CV//zLqgAAZHV+7hsAZiGyDgCQ1fm5bwCYhcg6AEBW5+e+AWAWItsg/QKAKJF0BICkxkvbACBKJB0BIKnx0jYAiBJJRwBIary0DQCiRNIRAJIZf9guABwqkuw1ACQz/LBdADhUJNlrAEhm+GG7AHCoSLLXAJDM8MN2AeBQkWSvASCJ4bU2AaCmTJJ1AEhidK1NAKgpk2QdAJIYXWsTAGrKJFkHgCRG19oEgJoySdYBYHCjl9oDgCWFBt8HgMENXmqvCcDu0d0SOaS5yDVuWZv0f8rYBOCUg/nseSjQBGB6/7Pso1zeKiFDNI5a39Z1Sf8njE0ATjiXj56JAusA+P2rFB0XV1eECCEiR6jFo4a5/92Te+W6mLebwzoAmkewGVGBtTWtAmB/H7CPcvtO+Rtbf7etPV+6XPv+0d631L/sN8ZVADQ+z9aZK3AUANO7H2Uf5eKyhAgRP0o91nUs9S/7jfEoABrnsHWmCtwIgOnt96KjeH23iuhe+b3zLvUv+43xRgA0zmPrzBToAsD05lvRUax+E4vYVvmi5VnqX/YbYxcAGuezZazAsek2AWB69bXo2OweQbr1/i72yr/Uv+w3xk0AaORjK5gCJgBML7+UNXH0vYOIGe272aqepf5lvzGaANDIz5azAqEAmF58LsfEP+28voO984oAtTpkvzGGAqBRJ1sbKTAGAJdX/zeRMQSKWu+y3xjHAKDRYJatm/Y5BgBWd93R8syuT88+leti3m4OYwDQbJHNlgJjAFC7Cx59veXsyr0xAFjZLG/7X4EhAJiefiwZ4387j18ZAoDj2+YTogAAiBJJRwA4c+NPLR8AlIK7dw+LRaiU7lMAcLfAtwAA0PpbPTfQOZ3nAOBsgHd6ANAOWD3r1zmd5wDgbIB3egDQDnAPoNVgHlmBXrVxBdBKcg+g1WCeQQGuANrl2t/W9V7XOZ3nAOBsgHd6ANAOcA+g1WCeQQGuANplngNoNZhHVKB3TVwBtKJcAbQazDMowBVAu8yvAK0G8wwKcAXQLvd+4lc7T+d0ngOAswHe6QFAO8A9gFaDeSQFtqqFK4BSdnrwvFiESuk+BQB3C3wLGAqA3YfXJUP0RGYoAHoKk+WssQCwepbvnacjnWMB0FGYLEeNBYDV73jvPB3pHAuAjsJEOWrrOsYCoPbsfbT1jlSMBUBHYbIcNRQA0/3HJUP0hHMoAHoKk+UsAMjidKVPAKgIk2UZALI4XekTACrCeC9b5QcAK6WD5gGAoMZYlQUAVkoHzQMAQY2xKgsArJQOmgcAghpjVRYAWCkdNA8ABDPGuhwAsFY8WD4ACGaIdTkAYK14sHwAEMwQ63IAwFrxYPkAIJgh1uUAgLXiwfIBQBBDvMoAAC/lg+QFgCBGeJUBAF7KB8kLAEGM8CoDALyUD5IXAIIY4VUGAHgpHyQvADgb4Z3+DwAAAP//g7aqkQAAAAZJREFUAwBsrcifdaE+dQAAAABJRU5ErkJggg==" alt="Bit Smithery Logo" class="w-4 h-4 shrink-0 rounded-xs" style="image-rendering: pixelated;" />
         <span id="window-title" class="truncate">untitled - Bit Smithery</span>
         <span class="text-[9px] bg-amber-900 text-amber-200 px-1 py-0.5 rounded font-bold hidden sm:inline">Bit Smithery</span>
+        <button id="btn-quick-gallery" type="button" class="bevel-raised px-2 py-0.5 text-[10px] bg-yellow-300 text-blue-950 font-bold hover:bg-white active:bevel-sunken cursor-pointer shadow flex items-center gap-1 shrink-0 ml-1" title="Browse Saved Projects Gallery">
+          <span>🖼️ Projects</span>
+        </button>
       </div>
       <div class="flex items-center gap-2">
         <span id="status-dimensions" class="font-mono text-[10px] text-blue-100 hidden sm:inline">64 x 64 px</span>
@@ -386,6 +473,52 @@
           <button id="quick-preset-2" type="button" class="quick-preset-btn w-8 h-8 bevel-sunken p-0 cursor-pointer active:scale-95 transition-transform relative shrink-0 flex items-center justify-center" data-index="2" data-color="#ff0000" style="background-color: #ff0000;" title="Red (Tap to select, tap again to change)"></button>
           <button id="quick-preset-3" type="button" class="quick-preset-btn w-8 h-8 bevel-sunken p-0 cursor-pointer active:scale-95 transition-transform relative shrink-0 flex items-center justify-center" data-index="3" data-color="#ffff00" style="background-color: #ffff00;" title="Yellow (Tap to select, tap again to change)"></button>
           <button id="quick-preset-4" type="button" class="quick-preset-btn w-8 h-8 bevel-sunken p-0 cursor-pointer active:scale-95 transition-transform relative shrink-0 flex items-center justify-center" data-index="4" data-color="#0000ff" style="background-color: #0000ff;" title="Blue (Tap to select, tap again to change)"></button>
+          <div class="w-[1px] h-6 bg-gray-400 mx-0.5"></div>
+          <!-- Quick HSV Adjust Toggle Button -->
+          <button id="btn-quick-hsv-toggle" type="button" class="w-8 h-8 bevel-raised p-0.5 bg-[#c0c0c0] hover:bg-gray-100 active:bevel-sunken flex flex-col items-center justify-center cursor-pointer shrink-0 font-bold" title="Adjust Saturation and Value for active color">
+            <span class="text-xs">🎛️</span>
+            <span class="text-[7px] leading-none uppercase text-blue-950 font-bold">S/V</span>
+          </button>
+        </div>
+
+        <!-- Floating Quick Saturation & Value Adjuster Bar (2 Bars) -->
+        <div id="quick-hsv-popup" class="hidden bevel-raised bg-[#dfdfdf] p-2 border border-gray-600 shadow-2xl flex flex-col gap-1.5 w-64 max-w-[85vw] z-30 select-none">
+          <div class="flex items-center justify-between border-b border-gray-400 pb-1">
+            <div class="flex items-center gap-1.5 font-bold text-xs text-gray-900 truncate">
+              <span id="quick-hsv-swatch" class="w-3.5 h-3.5 border border-black inline-block shrink-0" style="background-color: #000000;"></span>
+              <span id="quick-hsv-title" class="truncate">Adjust Color (S / V)</span>
+            </div>
+            <button id="btn-close-quick-hsv" type="button" class="w-4 h-4 bevel-raised text-black text-[10px] flex items-center justify-center font-bold">✕</button>
+          </div>
+          <!-- Saturation Bar -->
+          <div class="flex flex-col gap-0.5">
+            <div class="flex justify-between text-[11px] font-bold text-gray-800">
+              <span>Saturation:</span>
+              <span id="quick-sat-val" class="font-mono text-blue-900 font-bold">100%</span>
+            </div>
+            <input type="range" id="quick-sat-slider" min="0" max="100" value="100" class="w-full cursor-pointer h-3 rounded-none">
+          </div>
+          <!-- Value Bar -->
+          <div class="flex flex-col gap-0.5">
+            <div class="flex justify-between text-[11px] font-bold text-gray-800">
+              <span>Value (Brightness):</span>
+              <span id="quick-val-val" class="font-mono text-blue-900 font-bold">100%</span>
+            </div>
+            <input type="range" id="quick-val-slider" min="0" max="100" value="100" class="w-full cursor-pointer h-3 rounded-none">
+          </div>
+          <!-- Quick Nudges & Action -->
+          <div class="flex items-center justify-between pt-1 gap-1 flex-wrap border-t border-gray-300">
+            <div class="flex gap-1 text-[9px] font-bold">
+              <button id="btn-quick-val-minus" type="button" class="bevel-raised px-1 py-0.5 bg-gray-200 hover:bg-white active:bevel-sunken" title="Darken Value by 10%">-10% V</button>
+              <button id="btn-quick-val-plus" type="button" class="bevel-raised px-1 py-0.5 bg-gray-200 hover:bg-white active:bevel-sunken" title="Brighten Value by 10%">+10% V</button>
+              <button id="btn-quick-sat-minus" type="button" class="bevel-raised px-1 py-0.5 bg-gray-200 hover:bg-white active:bevel-sunken" title="Desaturate by 10%">-10% S</button>
+              <button id="btn-quick-sat-plus" type="button" class="bevel-raised px-1 py-0.5 bg-gray-200 hover:bg-white active:bevel-sunken" title="Saturate by 10%">+10% S</button>
+            </div>
+            <div class="flex gap-1">
+              <button id="btn-quick-hsv-more" type="button" class="bevel-raised px-2 py-0.5 text-[10px] font-bold bg-yellow-100 hover:bg-white text-blue-950 active:bevel-sunken" title="Open full Custom Color Sub-menu">More...</button>
+              <button id="btn-quick-hsv-done" type="button" class="bevel-raised px-2 py-0.5 text-[10px] font-bold bg-blue-100 hover:bg-white text-blue-900 active:bevel-sunken">Done ✓</button>
+            </div>
+          </div>
         </div>
 
         <!-- Live Dimension Badge (Directly below preset color buttons on the top left) -->
@@ -584,6 +717,14 @@
                 <span class="text-xs text-blue-700 font-bold">2x - 16x</span>
               </button>
               <div class="border-t border-gray-400 my-1"></div>
+              <button id="action-save-project" type="button" class="w-full bevel-raised py-2.5 px-3 text-left font-bold text-sm bg-yellow-100 hover:bg-white text-blue-950 active:bevel-sunken flex justify-between items-center">
+                <span>💾 Save Project to Gallery...</span>
+                <span class="text-xs text-blue-900 font-mono font-bold">In-App</span>
+              </button>
+              <button id="action-open-gallery" type="button" class="w-full bevel-raised py-2.5 px-3 text-left font-bold text-sm bg-blue-100 hover:bg-white text-blue-900 active:bevel-sunken flex justify-between items-center">
+                <span>🖼️ Projects Gallery...</span>
+                <span class="text-xs text-blue-900 font-mono font-bold">Showcase</span>
+              </button>
               <button id="action-clear-canvas" class="w-full bevel-raised py-2.5 px-3 text-left font-bold text-sm bg-[#c0c0c0] hover:bg-red-100 text-red-900 active:bevel-sunken">
                 🗑️ Clear Canvas (Fill Background)
               </button>
@@ -674,6 +815,9 @@
             <div id="menu-dropdown-colors" class="hidden flex flex-col gap-2">
               <button id="action-edit-colors" class="w-full bevel-raised py-2.5 px-3 text-left font-bold text-sm bg-[#c0c0c0] hover:bg-white active:bevel-sunken">
                 🎨 Open Color Picker...
+              </button>
+              <button id="action-tool-gradients" type="button" class="w-full bevel-raised py-2.5 px-3 text-left font-bold text-sm bg-[#c0c0c0] hover:bg-white active:bevel-sunken">
+                🌈 Tool Gradients Setup...
               </button>
               <button id="action-swap-colors" class="w-full bevel-raised py-2.5 px-3 text-left font-bold text-sm bg-[#c0c0c0] hover:bg-white active:bevel-sunken">
                 ⇄ Swap Foreground & Background
@@ -827,13 +971,22 @@
         </div>
 
         <!-- 3. Palette Overlay -->
-        <div id="overlay-palette" class="hidden bevel-raised bg-[#c0c0c0] w-full sm:w-[460px] max-h-[85vh] p-1 flex flex-col shadow-2xl overflow-hidden">
+        <div id="overlay-palette" class="hidden bevel-raised bg-[#c0c0c0] w-full sm:w-[500px] max-h-[88vh] p-1 flex flex-col shadow-2xl overflow-hidden">
           <div class="bg-gradient-to-r from-[#000080] to-[#1084d0] text-white px-2 py-1 flex items-center justify-between font-bold text-xs select-none">
-            <span>Color Palette & Swatches</span>
+            <span id="palette-overlay-title">Color Palette & Custom HSV</span>
             <button id="btn-close-palette-overlay" class="w-5 h-5 bg-[#c0c0c0] text-black bevel-raised text-xs flex items-center justify-center font-bold">✕</button>
           </div>
 
+          <!-- Sub-Tabs in Palette Overlay -->
+          <div class="flex border-b-2 border-gray-400 bg-[#c0c0c0] px-2 pt-1.5 gap-1 select-none shrink-0 overflow-x-auto">
+            <button id="tab-palette-swatches" class="tab-btn active text-xs font-bold" type="button">🎨 Swatches</button>
+            <button id="tab-palette-custom-hsv" class="tab-btn text-xs font-bold" type="button">🎛️ Custom Color (HSV)</button>
+            <button id="tab-palette-gradients" class="tab-btn text-xs font-bold" type="button">🌈 Tool Gradients</button>
+          </div>
+
           <div class="p-3 bg-[#dfdfdf] bevel-sunken flex-1 overflow-y-auto max-h-[65vh] flex flex-col gap-3">
+            <!-- Tab Panel 1: Swatches -->
+            <div id="panel-palette-swatches" class="flex flex-col gap-3">
             
             <!-- Active Color Box & Target Selector -->
             <div class="bevel-raised p-2 bg-[#c0c0c0] flex items-center justify-between gap-3">
@@ -876,6 +1029,9 @@
                 <span>🎨 Color Picker...</span>
                 <input type="color" id="native-color-picker" value="#000000" class="w-5 h-5 cursor-pointer p-0 border-0 bg-transparent">
               </label>
+              <button id="btn-open-custom-hsv-tab" type="button" class="bevel-raised px-2.5 py-1.5 font-bold text-xs bg-yellow-100 hover:bg-white text-blue-950 active:bevel-sunken flex items-center gap-1.5" title="Adjust chosen color by Saturation and Value">
+                <span>🎛️ Adjust S/V...</span>
+              </button>
               <button id="btn-reset-presets" type="button" class="bevel-raised px-2.5 py-1.5 font-bold text-xs bg-gray-200 hover:bg-white active:bevel-sunken flex items-center gap-1" title="Reset top preset colors back to Black, White, Red, Yellow, Blue">
                 <span>↺ Reset Presets</span>
               </button>
@@ -883,6 +1039,221 @@
                 Done ✓
               </button>
             </div>
+            </div> <!-- End panel-palette-swatches -->
+
+            <!-- Tab Panel 2: Custom Color HSV Adjuster -->
+            <div id="panel-palette-custom-hsv" class="hidden flex flex-col gap-2.5">
+              <div class="text-[11px] text-gray-700 font-semibold bg-white p-2 bevel-sunken leading-tight">
+                <span>Tap the chosen color or any preset below to use as a starting point, then adjust Saturation and Value sliders to reliably craft gradient colors:</span>
+              </div>
+
+              <!-- Chosen Color Window (Interactive dual swatch box) -->
+              <div class="bevel-raised p-2 bg-[#c0c0c0] flex items-center justify-between gap-2.5">
+                <div class="flex items-center gap-2.5 truncate">
+                  <!-- Chosen Color Window Box (Tap to adjust sliders to match chosen color) -->
+                  <button id="custom-chosen-color-window" type="button" class="relative w-12 h-12 bevel-sunken bg-gray-400 shrink-0 cursor-pointer hover:ring-2 hover:ring-blue-600 active:scale-95 transition-all shadow-inner" title="Click the Chosen Color Window to adjust the 3 sliders to match this color">
+                    <div id="custom-hsv-bg-swatch" class="absolute right-1 bottom-1 w-7 h-7 bevel-raised bg-white border border-gray-700 pointer-events-none" title="Background Color"></div>
+                    <div id="custom-hsv-fg-swatch" class="absolute left-1 top-1 w-7 h-7 bevel-raised bg-black border border-gray-700 z-10 pointer-events-none" title="Foreground Color"></div>
+                  </button>
+                  <div class="text-left truncate">
+                    <div class="font-bold text-xs text-gray-900 flex items-center gap-1.5">
+                      <span>Chosen Color Window</span>
+                      <span class="text-[9px] bg-blue-100 text-blue-900 px-1.5 py-0.5 rounded border border-blue-400 font-bold">Tap to Sync</span>
+                    </div>
+                    <div class="flex items-center gap-1.5 mt-0.5">
+                      <span id="custom-start-swatch" class="w-3.5 h-3.5 border border-black inline-block shrink-0" style="background-color: #000000;"></span>
+                      <span id="custom-start-hex" class="font-mono text-[10px] text-gray-800 font-bold">#000000</span>
+                      <span id="custom-chosen-color-desc" class="text-[10px] text-gray-600 font-mono">(Active)</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="flex flex-col gap-1 items-end shrink-0">
+                  <button id="btn-custom-start-color" type="button" class="bevel-raised px-2.5 py-1.5 font-bold text-xs bg-blue-100 hover:bg-white text-blue-900 active:bevel-sunken shadow-sm cursor-pointer" title="Automatically adjust the 3 sliders to match chosen color">
+                    <span>Match Chosen ⟲</span>
+                  </button>
+                  <button id="btn-custom-sync-chosen" type="button" class="hidden">Sync</button>
+                </div>
+              </div>
+
+              <!-- Quick Preset Chips -->
+              <div class="flex items-center gap-1.5 text-[11px] font-bold text-gray-700 flex-wrap">
+                <span>Or Preset Chips:</span>
+                <button id="btn-chip-preset-0" type="button" class="w-6 h-6 bevel-sunken border border-black cursor-pointer shrink-0" style="background-color: #000000;" title="Load Preset 1 as starting point"></button>
+                <button id="btn-chip-preset-1" type="button" class="w-6 h-6 bevel-sunken border border-black cursor-pointer shrink-0" style="background-color: #ffffff;" title="Load Preset 2 as starting point"></button>
+                <button id="btn-chip-preset-2" type="button" class="w-6 h-6 bevel-sunken border border-black cursor-pointer shrink-0" style="background-color: #ff0000;" title="Load Preset 3 as starting point"></button>
+                <button id="btn-chip-preset-3" type="button" class="w-6 h-6 bevel-sunken border border-black cursor-pointer shrink-0" style="background-color: #ffff00;" title="Load Preset 4 as starting point"></button>
+                <button id="btn-chip-preset-4" type="button" class="w-6 h-6 bevel-sunken border border-black cursor-pointer shrink-0" style="background-color: #0000ff;" title="Load Preset 5 as starting point"></button>
+                <button id="btn-chip-bg" type="button" class="w-6 h-6 bevel-sunken border border-black cursor-pointer shrink-0" style="background-color: #ffffff;" title="Load Background color as starting point"></button>
+              </div>
+
+              <!-- HSV Sliders -->
+              <div class="bevel-raised p-2 bg-[#c0c0c0] flex flex-col gap-2">
+                <!-- Hue -->
+                <div class="flex flex-col gap-0.5">
+                  <div class="flex justify-between text-xs font-bold text-gray-800">
+                    <span>Hue:</span>
+                    <span id="custom-hue-val" class="font-mono text-blue-900 font-bold">0°</span>
+                  </div>
+                  <input type="range" id="input-custom-hue" min="0" max="360" value="0" class="w-full cursor-pointer h-3.5 hsv-track-hue rounded-none">
+                </div>
+
+                <!-- Saturation -->
+                <div class="flex flex-col gap-0.5">
+                  <div class="flex justify-between text-xs font-bold text-gray-800">
+                    <span>Saturation:</span>
+                    <span id="custom-sat-val" class="font-mono text-blue-900 font-bold">100%</span>
+                  </div>
+                  <input type="range" id="input-custom-sat" min="0" max="100" value="100" class="w-full cursor-pointer h-3.5 rounded-none">
+                </div>
+
+                <!-- Value -->
+                <div class="flex flex-col gap-0.5">
+                  <div class="flex justify-between text-xs font-bold text-gray-800">
+                    <span>Value (Brightness):</span>
+                    <span id="custom-val-val" class="font-mono text-blue-900 font-bold">100%</span>
+                  </div>
+                  <input type="range" id="input-custom-val" min="0" max="100" value="100" class="w-full cursor-pointer h-3.5 rounded-none">
+                </div>
+
+                <!-- Nudges -->
+                <div class="grid grid-cols-3 sm:grid-cols-6 gap-1 pt-1 text-[10px] font-bold">
+                  <button id="btn-custom-val-minus10" type="button" class="bevel-raised py-1 bg-gray-100 hover:bg-white active:bevel-sunken" title="Darken Value by 10%">-10% V</button>
+                  <button id="btn-custom-val-plus10" type="button" class="bevel-raised py-1 bg-gray-100 hover:bg-white active:bevel-sunken" title="Brighten Value by 10%">+10% V</button>
+                  <button id="btn-custom-sat-minus10" type="button" class="bevel-raised py-1 bg-gray-100 hover:bg-white active:bevel-sunken" title="Desaturate by 10%">-10% S</button>
+                  <button id="btn-custom-sat-plus10" type="button" class="bevel-raised py-1 bg-gray-100 hover:bg-white active:bevel-sunken" title="Saturate by 10%">+10% S</button>
+                  <button id="btn-custom-val-minus5" type="button" class="bevel-raised py-1 bg-gray-100 hover:bg-white active:bevel-sunken" title="Darken Value by 5%">-5% V</button>
+                  <button id="btn-custom-val-plus5" type="button" class="bevel-raised py-1 bg-gray-100 hover:bg-white active:bevel-sunken" title="Brighten Value by 5%">+5% V</button>
+                </div>
+              </div>
+
+              <!-- Color Comparison & Tonal Ramp -->
+              <div class="bevel-raised p-2 bg-[#c0c0c0] flex flex-col gap-1.5">
+                <div class="flex items-center justify-between">
+                  <div class="flex items-center gap-1.5 text-xs font-bold text-gray-800">
+                    <span>Original:</span>
+                    <span id="custom-compare-orig-swatch" class="w-5 h-5 border border-black inline-block" style="background-color: #000000;"></span>
+                    <span id="custom-compare-orig-hex" class="font-mono text-[10px] text-gray-600">#000000</span>
+                  </div>
+                  <span class="text-sm font-bold text-blue-900">➜</span>
+                  <div class="flex items-center gap-1.5 text-xs font-bold text-gray-800">
+                    <span>Adjusted:</span>
+                    <span id="custom-compare-new-swatch" class="w-5 h-5 border border-black inline-block" style="background-color: #000000;"></span>
+                    <span id="custom-compare-new-hex" class="font-mono text-[10px] text-blue-900 font-bold">#000000</span>
+                  </div>
+                </div>
+                <div class="border-t border-gray-300 pt-1">
+                  <div class="flex justify-between items-center text-[10px] font-bold text-gray-700 mb-1">
+                    <span>Tonal Gradient Ramp (Tap shade to pick):</span>
+                    <span class="text-[9px] text-gray-500">Darker ➜ Lighter</span>
+                  </div>
+                  <div id="custom-tonal-ramp" class="grid grid-cols-5 gap-1.5 bg-[#808080] p-1 bevel-sunken">
+                    <!-- 5 generated swatches -->
+                  </div>
+                </div>
+              </div>
+
+              <!-- Action Buttons -->
+              <div class="flex flex-col gap-1.5 pt-1 border-t border-gray-300">
+                <div class="grid grid-cols-2 gap-1.5">
+                  <button id="btn-custom-apply-fg" type="button" class="bevel-raised py-2 px-2 font-bold text-xs bg-blue-100 text-blue-900 hover:bg-white active:bevel-sunken">✓ Apply to Foreground</button>
+                  <button id="btn-custom-apply-bg" type="button" class="bevel-raised py-2 px-2 font-bold text-xs bg-gray-100 text-gray-800 hover:bg-white active:bevel-sunken">✓ Apply to Background</button>
+                </div>
+                <div class="grid grid-cols-2 gap-1.5">
+                  <button id="btn-custom-set-grad-end" type="button" class="bevel-raised py-2 px-2 font-bold text-xs bg-yellow-100 text-blue-950 hover:bg-white active:bevel-sunken flex items-center justify-center gap-1" title="Set this adjusted color as the gradient end color for tools">
+                    <span>🌈 Set as Grad End Color</span>
+                  </button>
+                  <div class="flex gap-1 items-center">
+                    <select id="select-custom-preset-target" class="bevel-sunken bg-white px-1 py-1.5 text-[10px] font-bold flex-1">
+                      <option value="0">Preset 1</option>
+                      <option value="1">Preset 2</option>
+                      <option value="2">Preset 3</option>
+                      <option value="3">Preset 4</option>
+                      <option value="4">Preset 5</option>
+                    </select>
+                    <button id="btn-custom-save-preset" type="button" class="bevel-raised py-1.5 px-2 font-bold text-xs bg-gray-100 hover:bg-white active:bevel-sunken shrink-0">Save</button>
+                  </div>
+                </div>
+              </div>
+            </div> <!-- End panel-palette-custom-hsv -->
+
+            <!-- Tab Panel 3: Tool Gradients Settings -->
+            <div id="panel-palette-gradients" class="hidden flex flex-col gap-2.5">
+              <label class="bevel-raised p-2 bg-[#ffffd0] flex items-center justify-between cursor-pointer border border-yellow-400">
+                <div class="flex flex-col">
+                  <span class="font-bold text-xs text-gray-900 flex items-center gap-1.5"><span>🌈</span><span>Tool Gradients Mode</span></span>
+                  <span class="text-[10px] text-gray-600">Draws Vector lines, Rect, Circle, and Bevel with smooth or dithered color gradients</span>
+                </div>
+                <input type="checkbox" id="grad-enable-checkbox" class="w-5 h-5 cursor-pointer">
+              </label>
+
+              <!-- Live Gradient Preview Strip -->
+              <div class="flex flex-col gap-1">
+                <div class="text-[11px] font-bold text-gray-700">Gradient Preview:</div>
+                <div id="grad-preview-strip" class="w-full h-8 bevel-sunken border border-black flex items-center justify-center text-[10px] font-bold text-white shadow-inner"></div>
+              </div>
+
+              <!-- Colors Section -->
+              <div class="bevel-raised p-2 bg-[#c0c0c0] flex flex-col gap-1.5">
+                <div class="text-[11px] font-bold text-gray-800">Gradient Color Stops:</div>
+                <div class="flex items-center justify-between gap-1.5">
+                  <!-- Color 1 Button (Tap directly to open color picker) -->
+                  <button id="btn-grad-color-1" type="button" class="bevel-raised p-1.5 bg-white hover:bg-yellow-50 active:bevel-sunken flex-1 flex items-center gap-2 cursor-pointer shadow-sm truncate border border-gray-400" title="Tap directly to choose Gradient Start Color (C1)">
+                    <span id="grad-swatch-1" class="w-6 h-6 border-2 border-black inline-block shrink-0 shadow-sm" style="background-color: #000000;"></span>
+                    <div class="text-left truncate">
+                      <div class="text-[9px] font-bold text-gray-600 uppercase flex items-center gap-1">
+                        <span>Start (C1)</span>
+                        <span class="text-[8px] text-blue-900 bg-blue-100 px-1 rounded font-bold">Tap to Pick</span>
+                      </div>
+                      <div id="grad-hex-1" class="font-mono text-xs font-bold text-gray-900">#000000</div>
+                    </div>
+                  </button>
+                  <!-- Swap -->
+                  <button id="btn-grad-swap-colors" type="button" class="bevel-raised px-2.5 py-2 font-bold text-xs bg-gray-200 hover:bg-white active:bevel-sunken shrink-0" title="Swap Start and End Colors">⇄</button>
+                  <!-- Color 2 Button (Tap directly to open color picker) -->
+                  <button id="btn-grad-color-2" type="button" class="bevel-raised p-1.5 bg-white hover:bg-yellow-50 active:bevel-sunken flex-1 flex items-center gap-2 cursor-pointer shadow-sm truncate border border-gray-400" title="Tap directly to choose Gradient End Color (C2)">
+                    <span id="grad-swatch-2" class="w-6 h-6 border-2 border-black inline-block shrink-0 shadow-sm" style="background-color: #ffffff;"></span>
+                    <div class="text-left truncate">
+                      <div class="text-[9px] font-bold text-gray-600 uppercase flex items-center gap-1">
+                        <span>End (C2)</span>
+                        <span class="text-[8px] text-blue-900 bg-blue-100 px-1 rounded font-bold">Tap to Pick</span>
+                      </div>
+                      <div id="grad-hex-2" class="font-mono text-xs font-bold text-gray-900">#ffffff</div>
+                    </div>
+                  </button>
+                </div>
+                <div class="grid grid-cols-3 gap-1 pt-1 text-[10px] font-bold">
+                  <button id="btn-grad-set-fg" type="button" class="bevel-raised py-1 bg-gray-100 hover:bg-white active:bevel-sunken" title="Set Start Color from active Foreground">C1 from FG</button>
+                  <button id="btn-grad-set-bg" type="button" class="bevel-raised py-1 bg-gray-100 hover:bg-white active:bevel-sunken" title="Set End Color from active Background">C2 from BG</button>
+                  <button id="btn-grad-preset-fgbg" type="button" class="bevel-raised py-1 bg-gray-100 hover:bg-white active:bevel-sunken" title="Use current FG and BG colors">Use FG → BG</button>
+                </div>
+              </div>
+
+              <!-- Gradient Direction / Pattern -->
+              <div class="bevel-raised p-2 bg-[#c0c0c0] flex flex-col gap-1.5">
+                <div class="text-[11px] font-bold text-gray-800">Direction / Geometry:</div>
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-1 text-[10px] font-bold">
+                  <button id="btn-grad-dir-drag" type="button" class="bevel-raised py-1.5 px-1 bg-blue-100 text-blue-900 border border-blue-500 active:bevel-sunken">Along Drag</button>
+                  <button id="btn-grad-dir-h" type="button" class="bevel-raised py-1.5 px-1 bg-gray-100 text-gray-800 hover:bg-white active:bevel-sunken">Horizontal</button>
+                  <button id="btn-grad-dir-v" type="button" class="bevel-raised py-1.5 px-1 bg-gray-100 text-gray-800 hover:bg-white active:bevel-sunken">Vertical</button>
+                  <button id="btn-grad-dir-rad" type="button" class="bevel-raised py-1.5 px-1 bg-gray-100 text-gray-800 hover:bg-white active:bevel-sunken">Radial</button>
+                </div>
+              </div>
+
+              <!-- Dithering Mode (Pixel Art) -->
+              <div class="bevel-raised p-2 bg-[#c0c0c0] flex flex-col gap-1.5">
+                <div class="text-[11px] font-bold text-gray-800">Pixel Dithering Style:</div>
+                <div class="grid grid-cols-3 gap-1 text-[10px] font-bold">
+                  <button id="btn-grad-dither-none" type="button" class="bevel-raised py-1.5 px-1 bg-blue-100 text-blue-900 border border-blue-500 active:bevel-sunken">Smooth</button>
+                  <button id="btn-grad-dither-bayer" type="button" class="bevel-raised py-1.5 px-1 bg-gray-100 text-gray-800 hover:bg-white active:bevel-sunken">Bayer 4x4</button>
+                  <button id="btn-grad-dither-checker" type="button" class="bevel-raised py-1.5 px-1 bg-gray-100 text-gray-800 hover:bg-white active:bevel-sunken">Checker (50%)</button>
+                </div>
+              </div>
+
+              <!-- Done Button -->
+              <div class="flex justify-end pt-1 border-t border-gray-300">
+                <button id="btn-done-gradient-overlay" type="button" class="bevel-raised px-4 py-1.5 font-bold text-xs bg-blue-100 text-blue-900 hover:bg-white active:bevel-sunken">Start Drawing with Gradient ✓</button>
+              </div>
+            </div> <!-- End panel-palette-gradients -->
 
           </div>
         </div>
@@ -1031,24 +1402,24 @@
     </div>
 
     <!-- Bottom Consolidated Control Bar -->
-    <div id="bottom-control-bar" class="bevel-raised bg-[#c0c0c0] p-1.5 flex items-center justify-between gap-1 select-none shrink-0 border-t border-[#808080]">
+    <div id="bottom-control-bar" class="bevel-raised bg-[#c0c0c0] p-1 sm:p-1.5 flex items-center justify-between gap-1 select-none shrink-0 border-t border-[#808080] overflow-hidden">
       
-      <!-- Left 3 Consolidated Buttons -->
-      <div class="flex items-center gap-1 sm:gap-2">
+      <!-- Left 4 Consolidated Buttons -->
+      <div class="flex items-center gap-1 sm:gap-1.5 shrink min-w-0">
         <!-- 1. Menu Button -->
-        <button id="btn-bottom-menu" class="bevel-raised px-2.5 sm:px-3.5 py-2 flex items-center gap-1.5 bg-[#c0c0c0] hover:bg-gray-200 active:bevel-sunken font-bold text-xs sm:text-sm text-gray-900" title="Open Menu (File, Edit, View, Image)">
+        <button id="btn-bottom-menu" class="bevel-raised px-2 sm:px-3 py-1.5 h-[38px] max-h-[38px] flex items-center gap-1.5 bg-[#c0c0c0] hover:bg-gray-200 active:bevel-sunken font-bold text-xs sm:text-sm text-gray-900 shrink-0 whitespace-nowrap" title="Open Menu (File, Edit, View, Image)">
           <span class="text-sm">📁</span>
           <span>Menu</span>
         </button>
 
         <!-- 2. Tool Button -->
-        <button id="btn-bottom-tools" class="bevel-raised px-2.5 sm:px-3.5 py-2 flex items-center gap-1.5 bg-[#c0c0c0] hover:bg-gray-200 active:bevel-sunken font-bold text-xs sm:text-sm text-gray-900" title="Choose Tool & Size">
-          <span id="bottom-tool-icon" class="w-4 h-4 flex items-center justify-center"><svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M3 17c3-3 4-8 8-8s4 6 7 6 3-3 3-5"/></svg></span>
-          <span id="bottom-tool-name">Scribble (1px)</span>
+        <button id="btn-bottom-tools" class="bevel-raised px-2 sm:px-3 py-1.5 h-[38px] max-h-[38px] flex items-center gap-1.5 bg-[#c0c0c0] hover:bg-gray-200 active:bevel-sunken font-bold text-xs sm:text-sm text-gray-900 shrink-0 whitespace-nowrap overflow-hidden" title="Choose Tool & Size">
+          <span id="bottom-tool-icon" class="w-4 h-4 flex items-center justify-center shrink-0"><svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M3 17c3-3 4-8 8-8s4 6 7 6 3-3 3-5"/></svg></span>
+          <span id="bottom-tool-name" class="whitespace-nowrap">Scribble</span>
         </button>
 
         <!-- 3. Palette Button -->
-        <button id="btn-bottom-palette" class="bevel-raised px-2.5 sm:px-3.5 py-2 flex items-center gap-2 bg-[#c0c0c0] hover:bg-gray-200 active:bevel-sunken font-bold text-xs sm:text-sm text-gray-900" title="Choose Colors">
+        <button id="btn-bottom-palette" class="bevel-raised px-2 sm:px-3 py-1.5 h-[38px] max-h-[38px] flex items-center gap-1.5 bg-[#c0c0c0] hover:bg-gray-200 active:bevel-sunken font-bold text-xs sm:text-sm text-gray-900 shrink-0 whitespace-nowrap" title="Choose Colors">
           <div class="relative w-5 h-5 bevel-sunken bg-gray-400 shrink-0">
             <div id="dock-bg-swatch" class="absolute right-0 bottom-0 w-3.5 h-3.5 bg-white border border-gray-600"></div>
             <div id="dock-fg-swatch" class="absolute left-0 top-0 w-3.5 h-3.5 bg-black border border-gray-600 z-10"></div>
@@ -1056,14 +1427,18 @@
           <span>Colors</span>
         </button>
 
-
+        <!-- 4. Gradient Button -->
+        <button id="btn-bottom-gradient" type="button" class="bevel-raised px-2 sm:px-2.5 py-1.5 h-[38px] max-h-[38px] flex items-center gap-1 bg-[#c0c0c0] hover:bg-gray-200 active:bevel-sunken font-bold text-xs sm:text-sm text-gray-900 shrink-0 whitespace-nowrap" title="Toggle and Configure Color Gradients for Tools">
+          <span class="text-sm">🌈</span>
+          <span id="bottom-gradient-label" class="whitespace-nowrap">Gradient: OFF</span>
+        </button>
       </div>
 
       <!-- Right Quick Actions -->
-      <div class="flex items-center gap-1">
-        <button id="quick-undo" class="bevel-raised px-2.5 py-2 hover:bg-gray-200 active:bevel-sunken font-bold text-xs" title="Undo (Ctrl+Z)">↩</button>
-        <button id="quick-redo" class="bevel-raised px-2.5 py-2 hover:bg-gray-200 active:bevel-sunken font-bold text-xs" title="Redo (Ctrl+Y)">↪</button>
-        <button id="quick-reset-view" class="bevel-raised px-2.5 py-2 hover:bg-gray-200 active:bevel-sunken font-bold text-xs" title="Reset View">🔍</button>
+      <div class="flex items-center gap-1 shrink-0 ml-auto">
+        <button id="quick-undo" class="bevel-raised px-2.5 py-1.5 h-[38px] max-h-[38px] hover:bg-gray-200 active:bevel-sunken font-bold text-xs" title="Undo (Ctrl+Z)">↩</button>
+        <button id="quick-redo" class="bevel-raised px-2.5 py-1.5 h-[38px] max-h-[38px] hover:bg-gray-200 active:bevel-sunken font-bold text-xs" title="Redo (Ctrl+Y)">↪</button>
+        <button id="quick-reset-view" class="bevel-raised px-2.5 py-1.5 h-[38px] max-h-[38px] hover:bg-gray-200 active:bevel-sunken font-bold text-xs" title="Reset View">🔍</button>
         <span id="status-coords" class="font-mono text-[10px] text-gray-700 w-16 text-center hidden md:inline">- , -</span>
       </div>
 
@@ -1259,9 +1634,8 @@
       <div class="p-3.5 text-xs flex flex-col gap-3.5 max-h-[80vh] overflow-y-auto">
         <!-- Studio & App Header Banner -->
         <div class="flex items-center gap-3.5 border-b border-gray-400 pb-3">
-          <div class="w-14 h-14 bevel-sunken bg-yellow-300 flex flex-col items-center justify-center font-black text-blue-900 font-mono shadow-inner shrink-0">
-            <span class="text-lg leading-tight">1px</span>
-            <span class="text-[9px] tracking-tighter uppercase font-bold text-blue-950">FORGE</span>
+          <div class="w-14 h-14 bevel-sunken bg-black flex items-center justify-center shadow-inner shrink-0 p-1">
+            <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAIAAAACACAYAAADDPmHLAAAEjUlEQVR4AeyaMY4TQRBFe3YJCDgDIWfhAogzICFiEkSAkAAJEXINAkIyAgICAiQOwDlAZo2mUMls94zXPVXlridR6na33VX1/9N4POxFKWVH5NVgD8CV//zLqgAAZHV+7hsAZiGyDgCQ1fm5bwCYhcg6AEBW5+e+AWAWItsg/QKAKJF0BICkxkvbACBKJB0BIKnx0jYAiBJJRwBIary0DQCiRNIRAJIZf9guABwqkuw1ACQz/LBdADhUJNlrAEhm+GG7AHCoSLLXAJDM8MN2AeBQkWSvASCJ4bU2AaCmTJJ1AEhidK1NAKgpk2QdAJIYXWsTAGrKJFkHgCRG19oEgJoySdYBYHCjl9oDgCWFBt8HgMENXmqvCcDu0d0SOaS5yDVuWZv0f8rYBOCUg/nseSjQBGB6/7Pso1zeKiFDNI5a39Z1Sf8njE0ATjiXj56JAusA+P2rFB0XV1eECCEiR6jFo4a5/92Te+W6mLebwzoAmkewGVGBtTWtAmB/H7CPcvtO+Rtbf7etPV+6XPv+0d631L/sN8ZVADQ+z9aZK3AUANO7H2Uf5eKyhAgRP0o91nUs9S/7jfEoABrnsHWmCtwIgOnt96KjeH23iuhe+b3zLvUv+43xRgA0zmPrzBToAsD05lvRUax+E4vYVvmi5VnqX/YbYxcAGuezZazAsek2AWB69bXo2OweQbr1/i72yr/Uv+w3xk0AaORjK5gCJgBML7+UNXH0vYOIGe272aqepf5lvzGaANDIz5azAqEAmF58LsfEP+28voO984oAtTpkvzGGAqBRJ1sbKTAGAJdX/zeRMQSKWu+y3xjHAKDRYJatm/Y5BgBWd93R8syuT88+leti3m4OYwDQbJHNlgJjAFC7Cx59veXsyr0xAFjZLG/7X4EhAJiefiwZ4387j18ZAoDj2+YTogAAiBJJRwA4c+NPLR8AlIK7dw+LRaiU7lMAcLfAtwAA0PpbPTfQOZ3nAOBsgHd6ANAOWD3r1zmd5wDgbIB3egDQDnAPoNVgHlmBXrVxBdBKcg+g1WCeQQGuANrl2t/W9V7XOZ3nAOBsgHd6ANAOcA+g1WCeQQGuANplngNoNZhHVKB3TVwBtKJcAbQazDMowBVAu8yvAK0G8wwKcAXQLvd+4lc7T+d0ngOAswHe6QFAO8A9gFaDeSQFtqqFK4BSdnrwvFiESuk+BQB3C3wLGAqA3YfXJUP0RGYoAHoKk+WssQCwepbvnacjnWMB0FGYLEeNBYDV73jvPB3pHAuAjsJEOWrrOsYCoPbsfbT1jlSMBUBHYbIcNRQA0/3HJUP0hHMoAHoKk+UsAMjidKVPAKgIk2UZALI4XekTACrCeC9b5QcAK6WD5gGAoMZYlQUAVkoHzQMAQY2xKgsArJQOmgcAghpjVRYAWCkdNA8ABDPGuhwAsFY8WD4ACGaIdTkAYK14sHwAEMwQ63IAwFrxYPkAIJgh1uUAgLXiwfIBQBBDvMoAAC/lg+QFgCBGeJUBAF7KB8kLAEGM8CoDALyUD5IXAIIY4VUGAHgpHyQvADgb4Z3+DwAAAP//g7aqkQAAAAZJREFUAwBsrcifdaE+dQAAAABJRU5ErkJggg==" alt="Bit Smithery Forge Logo" class="w-full h-full object-contain" style="image-rendering: pixelated;" />
           </div>
           <div class="flex-1 min-w-0">
             <div class="flex items-center gap-2">
@@ -1407,6 +1781,215 @@
       </div>
     </div>
   </div>
+  <!-- Gradient Color Picker Modal (Directly pick or adjust C1 or C2) -->
+  <div id="modal-grad-color-picker" class="hidden fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-3 select-none">
+    <div class="bevel-raised bg-[#c0c0c0] w-[460px] max-w-full p-1 flex flex-col shadow-2xl">
+      <div class="bg-gradient-to-r from-[#000080] to-[#1084d0] text-white px-2 py-1.5 font-bold text-xs flex justify-between items-center">
+        <span id="grad-picker-modal-title">Pick Gradient Color</span>
+        <button id="btn-close-grad-picker" type="button" class="w-5 h-5 bevel-raised bg-[#c0c0c0] text-black text-xs leading-none font-bold">✕</button>
+      </div>
+      <div class="p-3 text-xs flex flex-col gap-2.5 bg-[#dfdfdf] bevel-sunken max-h-[82vh] overflow-y-auto">
+        <!-- Current Color Header -->
+        <div class="bevel-raised p-2 bg-white flex items-center justify-between gap-2">
+          <div class="flex items-center gap-2 truncate">
+            <span id="grad-picker-preview-swatch" class="w-8 h-8 border-2 border-black inline-block shadow-sm shrink-0" style="background-color: #000000;"></span>
+            <div class="text-left truncate">
+              <div id="grad-picker-target-label" class="font-bold text-xs text-gray-900">Editing Gradient Color</div>
+              <div id="grad-picker-hex-val" class="font-mono text-xs text-blue-900 font-bold">#000000</div>
+            </div>
+          </div>
+          <label for="grad-picker-native" class="bevel-raised px-2.5 py-1.5 cursor-pointer bg-[#c0c0c0] hover:bg-white active:bevel-sunken font-bold text-xs flex items-center gap-1.5 shrink-0">
+            <span>🎨 System Picker...</span>
+            <input type="color" id="grad-picker-native" value="#000000" class="w-5 h-5 cursor-pointer p-0 border-0 bg-transparent">
+          </label>
+        </div>
+
+        <!-- Palette Swatches Grid (28 classic colors) -->
+        <div>
+          <div class="text-[11px] font-bold text-gray-700 mb-1">Tap a Palette Swatch:</div>
+          <div id="grad-picker-palette-grid" class="grid grid-cols-7 gap-1 bg-[#808080] p-1 bevel-sunken">
+            <!-- Populated dynamically -->
+          </div>
+        </div>
+
+        <!-- HSV Sliders for Real-time Fine Tuning -->
+        <div class="bevel-raised p-2 bg-[#c0c0c0] flex flex-col gap-2">
+          <div class="text-[11px] font-bold text-gray-800">Adjust Saturation, Value & Hue:</div>
+          <!-- Hue -->
+          <div class="flex flex-col gap-0.5">
+            <div class="flex justify-between text-[11px] font-bold text-gray-800">
+              <span>Hue:</span>
+              <span id="grad-picker-hue-val" class="font-mono text-blue-900 font-bold">0°</span>
+            </div>
+            <input type="range" id="grad-picker-hue" min="0" max="360" value="0" class="w-full cursor-pointer h-3 hsv-track-hue rounded-none">
+          </div>
+          <!-- Saturation -->
+          <div class="flex flex-col gap-0.5">
+            <div class="flex justify-between text-[11px] font-bold text-gray-800">
+              <span>Saturation:</span>
+              <span id="grad-picker-sat-val" class="font-mono text-blue-900 font-bold">100%</span>
+            </div>
+            <input type="range" id="grad-picker-sat" min="0" max="100" value="100" class="w-full cursor-pointer h-3 rounded-none">
+          </div>
+          <!-- Value -->
+          <div class="flex flex-col gap-0.5">
+            <div class="flex justify-between text-[11px] font-bold text-gray-800">
+              <span>Value (Brightness):</span>
+              <span id="grad-picker-val-val" class="font-mono text-blue-900 font-bold">100%</span>
+            </div>
+            <input type="range" id="grad-picker-val" min="0" max="100" value="100" class="w-full cursor-pointer h-3 rounded-none">
+          </div>
+          <!-- Quick Nudges -->
+          <div class="grid grid-cols-4 gap-1 pt-1 text-[10px] font-bold">
+            <button id="btn-grad-picker-val-minus" type="button" class="bevel-raised py-1 bg-gray-100 hover:bg-white active:bevel-sunken" title="Darken Value by 10%">-10% V</button>
+            <button id="btn-grad-picker-val-plus" type="button" class="bevel-raised py-1 bg-gray-100 hover:bg-white active:bevel-sunken" title="Brighten Value by 10%">+10% V</button>
+            <button id="btn-grad-picker-sat-minus" type="button" class="bevel-raised py-1 bg-gray-100 hover:bg-white active:bevel-sunken" title="Desaturate by 10%">-10% S</button>
+            <button id="btn-grad-picker-sat-plus" type="button" class="bevel-raised py-1 bg-gray-100 hover:bg-white active:bevel-sunken" title="Saturate by 10%">+10% S</button>
+          </div>
+        </div>
+
+        <!-- Quick Preset Chips -->
+        <div class="flex items-center gap-1.5 text-[11px] font-bold text-gray-700 flex-wrap">
+          <span>Preset Chips:</span>
+          <button id="btn-grad-chip-p0" type="button" class="w-6 h-6 bevel-sunken border border-black cursor-pointer shrink-0" style="background-color: #000000;" title="Preset 1"></button>
+          <button id="btn-grad-chip-p1" type="button" class="w-6 h-6 bevel-sunken border border-black cursor-pointer shrink-0" style="background-color: #ffffff;" title="Preset 2"></button>
+          <button id="btn-grad-chip-p2" type="button" class="w-6 h-6 bevel-sunken border border-black cursor-pointer shrink-0" style="background-color: #ff0000;" title="Preset 3"></button>
+          <button id="btn-grad-chip-p3" type="button" class="w-6 h-6 bevel-sunken border border-black cursor-pointer shrink-0" style="background-color: #ffff00;" title="Preset 4"></button>
+          <button id="btn-grad-chip-p4" type="button" class="w-6 h-6 bevel-sunken border border-black cursor-pointer shrink-0" style="background-color: #0000ff;" title="Preset 5"></button>
+          <button id="btn-grad-chip-fg" type="button" class="w-6 h-6 bevel-sunken border border-black cursor-pointer shrink-0" style="background-color: #000000;" title="Foreground Color"></button>
+          <button id="btn-grad-chip-bg" type="button" class="w-6 h-6 bevel-sunken border border-black cursor-pointer shrink-0" style="background-color: #ffffff;" title="Background Color"></button>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="flex justify-end gap-2 mt-1 pt-2 border-t border-gray-400">
+          <button id="btn-apply-grad-picker" type="button" class="bevel-raised px-4 py-1.5 font-bold hover:bg-gray-200 active:bevel-sunken bg-blue-100 text-blue-900 cursor-pointer">Set Color ✓</button>
+          <button id="btn-cancel-grad-picker" type="button" class="bevel-raised px-3 py-1.5 hover:bg-gray-200 active:bevel-sunken cursor-pointer">Cancel</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  
+  <!-- Horizontal Projects Gallery Modal -->
+  <div id="modal-project-gallery" class="hidden fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-2 sm:p-4 select-none">
+    <div class="bevel-raised bg-[#c0c0c0] w-[760px] max-w-full max-h-[92vh] p-1 flex flex-col shadow-2xl overflow-hidden">
+      <!-- Titlebar -->
+      <div class="bg-gradient-to-r from-[#000080] to-[#1084d0] text-white px-2.5 py-1.5 font-bold text-xs flex justify-between items-center shrink-0">
+        <div class="flex items-center gap-2">
+          <span>🖼️</span>
+          <span>Bit Smithery — Projects Gallery</span>
+        </div>
+        <button id="btn-close-gallery-modal" type="button" class="w-5 h-5 bevel-raised bg-[#c0c0c0] text-black text-xs leading-none font-bold hover:bg-red-400 active:bevel-sunken">✕</button>
+      </div>
+
+      <div class="p-3 text-xs flex flex-col gap-3 bg-[#dfdfdf] bevel-sunken flex-1 overflow-y-auto">
+        <!-- Gallery Header & Top Action -->
+        <div class="flex items-center justify-between border-b border-gray-400 pb-2 flex-wrap gap-2">
+          <div>
+            <h3 class="font-bold text-sm text-gray-900">Saved Projects Showcase</h3>
+            <div class="text-[11px] text-gray-600">Swipe or scroll left & right to browse projects. Active project spins in frame.</div>
+          </div>
+          <button id="btn-gallery-save-current" type="button" class="bevel-raised px-3 py-1.5 font-bold text-xs bg-yellow-200 text-blue-950 hover:bg-white active:bevel-sunken flex items-center gap-1.5 shadow cursor-pointer shrink-0">
+            <span>➕ Save Current Canvas</span>
+          </button>
+        </div>
+
+        <!-- Horizontal Swipe / Carousel Showcase Area -->
+        <div class="relative w-full bg-[#181822] bevel-sunken p-3 sm:p-4 flex flex-col items-center justify-center overflow-hidden min-h-[300px] shadow-inner">
+          <!-- Left / Right Carousel Navigation Arrows -->
+          <button id="btn-gallery-prev" type="button" class="absolute left-2 top-1/2 -translate-y-1/2 z-30 w-9 h-12 bevel-raised bg-[#c0c0c0] hover:bg-white active:bevel-sunken font-black text-base flex items-center justify-center shadow-xl cursor-pointer" title="Previous Project (Swipe Right)">◀</button>
+          <button id="btn-gallery-next" type="button" class="absolute right-2 top-1/2 -translate-y-1/2 z-30 w-9 h-12 bevel-raised bg-[#c0c0c0] hover:bg-white active:bevel-sunken font-black text-base flex items-center justify-center shadow-xl cursor-pointer" title="Next Project (Swipe Left)">▶</button>
+
+          <!-- Horizontal Carousel Track -->
+          <div id="gallery-carousel-track" class="w-full flex items-center gap-6 overflow-x-auto scroll-smooth py-6 px-16 touch-pan-x select-none" style="scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch;">
+            <!-- Dynamically populated project cards -->
+          </div>
+
+          <!-- Project Index Indicator -->
+          <div id="gallery-counter-indicator" class="absolute bottom-2 left-1/2 -translate-x-1/2 font-mono text-[11px] text-gray-300 bg-black/60 px-2.5 py-0.5 rounded-full z-20 font-bold">
+            Project 1 of 1
+          </div>
+        </div>
+
+        <!-- Active Project Details Card -->
+        <div class="bevel-raised p-2.5 bg-white flex flex-col sm:flex-row sm:items-center justify-between gap-2 border border-gray-400">
+          <div class="flex flex-col truncate">
+            <span id="gallery-active-title" class="font-bold text-sm text-gray-900 truncate">Knight's Forge Anvil</span>
+            <div id="gallery-active-meta" class="text-[11px] font-mono text-gray-600 mt-0.5">64 x 64 px • 1 Layer • Default Starter</div>
+          </div>
+          <!-- The 4 Required Actions: Load, Duplicate, Export, Delete -->
+          <div class="flex items-center gap-1.5 shrink-0 flex-wrap">
+            <button id="btn-gallery-load" type="button" class="bevel-raised px-3.5 py-1.5 font-bold text-xs bg-green-100 text-green-950 hover:bg-white active:bevel-sunken flex items-center gap-1 cursor-pointer shadow-sm" title="Load this project into canvas">
+              <span>📂 Load</span>
+            </button>
+            <button id="btn-gallery-duplicate" type="button" class="bevel-raised px-3 py-1.5 font-bold text-xs bg-blue-100 text-blue-950 hover:bg-white active:bevel-sunken flex items-center gap-1 cursor-pointer shadow-sm" title="Duplicate project as a copy">
+              <span>📋 Duplicate</span>
+            </button>
+            <button id="btn-gallery-export" type="button" class="bevel-raised px-3 py-1.5 font-bold text-xs bg-yellow-100 text-yellow-950 hover:bg-white active:bevel-sunken flex items-center gap-1 cursor-pointer shadow-sm" title="Export project as PNG">
+              <span>📤 Export</span>
+            </button>
+            <button id="btn-gallery-delete" type="button" class="bevel-raised px-3 py-1.5 font-bold text-xs bg-red-100 text-red-950 hover:bg-white active:bevel-sunken flex items-center gap-1 cursor-pointer shadow-sm" title="Delete project from app">
+              <span>🗑️ Delete</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Gallery Footer -->
+        <div class="flex items-center justify-between pt-1 border-t border-gray-400 text-gray-600 text-[11px]">
+          <span>Tip: Swipe left or right with your finger, or click the ◀ ▶ buttons.</span>
+          <button id="btn-close-gallery-bottom" type="button" class="bevel-raised px-4 py-1.5 font-bold text-xs bg-[#c0c0c0] hover:bg-white active:bevel-sunken cursor-pointer">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Save Project Modal -->
+  <div id="modal-save-project" class="hidden fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-3 select-none">
+    <div class="bevel-raised bg-[#c0c0c0] w-84 max-w-full p-1 flex flex-col shadow-2xl">
+      <div class="bg-gradient-to-r from-[#000080] to-[#1084d0] text-white px-2 py-1.5 font-bold text-xs flex justify-between items-center">
+        <span>Save Project to Gallery</span>
+        <button id="btn-close-save-project-modal" type="button" class="w-5 h-5 bevel-raised bg-[#c0c0c0] text-black text-xs leading-none font-bold">✕</button>
+      </div>
+      <div class="p-3 text-xs flex flex-col gap-2.5 bg-[#dfdfdf] bevel-sunken">
+        <div class="flex items-center gap-3 bg-white p-2 bevel-sunken">
+          <div class="w-14 h-14 bg-gray-200 border border-black flex items-center justify-center overflow-hidden shrink-0">
+            <img id="save-project-preview-img" class="pixelated max-w-full max-h-full object-contain" alt="Current Artwork" />
+          </div>
+          <div class="flex flex-col text-[11px] truncate">
+            <span class="font-bold text-gray-900">Current Artwork</span>
+            <span id="save-project-meta-info" class="font-mono text-gray-600">64 x 64 px • 1 Layer</span>
+          </div>
+        </div>
+        <div>
+          <label for="input-save-project-name" class="block font-bold mb-1 text-gray-800">Project Name:</label>
+          <input type="text" id="input-save-project-name" value="Forge Artwork" maxlength="32" class="w-full bevel-sunken px-2 py-1.5 bg-white text-xs font-mono font-bold">
+        </div>
+        <div class="flex justify-end gap-2 mt-1 pt-2 border-t border-gray-400">
+          <button id="btn-confirm-save-project" type="button" class="bevel-raised px-4 py-1.5 font-bold hover:bg-gray-200 active:bevel-sunken bg-blue-100 text-blue-900 cursor-pointer">Save to Gallery ✓</button>
+          <button id="btn-cancel-save-project" type="button" class="bevel-raised px-3 py-1.5 hover:bg-gray-200 active:bevel-sunken cursor-pointer">Cancel</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Confirm Delete Project Modal -->
+  <div id="modal-confirm-delete-project" class="hidden fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-3 select-none">
+    <div class="bevel-raised bg-[#c0c0c0] w-80 max-w-full p-1 flex flex-col shadow-2xl">
+      <div class="bg-[#800000] text-white px-2 py-1.5 font-bold text-xs flex justify-between items-center">
+        <span>Confirm Delete Project</span>
+        <button id="btn-close-delete-modal" type="button" class="w-5 h-5 bevel-raised bg-[#c0c0c0] text-black text-xs leading-none font-bold">✕</button>
+      </div>
+      <div class="p-3 text-xs flex flex-col gap-3 bg-[#dfdfdf] bevel-sunken">
+        <p class="text-gray-800 leading-relaxed font-semibold">
+          Are you sure you want to delete <span id="delete-project-target-name" class="font-bold text-red-950 font-mono underline">this project</span>? This action cannot be undone.
+        </p>
+        <div class="flex justify-end gap-2 mt-1 pt-2 border-t border-gray-400">
+          <button id="btn-confirm-delete-action" type="button" class="bevel-raised px-4 py-1.5 font-bold bg-red-200 text-red-950 hover:bg-white active:bevel-sunken cursor-pointer">Delete 🗑️</button>
+          <button id="btn-cancel-delete-action" type="button" class="bevel-raised px-3 py-1.5 hover:bg-gray-200 active:bevel-sunken cursor-pointer">Cancel</button>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <!-- Hidden File Input for Opening Images -->
   <input type="file" id="file-input-image" accept="image/*" class="hidden">
@@ -1482,7 +2065,25 @@
         layers: [],
         activeLayerIndex: 0,
         layerCounter: 1,
-        renamingLayerIndex: null
+        renamingLayerIndex: null,
+
+        // Project Gallery state
+        currentProjectName: 'Knight\'s Forge',
+        savedProjects: [],
+        galleryActiveIndex: 0,
+        deletingProjectId: null,
+
+        // HSV Custom Color & Gradient state
+        customHsv: { h: 0, s: 100, v: 100 },
+        customStartingHex: '#000000',
+        quickHsvOpen: false,
+
+        gradientEnabled: false,
+        gradientColor1: '#000000',
+        gradientColor2: '#ffffff',
+        gradientType: 'linear-drag', // 'linear-drag', 'horizontal', 'vertical', 'radial'
+        gradientDither: 'none', // 'none', 'bayer', 'checker'
+        gradientTarget: 'fill' // 'fill', 'stroke', 'both'
       };
 
       // --- DOM Elements ---
@@ -1631,6 +2232,155 @@
       const btnSwapFgBg = document.getElementById('btn-swap-fg-bg');
       const btnResetPresets = document.getElementById('btn-reset-presets');
 
+      // Quick HSV Popup Elements (Top Left)
+      const btnQuickHsvToggle = document.getElementById('btn-quick-hsv-toggle');
+      const quickHsvPopup = document.getElementById('quick-hsv-popup');
+      const quickHsvSwatch = document.getElementById('quick-hsv-swatch');
+      const quickHsvTitle = document.getElementById('quick-hsv-title');
+      const btnCloseQuickHsv = document.getElementById('btn-close-quick-hsv');
+      const quickSatSlider = document.getElementById('quick-sat-slider');
+      const quickSatVal = document.getElementById('quick-sat-val');
+      const quickValSlider = document.getElementById('quick-val-slider');
+      const quickValVal = document.getElementById('quick-val-val');
+      const btnQuickValMinus = document.getElementById('btn-quick-val-minus');
+      const btnQuickValPlus = document.getElementById('btn-quick-val-plus');
+      const btnQuickSatMinus = document.getElementById('btn-quick-sat-minus');
+      const btnQuickSatPlus = document.getElementById('btn-quick-sat-plus');
+      const btnQuickHsvMore = document.getElementById('btn-quick-hsv-more');
+      const btnQuickHsvDone = document.getElementById('btn-quick-hsv-done');
+
+      // Palette Sub-tabs & Custom Color HSV Elements
+      const tabPaletteSwatches = document.getElementById('tab-palette-swatches');
+      const tabPaletteCustomHsv = document.getElementById('tab-palette-custom-hsv');
+      const tabPaletteGradients = document.getElementById('tab-palette-gradients');
+      const panelPaletteSwatches = document.getElementById('panel-palette-swatches');
+      const panelPaletteCustomHsv = document.getElementById('panel-palette-custom-hsv');
+      const panelPaletteGradients = document.getElementById('panel-palette-gradients');
+      const btnOpenCustomHsvTab = document.getElementById('btn-open-custom-hsv-tab');
+
+      const customChosenColorWindow = document.getElementById('custom-chosen-color-window');
+      const customHsvFgSwatch = document.getElementById('custom-hsv-fg-swatch');
+      const customHsvBgSwatch = document.getElementById('custom-hsv-bg-swatch');
+      const customChosenColorDesc = document.getElementById('custom-chosen-color-desc');
+      const btnCustomSyncChosen = document.getElementById('btn-custom-sync-chosen');
+      const btnCustomStartColor = document.getElementById('btn-custom-start-color');
+      const customStartSwatch = document.getElementById('custom-start-swatch');
+      const customStartHex = document.getElementById('custom-start-hex');
+
+      // Gradient color buttons (direct tap to pick)
+      const btnGradColor1 = document.getElementById('btn-grad-color-1');
+      const btnGradColor2 = document.getElementById('btn-grad-color-2');
+      const modalGradColorPicker = document.getElementById('modal-grad-color-picker');
+      const gradPickerModalTitle = document.getElementById('grad-picker-modal-title');
+      const btnCloseGradPicker = document.getElementById('btn-close-grad-picker');
+      const gradPickerPreviewSwatch = document.getElementById('grad-picker-preview-swatch');
+      const gradPickerTargetLabel = document.getElementById('grad-picker-target-label');
+      const gradPickerHexVal = document.getElementById('grad-picker-hex-val');
+      const gradPickerNative = document.getElementById('grad-picker-native');
+      const gradPickerPaletteGrid = document.getElementById('grad-picker-palette-grid');
+      const gradPickerHue = document.getElementById('grad-picker-hue');
+      const gradPickerSat = document.getElementById('grad-picker-sat');
+      const gradPickerVal = document.getElementById('grad-picker-val');
+      const gradPickerHueVal = document.getElementById('grad-picker-hue-val');
+      const gradPickerSatVal = document.getElementById('grad-picker-sat-val');
+      const gradPickerValVal = document.getElementById('grad-picker-val-val');
+      const btnGradPickerValMinus = document.getElementById('btn-grad-picker-val-minus');
+      const btnGradPickerValPlus = document.getElementById('btn-grad-picker-val-plus');
+      const btnGradPickerSatMinus = document.getElementById('btn-grad-picker-sat-minus');
+      const btnGradPickerSatPlus = document.getElementById('btn-grad-picker-sat-plus');
+      const btnGradChipP0 = document.getElementById('btn-grad-chip-p0');
+      const btnGradChipP1 = document.getElementById('btn-grad-chip-p1');
+      const btnGradChipP2 = document.getElementById('btn-grad-chip-p2');
+      const btnGradChipP3 = document.getElementById('btn-grad-chip-p3');
+      const btnGradChipP4 = document.getElementById('btn-grad-chip-p4');
+      const btnGradChipFg = document.getElementById('btn-grad-chip-fg');
+      const btnGradChipBg = document.getElementById('btn-grad-chip-bg');
+      const btnApplyGradPicker = document.getElementById('btn-apply-grad-picker');
+      const btnCancelGradPicker = document.getElementById('btn-cancel-grad-picker');
+
+      let currentGradPickTarget = 1; // 1 for C1, 2 for C2
+      let gradPickerCurrentHex = '#000000';
+
+      // Gallery DOM Elements
+      const btnQuickGallery = document.getElementById('btn-quick-gallery');
+      const actionSaveProject = document.getElementById('action-save-project');
+      const actionOpenGallery = document.getElementById('action-open-gallery');
+      const modalProjectGallery = document.getElementById('modal-project-gallery');
+      const btnCloseGalleryModal = document.getElementById('btn-close-gallery-modal');
+      const btnCloseGalleryBottom = document.getElementById('btn-close-gallery-bottom');
+      const btnGallerySaveCurrent = document.getElementById('btn-gallery-save-current');
+      const btnGalleryPrev = document.getElementById('btn-gallery-prev');
+      const btnGalleryNext = document.getElementById('btn-gallery-next');
+      const galleryCarouselTrack = document.getElementById('gallery-carousel-track');
+      const galleryCounterIndicator = document.getElementById('gallery-counter-indicator');
+      const galleryActiveTitle = document.getElementById('gallery-active-title');
+      const galleryActiveMeta = document.getElementById('gallery-active-meta');
+      const btnGalleryLoad = document.getElementById('btn-gallery-load');
+      const btnGalleryDuplicate = document.getElementById('btn-gallery-duplicate');
+      const btnGalleryExport = document.getElementById('btn-gallery-export');
+      const btnGalleryDelete = document.getElementById('btn-gallery-delete');
+
+      // Save Project Modal Elements
+      const modalSaveProject = document.getElementById('modal-save-project');
+      const btnCloseSaveProjectModal = document.getElementById('btn-close-save-project-modal');
+      const saveProjectPreviewImg = document.getElementById('save-project-preview-img');
+      const saveProjectMetaInfo = document.getElementById('save-project-meta-info');
+      const inputSaveProjectName = document.getElementById('input-save-project-name');
+      const btnConfirmSaveProject = document.getElementById('btn-confirm-save-project');
+      const btnCancelSaveProject = document.getElementById('btn-cancel-save-project');
+
+      // Delete Confirm Modal Elements
+      const modalConfirmDeleteProject = document.getElementById('modal-confirm-delete-project');
+      const btnCloseDeleteModal = document.getElementById('btn-close-delete-modal');
+      const deleteProjectTargetName = document.getElementById('delete-project-target-name');
+      const btnConfirmDeleteAction = document.getElementById('btn-confirm-delete-action');
+      const btnCancelDeleteAction = document.getElementById('btn-cancel-delete-action');
+      const inputCustomHue = document.getElementById('input-custom-hue');
+      const inputCustomSat = document.getElementById('input-custom-sat');
+      const inputCustomVal = document.getElementById('input-custom-val');
+      const customHueVal = document.getElementById('custom-hue-val');
+      const customSatVal = document.getElementById('custom-sat-val');
+      const customValVal = document.getElementById('custom-val-val');
+      const btnCustomValMinus10 = document.getElementById('btn-custom-val-minus10');
+      const btnCustomValPlus10 = document.getElementById('btn-custom-val-plus10');
+      const btnCustomSatMinus10 = document.getElementById('btn-custom-sat-minus10');
+      const btnCustomSatPlus10 = document.getElementById('btn-custom-sat-plus10');
+      const btnCustomValMinus5 = document.getElementById('btn-custom-val-minus5');
+      const btnCustomValPlus5 = document.getElementById('btn-custom-val-plus5');
+
+      const customCompareOrigSwatch = document.getElementById('custom-compare-orig-swatch');
+      const customCompareOrigHex = document.getElementById('custom-compare-orig-hex');
+      const customCompareNewSwatch = document.getElementById('custom-compare-new-swatch');
+      const customCompareNewHex = document.getElementById('custom-compare-new-hex');
+      const customTonalRamp = document.getElementById('custom-tonal-ramp');
+      const btnCustomApplyFg = document.getElementById('btn-custom-apply-fg');
+      const btnCustomApplyBg = document.getElementById('btn-custom-apply-bg');
+      const btnCustomSetGradEnd = document.getElementById('btn-custom-set-grad-end');
+      const selectCustomPresetTarget = document.getElementById('select-custom-preset-target');
+      const btnCustomSavePreset = document.getElementById('btn-custom-save-preset');
+
+      // Gradient Controls
+      const btnBottomGradient = document.getElementById('btn-bottom-gradient');
+      const bottomGradientLabel = document.getElementById('bottom-gradient-label');
+      const gradEnableCheckbox = document.getElementById('grad-enable-checkbox');
+      const gradPreviewStrip = document.getElementById('grad-preview-strip');
+      const gradSwatch1 = document.getElementById('grad-swatch-1');
+      const gradHex1 = document.getElementById('grad-hex-1');
+      const gradSwatch2 = document.getElementById('grad-swatch-2');
+      const gradHex2 = document.getElementById('grad-hex-2');
+      const btnGradSwapColors = document.getElementById('btn-grad-swap-colors');
+      const btnGradSetFg = document.getElementById('btn-grad-set-fg');
+      const btnGradSetBg = document.getElementById('btn-grad-set-bg');
+      const btnGradPresetFgbg = document.getElementById('btn-grad-preset-fgbg');
+      const btnGradDirDrag = document.getElementById('btn-grad-dir-drag');
+      const btnGradDirH = document.getElementById('btn-grad-dir-h');
+      const btnGradDirV = document.getElementById('btn-grad-dir-v');
+      const btnGradDirRad = document.getElementById('btn-grad-dir-rad');
+      const btnGradDitherNone = document.getElementById('btn-grad-dither-none');
+      const btnGradDitherBayer = document.getElementById('btn-grad-dither-bayer');
+      const btnGradDitherChecker = document.getElementById('btn-grad-dither-checker');
+      const btnDoneGradientOverlay = document.getElementById('btn-done-gradient-overlay');
+
       // Tools overlay elements
       const toolbox = document.getElementById('toolbox');
       const toolOptionsPanel = document.getElementById('tool-options-panel');
@@ -1697,12 +2447,163 @@
       // --- Overlay Management (Consolidated Mobile UI) ---
       let lastOverlayOpenedAt = 0;
 
+      
+      // --- Color Math: RGB <-> HSV <-> Hex ---
+      function rgbToHsv(r, g, b) {
+        r /= 255; g /= 255; b /= 255;
+        const max = Math.max(r, g, b), min = Math.min(r, g, b);
+        let h = 0, s = 0, v = max;
+        const d = max - min;
+        s = max === 0 ? 0 : d / max;
+        if (max !== min) {
+          switch (max) {
+            case r: h = (g - b) / d + (g < b ? 6 : 0); break;
+            case g: h = (b - r) / d + 2; break;
+            case b: h = (r - g) / d + 4; break;
+          }
+          h /= 6;
+        }
+        return {
+          h: Math.round(h * 360),
+          s: Math.round(s * 100),
+          v: Math.round(v * 100)
+        };
+      }
+
+      function hsvToRgb(h, s, v) {
+        h = ((h % 360) + 360) % 360;
+        s = Math.max(0, Math.min(100, s)) / 100;
+        v = Math.max(0, Math.min(100, v)) / 100;
+        const c = v * s;
+        const x = c * (1 - Math.abs((h / 60) % 2 - 1));
+        const m = v - c;
+        let r = 0, g = 0, b = 0;
+        if (h >= 0 && h < 60) { r = c; g = x; b = 0; }
+        else if (h >= 60 && h < 120) { r = x; g = c; b = 0; }
+        else if (h >= 120 && h < 180) { r = 0; g = c; b = x; }
+        else if (h >= 180 && h < 240) { r = 0; g = x; b = c; }
+        else if (h >= 240 && h < 300) { r = x; g = 0; b = c; }
+        else { r = c; g = 0; b = x; }
+        return {
+          r: Math.round((r + m) * 255),
+          g: Math.round((g + m) * 255),
+          b: Math.round((b + m) * 255)
+        };
+      }
+
+      function hexToRgb(hex) {
+        if (!hex || typeof hex !== 'string') return { r: 0, g: 0, b: 0 };
+        let clean = hex.replace('#', '').trim();
+        if (clean.length === 3) {
+          clean = clean.split('').map(c => c + c).join('');
+        }
+        const num = parseInt(clean, 16);
+        if (isNaN(num)) return { r: 0, g: 0, b: 0 };
+        return {
+          r: (num >> 16) & 255,
+          g: (num >> 8) & 255,
+          b: num & 255
+        };
+      }
+
+      function rgbToHex(r, g, b) {
+        return '#' + [r, g, b].map(x => {
+          const h = Math.max(0, Math.min(255, Math.round(x))).toString(16);
+          return h.length === 1 ? '0' + h : h;
+        }).join('');
+      }
+
+      function hexToHsv(hex) {
+        const rgb = hexToRgb(hex);
+        return rgbToHsv(rgb.r, rgb.g, rgb.b);
+      }
+
+      function hsvToHex(h, s, v) {
+        const rgb = hsvToRgb(h, s, v);
+        return rgbToHex(rgb.r, rgb.g, rgb.b);
+      }
+
+      // 4x4 Bayer Dithering Matrix for pixel art gradients
+      const bayer4x4 = [
+        [ 0,  8,  2, 10],
+        [12,  4, 14,  6],
+        [ 3, 11,  1,  9],
+        [15,  7, 13,  5]
+      ];
+
+      function interpolateRgb(rgb1, rgb2, t) {
+        t = Math.max(0, Math.min(1, t));
+        return {
+          r: Math.round(rgb1.r + (rgb2.r - rgb1.r) * t),
+          g: Math.round(rgb1.g + (rgb2.g - rgb1.g) * t),
+          b: Math.round(rgb1.b + (rgb2.b - rgb1.b) * t)
+        };
+      }
+
+      function getGradientColorAt(x, y, tOverride, geom, gradOpt) {
+        if (!gradOpt || !gradOpt.enabled) return null;
+        let t = 0;
+        if (tOverride !== null && tOverride !== undefined) {
+          t = tOverride;
+        } else if (geom) {
+          if (gradOpt.type === 'horizontal') {
+            const minX = geom.bounds ? geom.bounds.minX : (geom.p0 ? Math.min(geom.p0.x, geom.p1.x) : 0);
+            const maxX = geom.bounds ? geom.bounds.maxX : (geom.p0 ? Math.max(geom.p0.x, geom.p1.x) : 1);
+            t = (x - minX) / Math.max(1, maxX - minX);
+          } else if (gradOpt.type === 'vertical') {
+            const minY = geom.bounds ? geom.bounds.minY : (geom.p0 ? Math.min(geom.p0.y, geom.p1.y) : 0);
+            const maxY = geom.bounds ? geom.bounds.maxY : (geom.p0 ? Math.max(geom.p0.y, geom.p1.y) : 1);
+            t = (y - minY) / Math.max(1, maxY - minY);
+          } else if (gradOpt.type === 'radial') {
+            const cx = geom.center ? geom.center.x : (geom.p0 ? (geom.p0.x + geom.p1.x) / 2 : x);
+            const cy = geom.center ? geom.center.y : (geom.p0 ? (geom.p0.y + geom.p1.y) / 2 : y);
+            const rad = geom.radius ? geom.radius : Math.max(1, Math.hypot(geom.p1.x - geom.p0.x, geom.p1.y - geom.p0.y) / 2);
+            const dist = Math.hypot(x - cx, y - cy);
+            t = dist / Math.max(1, rad);
+          } else { // 'linear-drag'
+            if (geom.p0 && geom.p1) {
+              const vx = geom.p1.x - geom.p0.x;
+              const vy = geom.p1.y - geom.p0.y;
+              const lenSq = vx * vx + vy * vy;
+              if (lenSq === 0) {
+                t = 0;
+              } else {
+                t = ((x - geom.p0.x) * vx + (y - geom.p0.y) * vy) / lenSq;
+              }
+            } else {
+              t = 0;
+            }
+          }
+        }
+
+        t = Math.max(0, Math.min(1, t));
+
+        const rgb1 = hexToRgb(gradOpt.color1 || '#000000');
+        const rgb2 = hexToRgb(gradOpt.color2 || '#ffffff');
+
+        if (gradOpt.dither === 'bayer') {
+          const bx = ((Math.floor(x) % 4) + 4) % 4;
+          const by = ((Math.floor(y) % 4) + 4) % 4;
+          const thresh = (bayer4x4[by][bx] + 0.5) / 16;
+          return t >= thresh ? gradOpt.color2 : gradOpt.color1;
+        } else if (gradOpt.dither === 'checker') {
+          if (t < 0.33) return gradOpt.color1;
+          if (t > 0.67) return gradOpt.color2;
+          return ((Math.floor(x) + Math.floor(y)) % 2 === 0) ? gradOpt.color1 : gradOpt.color2;
+        } else {
+          const interp = interpolateRgb(rgb1, rgb2, t);
+          return rgbToHex(interp.r, interp.g, interp.b);
+        }
+      }
+
       function closeAllOverlays() {
         overlayBackdrop.classList.add('hidden');
         overlayMenu.classList.add('hidden');
         overlayTools.classList.add('hidden');
         overlayPalette.classList.add('hidden');
         if (overlaySelection) overlaySelection.classList.add('hidden');
+        if (quickHsvPopup) quickHsvPopup.classList.add('hidden');
+        state.quickHsvActive = false;
         btnBottomMenu.classList.remove('active');
         btnBottomTools.classList.remove('active');
         btnBottomPalette.classList.remove('active');
@@ -1939,25 +2840,11 @@
       }
 
       function onPresetClick(idx) {
-        const currentColor = state.presetColors[idx].toLowerCase();
-        const activeColor = state.fgColor.toLowerCase();
-
-        if (currentColor === activeColor || state.selectedPresetIndex === idx) {
-          // Already the active color/preset! Open palette to change this preset
-          state.editingPresetIndex = idx;
-          state.selectedPresetIndex = idx;
-          state.activePaletteTarget = 'fg';
-          targetFgBtn.className = 'bevel-raised px-2 py-0.5 font-bold bg-blue-100 text-blue-900 border border-blue-500';
-          targetBgBtn.className = 'bevel-raised px-2 py-0.5 font-bold bg-gray-200 text-gray-700';
-          paletteTargetLabel.textContent = `Change Preset ${idx + 1} Color`;
-          openOverlay(overlayPalette, btnBottomPalette);
-        } else {
-          // Select this preset color
-          state.editingPresetIndex = null;
-          state.selectedPresetIndex = idx;
-          state.fgColor = state.presetColors[idx];
-          updateColorDisplay();
-        }
+        state.editingPresetIndex = idx;
+        state.selectedPresetIndex = idx;
+        state.fgColor = state.presetColors[idx];
+        updateColorDisplay();
+        openQuickHsvPopup(state.presetColors[idx]);
       }
 
       function updateColorDisplay() {
@@ -1965,6 +2852,13 @@
         bgColorSwatch.style.backgroundColor = state.bgColor;
         dockFgSwatch.style.backgroundColor = state.fgColor;
         dockBgSwatch.style.backgroundColor = state.bgColor;
+        if (customHsvFgSwatch) customHsvFgSwatch.style.backgroundColor = state.fgColor;
+        if (customHsvBgSwatch) customHsvBgSwatch.style.backgroundColor = state.bgColor;
+        if (customChosenColorDesc) {
+          const activeLabel = state.activePaletteTarget === 'fg' ? 'Foreground' : 'Background';
+          const activeHex = state.activePaletteTarget === 'fg' ? state.fgColor : state.bgColor;
+          customChosenColorDesc.textContent = `${activeLabel}: ${activeHex}`;
+        }
         nativeColorPicker.value = state.fgColor;
         updateQuickColorBar();
       }
@@ -2080,8 +2974,9 @@
           sizeInfo = ` (${shIcon} ${state.brushSize}px)`;
         }
 
-        bottomToolName.textContent = `${meta.name}${sizeInfo}`;
-        statusHint.textContent = meta.hint;
+        bottomToolName.textContent = meta.name;
+        btnBottomTools.title = `Tool: ${meta.name}${sizeInfo} - Click to choose tool & size`;
+        statusHint.textContent = `${meta.hint}${sizeInfo ? ' [' + sizeInfo.trim() + ']' : ''}`;
       }
 
       // --- Tool Options Panel Rendering ---
@@ -2303,6 +3198,42 @@
           msg.className = 'text-gray-600 italic text-xs py-1';
           msg.textContent = 'Ready to draw with this tool.';
           toolOptionsPanel.appendChild(msg);
+        }
+
+        // Add Tool Gradients Quick Toggle inside tool options for compatible tools
+        if (['line', 'curve', 'rect', 'ellipse', 'roundrect', 'polygon', 'fill', 'brush', 'pencil'].includes(state.tool)) {
+          const gradSep = document.createElement('div');
+          gradSep.className = 'w-full border-t border-gray-400 my-1';
+          toolOptionsPanel.appendChild(gradSep);
+
+          const gradToggleBtn = document.createElement('button');
+          gradToggleBtn.type = 'button';
+          gradToggleBtn.className = `bevel-raised px-3 py-1.5 font-bold text-xs flex items-center gap-1.5 active:bevel-sunken ${state.gradientEnabled ? 'bg-blue-100 text-blue-900 border border-blue-500' : 'bg-gray-100 text-gray-800 hover:bg-white'}`;
+          gradToggleBtn.innerHTML = `<span>🌈 Tool Gradient:</span> <span>${state.gradientEnabled ? 'ON (' + getGradientTypeLabel(state.gradientType) + ')' : 'OFF'}</span>`;
+          gradToggleBtn.title = 'Toggle Gradient Drawing';
+          gradToggleBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            state.gradientEnabled = !state.gradientEnabled;
+            if (state.gradientEnabled) {
+              if (!state.gradientColor1) state.gradientColor1 = state.fgColor;
+              if (!state.gradientColor2) state.gradientColor2 = state.bgColor;
+            }
+            updateGradientUI();
+            renderToolOptions();
+          });
+          toolOptionsPanel.appendChild(gradToggleBtn);
+
+          const gradOptBtn = document.createElement('button');
+          gradOptBtn.type = 'button';
+          gradOptBtn.className = 'bevel-raised px-3 py-1.5 font-bold text-xs bg-yellow-100 text-blue-950 hover:bg-white active:bevel-sunken flex items-center gap-1';
+          gradOptBtn.innerHTML = '<span>⚙️ Gradient Colors & Pattern...</span>';
+          gradOptBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            closeAllOverlays();
+            openOverlay(overlayPalette, btnBottomPalette);
+            switchPaletteTab('gradients');
+          });
+          toolOptionsPanel.appendChild(gradOptBtn);
         }
       }
 
@@ -2611,6 +3542,15 @@
       }
 
       function stageShape(shape) {
+        if (state.gradientEnabled) {
+          shape.gradient = {
+            enabled: true,
+            color1: state.gradientColor1 || state.fgColor,
+            color2: state.gradientColor2 || state.bgColor,
+            type: state.gradientType,
+            dither: state.gradientDither
+          };
+        }
         state.stagedShape = shape;
         renderStagedShape();
         updateShapeHandles();
@@ -2626,19 +3566,19 @@
         const s = state.stagedShape;
 
         if (s.type === 'line') {
-          drawBresenhamLine(previewCtx, s.p0.x, s.p0.y, s.p1.x, s.p1.y, s.strokeColor, s.thickness);
+          drawBresenhamLine(previewCtx, s.p0.x, s.p0.y, s.p1.x, s.p1.y, s.strokeColor, s.thickness, s.gradient);
         } else if (s.type === 'rect') {
-          drawBresenhamRect(previewCtx, s.p0.x, s.p0.y, s.p1.x, s.p1.y, s.strokeColor, s.fillColor, s.mode);
+          drawBresenhamRect(previewCtx, s.p0.x, s.p0.y, s.p1.x, s.p1.y, s.strokeColor, s.fillColor, s.mode, s.gradient);
         } else if (s.type === 'ellipse') {
           const rx = Math.abs(s.p1.x - s.p0.x) / 2;
           const ry = Math.abs(s.p1.y - s.p0.y) / 2;
           const cx = Math.min(s.p0.x, s.p1.x) + rx;
           const cy = Math.min(s.p0.y, s.p1.y) + ry;
-          drawBresenhamEllipse(previewCtx, cx, cy, rx, ry, s.strokeColor, s.fillColor, s.mode);
+          drawBresenhamEllipse(previewCtx, cx, cy, rx, ry, s.strokeColor, s.fillColor, s.mode, s.gradient);
         } else if (s.type === 'roundrect') {
-          drawBresenhamRoundRect(previewCtx, s.p0.x, s.p0.y, s.p1.x, s.p1.y, s.strokeColor, s.fillColor, s.mode);
+          drawBresenhamRoundRect(previewCtx, s.p0.x, s.p0.y, s.p1.x, s.p1.y, s.strokeColor, s.fillColor, s.mode, s.gradient);
         } else if (s.type === 'curve') {
-          drawBresenhamBezier(previewCtx, s.p0, s.p1, s.p2, s.p3, s.strokeColor, s.thickness);
+          drawBresenhamBezier(previewCtx, s.p0, s.p1, s.p2, s.p3, s.strokeColor, s.thickness, s.gradient);
         }
       }
 
@@ -2679,19 +3619,19 @@
         const targetCtx = getActiveLayerCtx();
 
         if (s.type === 'line') {
-          drawBresenhamLine(targetCtx, s.p0.x, s.p0.y, s.p1.x, s.p1.y, s.strokeColor, s.thickness);
+          drawBresenhamLine(targetCtx, s.p0.x, s.p0.y, s.p1.x, s.p1.y, s.strokeColor, s.thickness, s.gradient);
         } else if (s.type === 'rect') {
-          drawBresenhamRect(targetCtx, s.p0.x, s.p0.y, s.p1.x, s.p1.y, s.strokeColor, s.fillColor, s.mode);
+          drawBresenhamRect(targetCtx, s.p0.x, s.p0.y, s.p1.x, s.p1.y, s.strokeColor, s.fillColor, s.mode, s.gradient);
         } else if (s.type === 'ellipse') {
           const rx = Math.abs(s.p1.x - s.p0.x) / 2;
           const ry = Math.abs(s.p1.y - s.p0.y) / 2;
           const cx = Math.min(s.p0.x, s.p1.x) + rx;
           const cy = Math.min(s.p0.y, s.p1.y) + ry;
-          drawBresenhamEllipse(targetCtx, cx, cy, rx, ry, s.strokeColor, s.fillColor, s.mode);
+          drawBresenhamEllipse(targetCtx, cx, cy, rx, ry, s.strokeColor, s.fillColor, s.mode, s.gradient);
         } else if (s.type === 'roundrect') {
-          drawBresenhamRoundRect(targetCtx, s.p0.x, s.p0.y, s.p1.x, s.p1.y, s.strokeColor, s.fillColor, s.mode);
+          drawBresenhamRoundRect(targetCtx, s.p0.x, s.p0.y, s.p1.x, s.p1.y, s.strokeColor, s.fillColor, s.mode, s.gradient);
         } else if (s.type === 'curve') {
-          drawBresenhamBezier(targetCtx, s.p0, s.p1, s.p2, s.p3, s.strokeColor, s.thickness);
+          drawBresenhamBezier(targetCtx, s.p0, s.p1, s.p2, s.p3, s.strokeColor, s.thickness, s.gradient);
         }
 
         previewCtx.clearRect(0, 0, state.width, state.height);
@@ -2967,7 +3907,7 @@
         }
       }
 
-      function drawBresenhamLine(ctx, x0, y0, x1, y1, color, thickness = 1) {
+      function drawBresenhamLine(ctx, x0, y0, x1, y1, color, thickness = 1, gradOpt = null) {
         x0 = Math.round(x0);
         y0 = Math.round(y0);
         x1 = Math.round(x1);
@@ -2979,9 +3919,17 @@
         const sy = y0 < y1 ? 1 : -1;
         let err = dx - dy;
 
+        const totalSteps = Math.max(dx, dy);
+        let step = 0;
+        const geom = { p0: { x: x0, y: y0 }, p1: { x: x1, y: y1 } };
+
         while (true) {
-          putPixel(ctx, x0, y0, color, thickness);
+          const pixelColor = (gradOpt && gradOpt.enabled)
+            ? getGradientColorAt(x0, y0, totalSteps > 0 ? step / totalSteps : 0, geom, gradOpt)
+            : color;
+          putPixel(ctx, x0, y0, pixelColor, thickness);
           if (x0 === x1 && y0 === y1) break;
+          step++;
           const e2 = 2 * err;
           if (e2 > -dy) {
             err -= dy;
@@ -2994,7 +3942,7 @@
         }
       }
 
-      function drawBresenhamEllipse(ctx, xc, yc, rx, ry, strokeColor, fillColor, mode) {
+      function drawBresenhamEllipse(ctx, xc, yc, rx, ry, strokeColor, fillColor, mode, gradOpt = null) {
         xc = Math.round(xc);
         yc = Math.round(yc);
         rx = Math.max(1, Math.round(rx));
@@ -3039,8 +3987,15 @@
           }
         }
 
+        const geom = {
+          p0: { x: xc - rx, y: yc - ry },
+          p1: { x: xc + rx, y: yc + ry },
+          bounds: { minX: xc - rx, minY: yc - ry, maxX: xc + rx, maxY: yc + ry },
+          center: { x: xc, y: yc },
+          radius: Math.max(rx, ry)
+        };
+
         if (mode === 'fill' || mode === 'outline-fill') {
-          ctx.fillStyle = fillColor;
           const ySpans = {};
           points.forEach(p => {
             if (ySpans[p.y] === undefined || p.x > ySpans[p.y]) {
@@ -3050,47 +4005,102 @@
           for (let py in ySpans) {
             const spanX = ySpans[py];
             const numY = parseInt(py, 10);
-            ctx.fillRect(xc - spanX, yc + numY, spanX * 2 + 1, 1);
-            if (numY !== 0) {
-              ctx.fillRect(xc - spanX, yc - numY, spanX * 2 + 1, 1);
+            const startX = xc - spanX;
+            const endX = xc + spanX;
+
+            if (gradOpt && gradOpt.enabled) {
+              for (let px = startX; px <= endX; px++) {
+                ctx.fillStyle = getGradientColorAt(px, yc + numY, null, geom, gradOpt);
+                ctx.fillRect(px, yc + numY, 1, 1);
+                if (numY !== 0) {
+                  ctx.fillStyle = getGradientColorAt(px, yc - numY, null, geom, gradOpt);
+                  ctx.fillRect(px, yc - numY, 1, 1);
+                }
+              }
+            } else {
+              ctx.fillStyle = fillColor;
+              ctx.fillRect(startX, yc + numY, spanX * 2 + 1, 1);
+              if (numY !== 0) {
+                ctx.fillRect(startX, yc - numY, spanX * 2 + 1, 1);
+              }
             }
           }
         }
 
         if (mode === 'outline' || mode === 'outline-fill') {
-          ctx.fillStyle = strokeColor;
           points.forEach(p => {
-            ctx.fillRect(xc + p.x, yc + p.y, 1, 1);
-            ctx.fillRect(xc - p.x, yc + p.y, 1, 1);
-            ctx.fillRect(xc + p.x, yc - p.y, 1, 1);
-            ctx.fillRect(xc - p.x, yc - p.y, 1, 1);
+            const pArr = [
+              { x: xc + p.x, y: yc + p.y },
+              { x: xc - p.x, y: yc + p.y },
+              { x: xc + p.x, y: yc - p.y },
+              { x: xc - p.x, y: yc - p.y }
+            ];
+            pArr.forEach(pt => {
+              const col = (gradOpt && gradOpt.enabled && mode === 'outline')
+                ? getGradientColorAt(pt.x, pt.y, null, geom, gradOpt)
+                : strokeColor;
+              ctx.fillStyle = col;
+              ctx.fillRect(pt.x, pt.y, 1, 1);
+            });
           });
         }
       }
 
-      function drawBresenhamRect(ctx, x0, y0, x1, y1, strokeColor, fillColor, mode) {
+      function drawBresenhamRect(ctx, x0, y0, x1, y1, strokeColor, fillColor, mode, gradOpt = null) {
         const left = Math.min(x0, x1);
         const top = Math.min(y0, y1);
         const w = Math.abs(x1 - x0) + 1;
         const h = Math.abs(y1 - y0) + 1;
 
-        if (mode === 'fill') {
-          ctx.fillStyle = fillColor;
-          ctx.fillRect(left, top, w, h);
-        } else if (mode === 'outline-fill') {
-          ctx.fillStyle = fillColor;
-          ctx.fillRect(left, top, w, h);
+        const geom = {
+          p0: { x: x0, y: y0 },
+          p1: { x: x1, y: y1 },
+          bounds: { minX: left, minY: top, maxX: left + w - 1, maxY: top + h - 1 },
+          center: { x: left + w / 2, y: top + h / 2 },
+          radius: Math.max(w, h) / 2
+        };
+
+        if (mode === 'fill' || mode === 'outline-fill') {
+          if (gradOpt && gradOpt.enabled) {
+            for (let py = top; py < top + h; py++) {
+              for (let px = left; px < left + w; px++) {
+                ctx.fillStyle = getGradientColorAt(px, py, null, geom, gradOpt);
+                ctx.fillRect(px, py, 1, 1);
+              }
+            }
+          } else {
+            ctx.fillStyle = fillColor;
+            ctx.fillRect(left, top, w, h);
+          }
+        }
+
+        if (mode === 'outline-fill') {
           ctx.fillStyle = strokeColor;
           ctx.fillRect(left, top, w, 1);
           ctx.fillRect(left, top + h - 1, w, 1);
           ctx.fillRect(left, top, 1, h);
           ctx.fillRect(left + w - 1, top, 1, h);
-        } else {
-          ctx.fillStyle = strokeColor;
-          ctx.fillRect(left, top, w, 1);
-          ctx.fillRect(left, top + h - 1, w, 1);
-          ctx.fillRect(left, top, 1, h);
-          ctx.fillRect(left + w - 1, top, 1, h);
+        } else if (mode === 'outline') {
+          if (gradOpt && gradOpt.enabled) {
+            for (let px = left; px < left + w; px++) {
+              ctx.fillStyle = getGradientColorAt(px, top, null, geom, gradOpt);
+              ctx.fillRect(px, top, 1, 1);
+              ctx.fillStyle = getGradientColorAt(px, top + h - 1, null, geom, gradOpt);
+              ctx.fillRect(px, top + h - 1, 1, 1);
+            }
+            for (let py = top; py < top + h; py++) {
+              ctx.fillStyle = getGradientColorAt(left, py, null, geom, gradOpt);
+              ctx.fillRect(left, py, 1, 1);
+              ctx.fillStyle = getGradientColorAt(left + w - 1, py, null, geom, gradOpt);
+              ctx.fillRect(left + w - 1, py, 1, 1);
+            }
+          } else {
+            ctx.fillStyle = strokeColor;
+            ctx.fillRect(left, top, w, 1);
+            ctx.fillRect(left, top + h - 1, w, 1);
+            ctx.fillRect(left, top, 1, h);
+            ctx.fillRect(left + w - 1, top, 1, h);
+          }
         }
       }
 
@@ -3105,18 +4115,26 @@
         return inside;
       }
 
-      function drawBresenhamPolygon(ctx, points, strokeColor, fillColor, mode) {
+      function drawBresenhamPolygon(ctx, points, strokeColor, fillColor, mode, gradOpt = null) {
         if (points.length < 3) return;
 
-        if (mode === 'fill' || mode === 'outline-fill') {
-          ctx.fillStyle = fillColor;
-          let minY = state.height;
-          let maxY = 0;
-          points.forEach(p => {
-            if (p.y < minY) minY = p.y;
-            if (p.y > maxY) maxY = p.y;
-          });
+        let minX = state.width, maxX = 0, minY = state.height, maxY = 0;
+        points.forEach(p => {
+          if (p.x < minX) minX = p.x;
+          if (p.x > maxX) maxX = p.x;
+          if (p.y < minY) minY = p.y;
+          if (p.y > maxY) maxY = p.y;
+        });
 
+        const geom = {
+          p0: { x: minX, y: minY },
+          p1: { x: maxX, y: maxY },
+          bounds: { minX, minY, maxX, maxY },
+          center: { x: (minX + maxX) / 2, y: (minY + maxY) / 2 },
+          radius: Math.max(maxX - minX, maxY - minY) / 2
+        };
+
+        if (mode === 'fill' || mode === 'outline-fill') {
           minY = Math.max(0, Math.floor(minY));
           maxY = Math.min(state.height - 1, Math.ceil(maxY));
 
@@ -3136,7 +4154,15 @@
                 const x1 = Math.max(0, nodeX[i]);
                 const x2 = Math.min(state.width - 1, nodeX[i + 1]);
                 if (x2 >= x1) {
-                  ctx.fillRect(x1, y, x2 - x1 + 1, 1);
+                  if (gradOpt && gradOpt.enabled) {
+                    for (let px = x1; px <= x2; px++) {
+                      ctx.fillStyle = getGradientColorAt(px, y, null, geom, gradOpt);
+                      ctx.fillRect(px, y, 1, 1);
+                    }
+                  } else {
+                    ctx.fillStyle = fillColor;
+                    ctx.fillRect(x1, y, x2 - x1 + 1, 1);
+                  }
                 }
               }
             }
@@ -3147,16 +4173,16 @@
           for (let i = 0; i < points.length; i++) {
             const p1 = points[i];
             const p2 = points[(i + 1) % points.length];
-            drawBresenhamLine(ctx, p1.x, p1.y, p2.x, p2.y, strokeColor, 1);
+            drawBresenhamLine(ctx, p1.x, p1.y, p2.x, p2.y, strokeColor, 1, gradOpt);
           }
         }
       }
 
-      function drawBresenhamBezier(ctx, p0, p1, p2, p3, color, thickness = 1) {
+      function drawBresenhamBezier(ctx, p0, p1, p2, p3, color, thickness = 1, gradOpt = null) {
         const chord = Math.hypot(p3.x - p0.x, p3.y - p0.y);
         const net = Math.hypot(p1.x - p0.x, p1.y - p0.y) + Math.hypot(p2.x - p1.x, p2.y - p1.y) + Math.hypot(p3.x - p2.x, p3.y - p2.y);
         const steps = Math.max(12, Math.ceil(Math.max(chord, net) * 2));
-        
+
         let prevX = Math.round(p0.x);
         let prevY = Math.round(p0.y);
 
@@ -3165,7 +4191,10 @@
           const mt = 1 - t;
           const x = Math.round(mt * mt * mt * p0.x + 3 * mt * mt * t * p1.x + 3 * mt * t * t * p2.x + t * t * t * p3.x);
           const y = Math.round(mt * mt * mt * p0.y + 3 * mt * mt * t * p1.y + 3 * mt * t * t * p2.y + t * t * t * p3.y);
-          drawBresenhamLine(ctx, prevX, prevY, x, y, color, thickness);
+          const segColor = (gradOpt && gradOpt.enabled)
+            ? getGradientColorAt(x, y, t, { p0, p1: p3 }, gradOpt)
+            : color;
+          drawBresenhamLine(ctx, prevX, prevY, x, y, segColor, thickness);
           prevX = x;
           prevY = y;
         }
@@ -3179,15 +4208,25 @@
         }
         const strokeCol = state.mouseButton === 2 ? state.bgColor : state.fgColor;
         const fillCol = state.mouseButton === 2 ? state.fgColor : state.bgColor;
+        const targetCtx = getActiveLayerCtx();
+
+        const activeGrad = state.gradientEnabled ? {
+          enabled: true,
+          color1: state.gradientColor1 || strokeCol,
+          color2: state.gradientColor2 || fillCol,
+          type: state.gradientType,
+          dither: state.gradientDither
+        } : null;
 
         previewCtx.clearRect(0, 0, state.width, state.height);
-        drawBresenhamPolygon(paintCtx, state.polygonPoints, strokeCol, fillCol, state.shapeMode);
+        drawBresenhamPolygon(targetCtx, state.polygonPoints, strokeCol, fillCol, state.shapeMode, activeGrad);
+        compositeLayers();
         saveHistoryState();
         state.polygonPoints = [];
         statusHint.textContent = 'Polygon: Tap and drag to start a new polygon.';
       }
 
-      function drawBresenhamRoundRect(ctx, x0, y0, x1, y1, strokeColor, fillColor, mode) {
+      function drawBresenhamRoundRect(ctx, x0, y0, x1, y1, strokeColor, fillColor, mode, gradOpt = null) {
         const left = Math.min(x0, x1);
         const top = Math.min(y0, y1);
         const w = Math.abs(x1 - x0) + 1;
@@ -3197,11 +4236,18 @@
         const r = Math.min(Math.min(8, Math.max(2, Math.floor(Math.min(w, h) / 4))), maxR);
 
         if (r <= 1 || w <= 4 || h <= 4) {
-          drawBresenhamRect(ctx, x0, y0, x1, y1, strokeColor, fillColor, mode);
+          drawBresenhamRect(ctx, x0, y0, x1, y1, strokeColor, fillColor, mode, gradOpt);
           return;
         }
 
-        // Midpoint circle quadrant points for radius r (exact continuous pixel arc)
+        const geom = {
+          p0: { x: x0, y: y0 },
+          p1: { x: x1, y: y1 },
+          bounds: { minX: left, minY: top, maxX: left + w - 1, maxY: top + h - 1 },
+          center: { x: left + w / 2, y: top + h / 2 },
+          radius: Math.max(w, h) / 2
+        };
+
         let cx = 0, cy = r, d = 1 - r;
         const pts = [];
         while (cx <= cy) {
@@ -3216,15 +4262,21 @@
           cx++;
         }
 
-        // Fill mode
         if (mode === 'fill' || mode === 'outline-fill') {
-          ctx.fillStyle = fillColor;
-          // Middle rows
           const midH = h - 2 * r;
           if (midH > 0) {
-            ctx.fillRect(left, top + r, w, midH);
+            if (gradOpt && gradOpt.enabled) {
+              for (let py = top + r; py < top + r + midH; py++) {
+                for (let px = left; px < left + w; px++) {
+                  ctx.fillStyle = getGradientColorAt(px, py, null, geom, gradOpt);
+                  ctx.fillRect(px, py, 1, 1);
+                }
+              }
+            } else {
+              ctx.fillStyle = fillColor;
+              ctx.fillRect(left, top + r, w, midH);
+            }
           }
-          // Top and bottom corner rows
           const rowSpans = {};
           pts.forEach(p => {
             if (rowSpans[p.y] === undefined || p.x > rowSpans[p.y]) {
@@ -3237,15 +4289,24 @@
             const startX = left + r - spanX;
             const endX = left + w - 1 - r + spanX;
             const rowW = endX - startX + 1;
-            ctx.fillRect(startX, top + r - numPy, rowW, 1);
-            ctx.fillRect(startX, top + h - 1 - r + numPy, rowW, 1);
+
+            if (gradOpt && gradOpt.enabled) {
+              for (let px = startX; px <= endX; px++) {
+                ctx.fillStyle = getGradientColorAt(px, top + r - numPy, null, geom, gradOpt);
+                ctx.fillRect(px, top + r - numPy, 1, 1);
+                ctx.fillStyle = getGradientColorAt(px, top + h - 1 - r + numPy, null, geom, gradOpt);
+                ctx.fillRect(px, top + h - 1 - r + numPy, 1, 1);
+              }
+            } else {
+              ctx.fillStyle = fillColor;
+              ctx.fillRect(startX, top + r - numPy, rowW, 1);
+              ctx.fillRect(startX, top + h - 1 - r + numPy, rowW, 1);
+            }
           }
         }
 
-        // Outline mode: continuous, uninterrupted 1-pixel borders
         if (mode === 'outline' || mode === 'outline-fill') {
           ctx.fillStyle = strokeColor;
-          // 4 Straight edges
           const straightW = w - 2 * r;
           const straightH = h - 2 * r;
           if (straightW > 0) {
@@ -3256,7 +4317,6 @@
             ctx.fillRect(left, top + r, 1, straightH);
             ctx.fillRect(left + w - 1, top + r, 1, straightH);
           }
-          // 4 Rounded corners
           pts.forEach(p => {
             ctx.fillRect(left + r - p.x, top + r - p.y, 1, 1);
             ctx.fillRect(left + w - 1 - r + p.x, top + r - p.y, 1, 1);
@@ -3336,7 +4396,7 @@
         }
       }
 
-      function floodFill(startX, startY, fillHex) {
+      function floodFill(startX, startY, fillHex, gradOpt = null) {
         if (startX < 0 || startX >= state.width || startY < 0 || startY >= state.height) return;
 
         const targetCtx = getActiveLayerCtx();
@@ -3361,10 +4421,13 @@
         const startIndex = startY * w + startX;
         const targetColor = data[startIndex];
 
-        if (targetColor === fillColor) return;
+        if (!gradOpt && targetColor === fillColor) return;
 
         const queue = [startX, startY];
         const visited = new Uint8Array(w * h);
+        const floodedPixels = [];
+
+        let minX = w, maxX = 0, minY = h, maxY = 0;
 
         while (queue.length > 0) {
           const cy = queue.pop();
@@ -3376,12 +4439,38 @@
           if (data[idx] !== targetColor) continue;
 
           visited[idx] = 1;
-          data[idx] = fillColor;
+          if (gradOpt && gradOpt.enabled) {
+            floodedPixels.push(cx, cy);
+            if (cx < minX) minX = cx;
+            if (cx > maxX) maxX = cx;
+            if (cy < minY) minY = cy;
+            if (cy > maxY) maxY = cy;
+          } else {
+            data[idx] = fillColor;
+          }
 
           if (cx + 1 < w && !visited[idx + 1] && data[idx + 1] === targetColor) queue.push(cx + 1, cy);
           if (cx - 1 >= 0 && !visited[idx - 1] && data[idx - 1] === targetColor) queue.push(cx - 1, cy);
           if (cy + 1 < h && !visited[idx + w] && data[idx + w] === targetColor) queue.push(cx, cy + 1);
           if (cy - 1 >= 0 && !visited[idx - w] && data[idx - w] === targetColor) queue.push(cx, cy - 1);
+        }
+
+        if (gradOpt && gradOpt.enabled && floodedPixels.length > 0) {
+          const geom = {
+            p0: { x: minX, y: minY },
+            p1: { x: maxX, y: maxY },
+            bounds: { minX, minY, maxX, maxY },
+            center: { x: (minX + maxX) / 2, y: (minY + maxY) / 2 },
+            radius: Math.max(maxX - minX, maxY - minY) / 2
+          };
+          for (let i = 0; i < floodedPixels.length; i += 2) {
+            const px = floodedPixels[i];
+            const py = floodedPixels[i + 1];
+            const colHex = getGradientColorAt(px, py, null, geom, gradOpt);
+            const rgb = hexToRgb(colHex);
+            const idx = py * w + px;
+            data[idx] = (255 << 24) | (rgb.b << 16) | (rgb.g << 8) | rgb.r;
+          }
         }
 
         targetCtx.putImageData(imgData, 0, 0);
@@ -4577,7 +5666,14 @@
           applyAirbrush(targetCtx, coords.x, coords.y, activeColor, state.sprayRadius);
           compositeLayers();
         } else if (state.tool === 'fill') {
-          floodFill(coords.x, coords.y, activeColor);
+          const activeGrad = state.gradientEnabled ? {
+            enabled: true,
+            color1: state.gradientColor1 || state.fgColor,
+            color2: state.gradientColor2 || state.bgColor,
+            type: state.gradientType,
+            dither: state.gradientDither
+          } : null;
+          floodFill(coords.x, coords.y, activeColor, activeGrad);
           state.isDrawing = false;
         } else if (state.tool === 'picker') {
           pickColorAt(coords.x, coords.y, state.mouseButton === 2);
@@ -4672,18 +5768,26 @@
           const strokeCol = state.mouseButton === 2 ? state.bgColor : state.fgColor;
           const fillCol = state.mouseButton === 2 ? state.fgColor : state.bgColor;
 
+          const activeGrad = state.gradientEnabled ? {
+            enabled: true,
+            color1: state.gradientColor1 || strokeCol,
+            color2: state.gradientColor2 || fillCol,
+            type: state.gradientType,
+            dither: state.gradientDither
+          } : null;
+
           if (state.tool === 'line') {
-            drawBresenhamLine(previewCtx, state.startX, state.startY, coords.x, coords.y, strokeCol, state.lineThickness);
+            drawBresenhamLine(previewCtx, state.startX, state.startY, coords.x, coords.y, strokeCol, state.lineThickness, activeGrad);
           } else if (state.tool === 'rect') {
-            drawBresenhamRect(previewCtx, state.startX, state.startY, coords.x, coords.y, strokeCol, fillCol, state.shapeMode);
+            drawBresenhamRect(previewCtx, state.startX, state.startY, coords.x, coords.y, strokeCol, fillCol, state.shapeMode, activeGrad);
           } else if (state.tool === 'ellipse') {
             const rx = Math.abs(coords.x - state.startX) / 2;
             const ry = Math.abs(coords.y - state.startY) / 2;
             const cx = Math.min(state.startX, coords.x) + rx;
             const cy = Math.min(state.startY, coords.y) + ry;
-            drawBresenhamEllipse(previewCtx, cx, cy, rx, ry, strokeCol, fillCol, state.shapeMode);
+            drawBresenhamEllipse(previewCtx, cx, cy, rx, ry, strokeCol, fillCol, state.shapeMode, activeGrad);
           } else if (state.tool === 'roundrect') {
-            drawBresenhamRoundRect(previewCtx, state.startX, state.startY, coords.x, coords.y, strokeCol, fillCol, state.shapeMode);
+            drawBresenhamRoundRect(previewCtx, state.startX, state.startY, coords.x, coords.y, strokeCol, fillCol, state.shapeMode, activeGrad);
           } else if (state.tool === 'select') {
             drawBresenhamRect(previewCtx, state.startX, state.startY, coords.x, coords.y, '#000000', '', 'outline');
           }
@@ -5257,7 +6361,14 @@
         const activeColor = state.mouseButton === 2 ? state.bgColor : state.fgColor;
 
         if (cand.tool === 'fill') {
-          floodFill(cand.x, cand.y, activeColor);
+          const activeGrad = state.gradientEnabled ? {
+            enabled: true,
+            color1: state.gradientColor1 || state.fgColor,
+            color2: state.gradientColor2 || state.bgColor,
+            type: state.gradientType,
+            dither: state.gradientDither
+          } : null;
+          floodFill(cand.x, cand.y, activeColor, activeGrad);
         } else if (cand.tool === 'picker') {
           pickColorAt(cand.x, cand.y, false);
         } else if (cand.tool === 'text') {
@@ -5753,8 +6864,18 @@
 
       document.getElementById('action-edit-colors').addEventListener('click', () => {
         closeAllOverlays();
-        nativeColorPicker.click();
+        openOverlay(overlayPalette, btnBottomPalette);
+        switchPaletteTab('custom-hsv');
       });
+
+      const actionToolGradients = document.getElementById('action-tool-gradients');
+      if (actionToolGradients) {
+        actionToolGradients.addEventListener('click', () => {
+          closeAllOverlays();
+          openOverlay(overlayPalette, btnBottomPalette);
+          switchPaletteTab('gradients');
+        });
+      }
 
       document.getElementById('action-swap-colors').addEventListener('click', () => {
         closeAllOverlays();
@@ -6025,6 +7146,1229 @@
           state.renamingLayerIndex = null;
         });
       }
+
+      
+      // --- Top-Left Quick 2-Bar HSV Adjuster Logic ---
+      function openQuickHsvPopup(startingHex) {
+        const hex = startingHex || state.fgColor;
+        const hsv = hexToHsv(hex);
+        state.quickHsvActive = true;
+
+        if (quickHsvSwatch) quickHsvSwatch.style.backgroundColor = hex;
+        if (quickHsvTitle) {
+          const label = state.selectedPresetIndex !== null ? `Preset ${state.selectedPresetIndex + 1}` : 'Color';
+          quickHsvTitle.textContent = `Adjust ${label} (S/V)`;
+        }
+
+        if (quickSatSlider) quickSatSlider.value = hsv.s;
+        if (quickValSlider) quickValSlider.value = hsv.v;
+        if (quickSatVal) quickSatVal.textContent = `${hsv.s}%`;
+        if (quickValVal) quickValVal.textContent = `${hsv.v}%`;
+
+        updateQuickSliderTracks(hsv.h, hsv.s, hsv.v);
+        if (quickHsvPopup) quickHsvPopup.classList.remove('hidden');
+      }
+
+      function closeQuickHsvPopup() {
+        state.quickHsvActive = false;
+        if (quickHsvPopup) quickHsvPopup.classList.add('hidden');
+      }
+
+      function updateQuickSliderTracks(h, s, v) {
+        if (quickSatSlider) {
+          const s0 = hsvToHex(h, 0, v);
+          const s100 = hsvToHex(h, 100, v);
+          quickSatSlider.style.background = `linear-gradient(to right, ${s0}, ${s100})`;
+        }
+        if (quickValSlider) {
+          const v0 = hsvToHex(h, s, 0);
+          const v100 = hsvToHex(h, s, 100);
+          quickValSlider.style.background = `linear-gradient(to right, ${v0}, ${v100})`;
+        }
+      }
+
+      function onQuickHsvSliderChange() {
+        const curHex = (state.selectedPresetIndex !== null && state.presetColors[state.selectedPresetIndex])
+          ? state.presetColors[state.selectedPresetIndex]
+          : state.fgColor;
+        const hsv = hexToHsv(curHex);
+
+        const s = parseInt(quickSatSlider.value, 10);
+        const v = parseInt(quickValSlider.value, 10);
+
+        if (quickSatVal) quickSatVal.textContent = `${s}%`;
+        if (quickValVal) quickValVal.textContent = `${v}%`;
+
+        const newHex = hsvToHex(hsv.h, s, v);
+
+        if (quickHsvSwatch) quickHsvSwatch.style.backgroundColor = newHex;
+        updateQuickSliderTracks(hsv.h, s, v);
+
+        state.fgColor = newHex;
+        if (state.selectedPresetIndex !== null && state.selectedPresetIndex >= 0 && state.selectedPresetIndex < state.presetColors.length) {
+          state.presetColors[state.selectedPresetIndex] = newHex;
+        }
+        updateColorDisplay();
+      }
+
+      if (btnQuickHsvToggle) {
+        btnQuickHsvToggle.addEventListener('click', (e) => {
+          e.stopPropagation();
+          if (state.quickHsvActive) {
+            closeQuickHsvPopup();
+          } else {
+            openQuickHsvPopup(state.fgColor);
+          }
+        });
+      }
+
+      if (btnCloseQuickHsv) btnCloseQuickHsv.addEventListener('click', closeQuickHsvPopup);
+      if (btnQuickHsvDone) btnQuickHsvDone.addEventListener('click', closeQuickHsvPopup);
+
+      if (quickSatSlider) quickSatSlider.addEventListener('input', onQuickHsvSliderChange);
+      if (quickValSlider) quickValSlider.addEventListener('input', onQuickHsvSliderChange);
+
+      if (btnQuickValMinus) {
+        btnQuickValMinus.addEventListener('click', () => {
+          if (quickValSlider) {
+            quickValSlider.value = Math.max(0, parseInt(quickValSlider.value, 10) - 10);
+            onQuickHsvSliderChange();
+          }
+        });
+      }
+      if (btnQuickValPlus) {
+        btnQuickValPlus.addEventListener('click', () => {
+          if (quickValSlider) {
+            quickValSlider.value = Math.min(100, parseInt(quickValSlider.value, 10) + 10);
+            onQuickHsvSliderChange();
+          }
+        });
+      }
+      if (btnQuickSatMinus) {
+        btnQuickSatMinus.addEventListener('click', () => {
+          if (quickSatSlider) {
+            quickSatSlider.value = Math.max(0, parseInt(quickSatSlider.value, 10) - 10);
+            onQuickHsvSliderChange();
+          }
+        });
+      }
+      if (btnQuickSatPlus) {
+        btnQuickSatPlus.addEventListener('click', () => {
+          if (quickSatSlider) {
+            quickSatSlider.value = Math.min(100, parseInt(quickSatSlider.value, 10) + 10);
+            onQuickHsvSliderChange();
+          }
+        });
+      }
+
+      if (btnQuickHsvMore) {
+        btnQuickHsvMore.addEventListener('click', () => {
+          closeQuickHsvPopup();
+          openOverlay(overlayPalette, btnBottomPalette);
+          switchPaletteTab('custom-hsv');
+        });
+      }
+
+      // --- Palette Overlay Sub-Tabs & Custom HSV Sub-Menu ---
+      function switchPaletteTab(tabId) {
+        [tabPaletteSwatches, tabPaletteCustomHsv, tabPaletteGradients].forEach(t => {
+          if (t) t.classList.remove('active');
+        });
+        [panelPaletteSwatches, panelPaletteCustomHsv, panelPaletteGradients].forEach(p => {
+          if (p) p.classList.add('hidden');
+        });
+
+        if (tabId === 'swatches') {
+          if (tabPaletteSwatches) tabPaletteSwatches.classList.add('active');
+          if (panelPaletteSwatches) panelPaletteSwatches.classList.remove('hidden');
+        } else if (tabId === 'custom-hsv') {
+          if (tabPaletteCustomHsv) tabPaletteCustomHsv.classList.add('active');
+          if (panelPaletteCustomHsv) panelPaletteCustomHsv.classList.remove('hidden');
+          initCustomHsvFromChosen();
+        } else if (tabId === 'gradients') {
+          if (tabPaletteGradients) tabPaletteGradients.classList.add('active');
+          if (panelPaletteGradients) panelPaletteGradients.classList.remove('hidden');
+          updateGradientUI();
+        }
+      }
+
+      if (tabPaletteSwatches) tabPaletteSwatches.addEventListener('click', () => switchPaletteTab('swatches'));
+      if (tabPaletteCustomHsv) tabPaletteCustomHsv.addEventListener('click', () => switchPaletteTab('custom-hsv'));
+      if (tabPaletteGradients) tabPaletteGradients.addEventListener('click', () => switchPaletteTab('gradients'));
+      if (btnOpenCustomHsvTab) btnOpenCustomHsvTab.addEventListener('click', () => switchPaletteTab('custom-hsv'));
+
+      function initCustomHsvFromChosen() {
+        const targetColor = state.activePaletteTarget === 'fg' ? state.fgColor : state.bgColor;
+        setCustomHsvStartingColor(targetColor);
+      }
+
+      function setCustomHsvStartingColor(hex) {
+        state.customStartingHex = hex;
+        const hsv = hexToHsv(hex);
+        state.customHsv = hsv;
+
+        if (customStartSwatch) customStartSwatch.style.backgroundColor = hex;
+        if (customStartHex) customStartHex.textContent = hex;
+        if (customCompareOrigSwatch) customCompareOrigSwatch.style.backgroundColor = hex;
+        if (customCompareOrigHex) customCompareOrigHex.textContent = hex;
+        if (customChosenColorDesc) {
+          customChosenColorDesc.textContent = `Chosen: ${hex}`;
+        }
+
+        if (inputCustomHue) inputCustomHue.value = hsv.h;
+        if (inputCustomSat) inputCustomSat.value = hsv.s;
+        if (inputCustomVal) inputCustomVal.value = hsv.v;
+
+        updateCustomHsvDisplay();
+      }
+
+      function updateCustomHsvDisplay() {
+        const h = parseInt(inputCustomHue.value, 10);
+        const s = parseInt(inputCustomSat.value, 10);
+        const v = parseInt(inputCustomVal.value, 10);
+        state.customHsv = { h, s, v };
+
+        const currentHex = hsvToHex(h, s, v);
+
+        if (customHueVal) customHueVal.textContent = `${h}°`;
+        if (customSatVal) customSatVal.textContent = `${s}%`;
+        if (customValVal) customValVal.textContent = `${v}%`;
+
+        if (customCompareNewSwatch) customCompareNewSwatch.style.backgroundColor = currentHex;
+        if (customCompareNewHex) customCompareNewHex.textContent = currentHex;
+
+        if (inputCustomSat) {
+          const zeroSatHex = hsvToHex(h, 0, v);
+          const fullSatHex = hsvToHex(h, 100, v);
+          inputCustomSat.style.background = `linear-gradient(to right, ${zeroSatHex}, ${fullSatHex})`;
+        }
+        if (inputCustomVal) {
+          const zeroValHex = hsvToHex(h, s, 0);
+          const fullValHex = hsvToHex(h, s, 100);
+          inputCustomVal.style.background = `linear-gradient(to right, ${zeroValHex}, ${fullValHex})`;
+        }
+
+        renderTonalRamp(h, s, v);
+      }
+
+      function renderTonalRamp(h, s, v) {
+        if (!customTonalRamp) return;
+        customTonalRamp.innerHTML = '';
+
+        const offsets = [-40, -20, 0, 20, 40];
+        offsets.forEach(off => {
+          const stepV = Math.max(0, Math.min(100, v + off));
+          const stepHex = hsvToHex(h, s, stepV);
+
+          const chip = document.createElement('button');
+          chip.type = 'button';
+          chip.className = 'w-full h-8 bevel-sunken p-0 cursor-pointer hover:scale-105 active:scale-95 transition-transform flex flex-col items-center justify-center relative';
+          chip.style.backgroundColor = stepHex;
+          chip.title = `Tonal Step: ${stepHex} (Value: ${stepV}%) - Tap to select`;
+
+          if (off === 0) {
+            chip.classList.add('ring-2', 'ring-blue-600', 'z-10');
+          }
+
+          chip.addEventListener('click', (e) => {
+            e.stopPropagation();
+            if (inputCustomVal) inputCustomVal.value = stepV;
+            updateCustomHsvDisplay();
+          });
+
+          customTonalRamp.appendChild(chip);
+        });
+      }
+
+      function adjustSlidersToChosenColor() {
+        const targetColor = state.activePaletteTarget === 'fg' ? state.fgColor : state.bgColor;
+        setCustomHsvStartingColor(targetColor);
+        statusHint.textContent = `Adjusted sliders to match chosen color ${targetColor}!`;
+      }
+
+      if (customChosenColorWindow) {
+        customChosenColorWindow.addEventListener('click', adjustSlidersToChosenColor);
+      }
+      if (btnCustomSyncChosen) {
+        btnCustomSyncChosen.addEventListener('click', adjustSlidersToChosenColor);
+      }
+      if (btnCustomStartColor) {
+        btnCustomStartColor.addEventListener('click', adjustSlidersToChosenColor);
+      }
+
+      // Chips listeners
+      const chipPresetIds = [
+        'btn-chip-preset-0',
+        'btn-chip-preset-1',
+        'btn-chip-preset-2',
+        'btn-chip-preset-3',
+        'btn-chip-preset-4'
+      ];
+      chipPresetIds.forEach((id, idx) => {
+        const btn = document.getElementById(id);
+        if (btn) {
+          btn.addEventListener('click', () => {
+            setCustomHsvStartingColor(state.presetColors[idx]);
+          });
+        }
+      });
+      const btnChipBg = document.getElementById('btn-chip-bg');
+      if (btnChipBg) {
+        btnChipBg.addEventListener('click', () => {
+          setCustomHsvStartingColor(state.bgColor);
+        });
+      }
+
+      if (inputCustomHue) inputCustomHue.addEventListener('input', updateCustomHsvDisplay);
+      if (inputCustomSat) inputCustomSat.addEventListener('input', updateCustomHsvDisplay);
+      if (inputCustomVal) inputCustomVal.addEventListener('input', updateCustomHsvDisplay);
+
+      if (btnCustomValMinus10) {
+        btnCustomValMinus10.addEventListener('click', () => {
+          if (inputCustomVal) {
+            inputCustomVal.value = Math.max(0, parseInt(inputCustomVal.value, 10) - 10);
+            updateCustomHsvDisplay();
+          }
+        });
+      }
+      if (btnCustomValPlus10) {
+        btnCustomValPlus10.addEventListener('click', () => {
+          if (inputCustomVal) {
+            inputCustomVal.value = Math.min(100, parseInt(inputCustomVal.value, 10) + 10);
+            updateCustomHsvDisplay();
+          }
+        });
+      }
+      if (btnCustomSatMinus10) {
+        btnCustomSatMinus10.addEventListener('click', () => {
+          if (inputCustomSat) {
+            inputCustomSat.value = Math.max(0, parseInt(inputCustomSat.value, 10) - 10);
+            updateCustomHsvDisplay();
+          }
+        });
+      }
+      if (btnCustomSatPlus10) {
+        btnCustomSatPlus10.addEventListener('click', () => {
+          if (inputCustomSat) {
+            inputCustomSat.value = Math.min(100, parseInt(inputCustomSat.value, 10) + 10);
+            updateCustomHsvDisplay();
+          }
+        });
+      }
+      if (btnCustomValMinus5) {
+        btnCustomValMinus5.addEventListener('click', () => {
+          if (inputCustomVal) {
+            inputCustomVal.value = Math.max(0, parseInt(inputCustomVal.value, 10) - 5);
+            updateCustomHsvDisplay();
+          }
+        });
+      }
+      if (btnCustomValPlus5) {
+        btnCustomValPlus5.addEventListener('click', () => {
+          if (inputCustomVal) {
+            inputCustomVal.value = Math.min(100, parseInt(inputCustomVal.value, 10) + 5);
+            updateCustomHsvDisplay();
+          }
+        });
+      }
+
+      if (btnCustomApplyFg) {
+        btnCustomApplyFg.addEventListener('click', () => {
+          const hex = hsvToHex(state.customHsv.h, state.customHsv.s, state.customHsv.v);
+          applyNewForegroundColor(hex);
+          closeAllOverlays();
+          statusHint.textContent = `Applied custom color ${hex} to Foreground.`;
+        });
+      }
+
+      if (btnCustomApplyBg) {
+        btnCustomApplyBg.addEventListener('click', () => {
+          const hex = hsvToHex(state.customHsv.h, state.customHsv.s, state.customHsv.v);
+          state.bgColor = hex;
+          updateColorDisplay();
+          closeAllOverlays();
+          statusHint.textContent = `Applied custom color ${hex} to Background.`;
+        });
+      }
+
+      if (btnCustomSetGradEnd) {
+        btnCustomSetGradEnd.addEventListener('click', () => {
+          const hex = hsvToHex(state.customHsv.h, state.customHsv.s, state.customHsv.v);
+          state.gradientColor2 = hex;
+          state.gradientColor1 = state.fgColor;
+          state.gradientEnabled = true;
+          updateGradientUI();
+          switchPaletteTab('gradients');
+          statusHint.textContent = `Gradient configured: ${state.gradientColor1} ➜ ${state.gradientColor2}!`;
+        });
+      }
+
+      if (btnCustomSavePreset) {
+        btnCustomSavePreset.addEventListener('click', () => {
+          const hex = hsvToHex(state.customHsv.h, state.customHsv.s, state.customHsv.v);
+          const targetSlot = parseInt(selectCustomPresetTarget.value, 10);
+          if (targetSlot >= 0 && targetSlot < state.presetColors.length) {
+            state.presetColors[targetSlot] = hex;
+            updateQuickColorBar();
+            statusHint.textContent = `Saved ${hex} to Preset ${targetSlot + 1}.`;
+          }
+        });
+      }
+
+      // --- Tool Gradients Settings Logic ---
+      function updateGradientUI() {
+        if (!bottomGradientLabel) return;
+        const isEnabled = state.gradientEnabled;
+
+        if (isEnabled) {
+          bottomGradientLabel.textContent = 'Gradient: ON';
+          if (btnBottomGradient) {
+            btnBottomGradient.classList.add('bg-blue-100', 'text-blue-950', 'border-blue-600', 'gradient-active-glow');
+            btnBottomGradient.classList.remove('bg-[#c0c0c0]');
+          }
+        } else {
+          bottomGradientLabel.textContent = 'Gradient: OFF';
+          if (btnBottomGradient) {
+            btnBottomGradient.classList.remove('bg-blue-100', 'text-blue-950', 'border-blue-600', 'gradient-active-glow');
+            btnBottomGradient.classList.add('bg-[#c0c0c0]');
+          }
+        }
+
+        if (gradEnableCheckbox) gradEnableCheckbox.checked = isEnabled;
+
+        if (gradSwatch1) gradSwatch1.style.backgroundColor = state.gradientColor1;
+        if (gradHex1) gradHex1.textContent = state.gradientColor1;
+        if (gradSwatch2) gradSwatch2.style.backgroundColor = state.gradientColor2;
+        if (gradHex2) gradHex2.textContent = state.gradientColor2;
+
+        if (gradPreviewStrip) {
+          const c1 = state.gradientColor1;
+          const c2 = state.gradientColor2;
+          let dirCss = 'to right';
+          if (state.gradientType === 'vertical') dirCss = 'to bottom';
+
+          if (state.gradientType === 'radial') {
+            gradPreviewStrip.style.background = `radial-gradient(circle, ${c1} 0%, ${c2} 100%)`;
+          } else {
+            gradPreviewStrip.style.background = `linear-gradient(${dirCss}, ${c1} 0%, ${c2} 100%)`;
+          }
+          const ditherTxt = state.gradientDither === 'bayer' ? 'Bayer Dither' : state.gradientDither === 'checker' ? 'Checker Dither' : 'Smooth';
+          gradPreviewStrip.textContent = `${getGradientTypeLabel(state.gradientType)} • ${ditherTxt}`;
+        }
+
+        const dirBtns = [
+          { el: btnGradDirDrag, type: 'linear-drag' },
+          { el: btnGradDirH, type: 'horizontal' },
+          { el: btnGradDirV, type: 'vertical' },
+          { el: btnGradDirRad, type: 'radial' }
+        ];
+        dirBtns.forEach(d => {
+          if (!d.el) return;
+          if (state.gradientType === d.type) {
+            d.el.className = 'bevel-raised py-1.5 px-1 bg-blue-100 text-blue-900 border border-blue-500 active:bevel-sunken font-bold text-[10px]';
+          } else {
+            d.el.className = 'bevel-raised py-1.5 px-1 bg-gray-100 text-gray-800 hover:bg-white active:bevel-sunken font-bold text-[10px]';
+          }
+        });
+
+        const ditherBtns = [
+          { el: btnGradDitherNone, mode: 'none' },
+          { el: btnGradDitherBayer, mode: 'bayer' },
+          { el: btnGradDitherChecker, mode: 'checker' }
+        ];
+        ditherBtns.forEach(d => {
+          if (!d.el) return;
+          if (state.gradientDither === d.mode) {
+            d.el.className = 'bevel-raised py-1.5 px-1 bg-blue-100 text-blue-900 border border-blue-500 active:bevel-sunken font-bold text-[10px]';
+          } else {
+            d.el.className = 'bevel-raised py-1.5 px-1 bg-gray-100 text-gray-800 hover:bg-white active:bevel-sunken font-bold text-[10px]';
+          }
+        });
+      }
+
+      function getGradientTypeLabel(type) {
+        if (type === 'horizontal') return 'Horizontal';
+        if (type === 'vertical') return 'Vertical';
+        if (type === 'radial') return 'Radial';
+        return 'Along Drag';
+      }
+
+      if (btnBottomGradient) {
+        btnBottomGradient.addEventListener('click', (e) => {
+          e.stopPropagation();
+          state.gradientEnabled = !state.gradientEnabled;
+          if (state.gradientEnabled) {
+            if (!state.gradientColor1) state.gradientColor1 = state.fgColor;
+            if (!state.gradientColor2) state.gradientColor2 = state.bgColor;
+          }
+          updateGradientUI();
+          statusHint.textContent = state.gradientEnabled
+            ? `Tool Gradients enabled (${getGradientTypeLabel(state.gradientType)}). Shapes and vectors will draw with gradient!`
+            : 'Tool Gradients disabled. Drawing with solid colors.';
+        });
+      }
+
+      if (gradEnableCheckbox) {
+        gradEnableCheckbox.addEventListener('change', (e) => {
+          state.gradientEnabled = e.target.checked;
+          updateGradientUI();
+        });
+      }
+
+      if (btnGradSwapColors) {
+        btnGradSwapColors.addEventListener('click', () => {
+          const tmp = state.gradientColor1;
+          state.gradientColor1 = state.gradientColor2;
+          state.gradientColor2 = tmp;
+          updateGradientUI();
+        });
+      }
+
+      if (btnGradSetFg) {
+        btnGradSetFg.addEventListener('click', () => {
+          state.gradientColor1 = state.fgColor;
+          updateGradientUI();
+        });
+      }
+
+      if (btnGradSetBg) {
+        btnGradSetBg.addEventListener('click', () => {
+          state.gradientColor2 = state.bgColor;
+          updateGradientUI();
+        });
+      }
+
+      if (btnGradPresetFgbg) {
+        btnGradPresetFgbg.addEventListener('click', () => {
+          state.gradientColor1 = state.fgColor;
+          state.gradientColor2 = state.bgColor;
+          updateGradientUI();
+        });
+      }
+
+      if (btnGradDirDrag) btnGradDirDrag.addEventListener('click', () => { state.gradientType = 'linear-drag'; updateGradientUI(); });
+      if (btnGradDirH) btnGradDirH.addEventListener('click', () => { state.gradientType = 'horizontal'; updateGradientUI(); });
+      if (btnGradDirV) btnGradDirV.addEventListener('click', () => { state.gradientType = 'vertical'; updateGradientUI(); });
+      if (btnGradDirRad) btnGradDirRad.addEventListener('click', () => { state.gradientType = 'radial'; updateGradientUI(); });
+
+      if (btnGradDitherNone) btnGradDitherNone.addEventListener('click', () => { state.gradientDither = 'none'; updateGradientUI(); });
+      if (btnGradDitherBayer) btnGradDitherBayer.addEventListener('click', () => { state.gradientDither = 'bayer'; updateGradientUI(); });
+      if (btnGradDitherChecker) btnGradDitherChecker.addEventListener('click', () => { state.gradientDither = 'checker'; updateGradientUI(); });
+
+      if (btnDoneGradientOverlay) {
+        btnDoneGradientOverlay.addEventListener('click', () => {
+          state.gradientEnabled = true;
+          updateGradientUI();
+          closeAllOverlays();
+          statusHint.textContent = `Tool Gradients active (${getGradientTypeLabel(state.gradientType)}). Draw any Vector, Rect, Circle, or Bevel!`;
+        });
+      }
+
+      
+      // --- Gradient Color Picker Menu Logic (Direct tap on C1 or C2) ---
+      function initGradPickerPalette() {
+        if (!gradPickerPaletteGrid) return;
+        gradPickerPaletteGrid.innerHTML = '';
+        classicColors.forEach(hex => {
+          const swatch = document.createElement('button');
+          swatch.type = 'button';
+          swatch.className = 'w-full h-8 bevel-sunken cursor-pointer hover:scale-105 active:scale-95 transition-transform flex items-center justify-center';
+          swatch.style.backgroundColor = hex;
+          swatch.title = `Color: ${hex} - Tap to select`;
+          swatch.addEventListener('click', (e) => {
+            e.stopPropagation();
+            setGradPickerColor(hex);
+          });
+          gradPickerPaletteGrid.appendChild(swatch);
+        });
+      }
+
+      function openGradColorPicker(targetNum) {
+        currentGradPickTarget = targetNum;
+        const initialHex = targetNum === 1 ? state.gradientColor1 : state.gradientColor2;
+        gradPickerCurrentHex = initialHex;
+
+        if (gradPickerModalTitle) {
+          gradPickerModalTitle.textContent = targetNum === 1
+            ? 'Pick Gradient Start Color (C1)'
+            : 'Pick Gradient End Color (C2)';
+        }
+        if (gradPickerTargetLabel) {
+          gradPickerTargetLabel.textContent = targetNum === 1
+            ? 'Editing Start Color (C1)'
+            : 'Editing End Color (C2)';
+        }
+
+        // Update preset chip backgrounds
+        if (btnGradChipP0) btnGradChipP0.style.backgroundColor = state.presetColors[0];
+        if (btnGradChipP1) btnGradChipP1.style.backgroundColor = state.presetColors[1];
+        if (btnGradChipP2) btnGradChipP2.style.backgroundColor = state.presetColors[2];
+        if (btnGradChipP3) btnGradChipP3.style.backgroundColor = state.presetColors[3];
+        if (btnGradChipP4) btnGradChipP4.style.backgroundColor = state.presetColors[4];
+        if (btnGradChipFg) btnGradChipFg.style.backgroundColor = state.fgColor;
+        if (btnGradChipBg) btnGradChipBg.style.backgroundColor = state.bgColor;
+
+        initGradPickerPalette();
+        setGradPickerColor(initialHex);
+
+        if (modalGradColorPicker) modalGradColorPicker.classList.remove('hidden');
+      }
+
+      function closeGradColorPicker() {
+        if (modalGradColorPicker) modalGradColorPicker.classList.add('hidden');
+      }
+
+      function setGradPickerColor(hex) {
+        gradPickerCurrentHex = hex;
+        const hsv = hexToHsv(hex);
+
+        if (gradPickerPreviewSwatch) gradPickerPreviewSwatch.style.backgroundColor = hex;
+        if (gradPickerHexVal) gradPickerHexVal.textContent = hex;
+        if (gradPickerNative) gradPickerNative.value = hex;
+
+        if (gradPickerHue) gradPickerHue.value = hsv.h;
+        if (gradPickerSat) gradPickerSat.value = hsv.s;
+        if (gradPickerVal) gradPickerVal.value = hsv.v;
+
+        if (gradPickerHueVal) gradPickerHueVal.textContent = `${hsv.h}°`;
+        if (gradPickerSatVal) gradPickerSatVal.textContent = `${hsv.s}%`;
+        if (gradPickerValVal) gradPickerValVal.textContent = `${hsv.v}%`;
+
+        updateGradPickerTracks(hsv.h, hsv.s, hsv.v);
+
+        // Live preview on gradient strip as user picks/slides!
+        if (currentGradPickTarget === 1) {
+          state.gradientColor1 = hex;
+        } else {
+          state.gradientColor2 = hex;
+        }
+        updateGradientUI();
+      }
+
+      function updateGradPickerTracks(h, s, v) {
+        if (gradPickerSat) {
+          const s0 = hsvToHex(h, 0, v);
+          const s100 = hsvToHex(h, 100, v);
+          gradPickerSat.style.background = `linear-gradient(to right, ${s0}, ${s100})`;
+        }
+        if (gradPickerVal) {
+          const v0 = hsvToHex(h, s, 0);
+          const v100 = hsvToHex(h, s, 100);
+          gradPickerVal.style.background = `linear-gradient(to right, ${v0}, ${v100})`;
+        }
+      }
+
+      function onGradPickerSliderChange() {
+        const h = parseInt(gradPickerHue.value, 10);
+        const s = parseInt(gradPickerSat.value, 10);
+        const v = parseInt(gradPickerVal.value, 10);
+
+        if (gradPickerHueVal) gradPickerHueVal.textContent = `${h}°`;
+        if (gradPickerSatVal) gradPickerSatVal.textContent = `${s}%`;
+        if (gradPickerValVal) gradPickerValVal.textContent = `${v}%`;
+
+        const newHex = hsvToHex(h, s, v);
+        gradPickerCurrentHex = newHex;
+
+        if (gradPickerPreviewSwatch) gradPickerPreviewSwatch.style.backgroundColor = newHex;
+        if (gradPickerHexVal) gradPickerHexVal.textContent = newHex;
+        if (gradPickerNative) gradPickerNative.value = newHex;
+
+        updateGradPickerTracks(h, s, v);
+
+        // Live update gradient color
+        if (currentGradPickTarget === 1) {
+          state.gradientColor1 = newHex;
+        } else {
+          state.gradientColor2 = newHex;
+        }
+        updateGradientUI();
+      }
+
+      if (btnGradColor1) {
+        btnGradColor1.addEventListener('click', (e) => {
+          e.stopPropagation();
+          openGradColorPicker(1);
+        });
+      }
+
+      if (btnGradColor2) {
+        btnGradColor2.addEventListener('click', (e) => {
+          e.stopPropagation();
+          openGradColorPicker(2);
+        });
+      }
+
+      if (btnCloseGradPicker) btnCloseGradPicker.addEventListener('click', closeGradColorPicker);
+      if (btnCancelGradPicker) btnCancelGradPicker.addEventListener('click', closeGradColorPicker);
+
+      if (btnApplyGradPicker) {
+        btnApplyGradPicker.addEventListener('click', () => {
+          if (currentGradPickTarget === 1) {
+            state.gradientColor1 = gradPickerCurrentHex;
+          } else {
+            state.gradientColor2 = gradPickerCurrentHex;
+          }
+          updateGradientUI();
+          closeGradColorPicker();
+          statusHint.textContent = `Gradient ${currentGradPickTarget === 1 ? 'Start' : 'End'} color set to ${gradPickerCurrentHex}!`;
+        });
+      }
+
+      if (gradPickerHue) gradPickerHue.addEventListener('input', onGradPickerSliderChange);
+      if (gradPickerSat) gradPickerSat.addEventListener('input', onGradPickerSliderChange);
+      if (gradPickerVal) gradPickerVal.addEventListener('input', onGradPickerSliderChange);
+
+      if (gradPickerNative) {
+        gradPickerNative.addEventListener('input', (e) => {
+          setGradPickerColor(e.target.value);
+        });
+      }
+
+      if (btnGradPickerValMinus) {
+        btnGradPickerValMinus.addEventListener('click', () => {
+          if (gradPickerVal) {
+            gradPickerVal.value = Math.max(0, parseInt(gradPickerVal.value, 10) - 10);
+            onGradPickerSliderChange();
+          }
+        });
+      }
+      if (btnGradPickerValPlus) {
+        btnGradPickerValPlus.addEventListener('click', () => {
+          if (gradPickerVal) {
+            gradPickerVal.value = Math.min(100, parseInt(gradPickerVal.value, 10) + 10);
+            onGradPickerSliderChange();
+          }
+        });
+      }
+      if (btnGradPickerSatMinus) {
+        btnGradPickerSatMinus.addEventListener('click', () => {
+          if (gradPickerSat) {
+            gradPickerSat.value = Math.max(0, parseInt(gradPickerSat.value, 10) - 10);
+            onGradPickerSliderChange();
+          }
+        });
+      }
+      if (btnGradPickerSatPlus) {
+        btnGradPickerSatPlus.addEventListener('click', () => {
+          if (gradPickerSat) {
+            gradPickerSat.value = Math.min(100, parseInt(gradPickerSat.value, 10) + 10);
+            onGradPickerSliderChange();
+          }
+        });
+      }
+
+      // Preset chip listeners for gradient color picker
+      if (btnGradChipP0) btnGradChipP0.addEventListener('click', () => setGradPickerColor(state.presetColors[0]));
+      if (btnGradChipP1) btnGradChipP1.addEventListener('click', () => setGradPickerColor(state.presetColors[1]));
+      if (btnGradChipP2) btnGradChipP2.addEventListener('click', () => setGradPickerColor(state.presetColors[2]));
+      if (btnGradChipP3) btnGradChipP3.addEventListener('click', () => setGradPickerColor(state.presetColors[3]));
+      if (btnGradChipP4) btnGradChipP4.addEventListener('click', () => setGradPickerColor(state.presetColors[4]));
+      if (btnGradChipFg) btnGradChipFg.addEventListener('click', () => setGradPickerColor(state.fgColor));
+      if (btnGradChipBg) btnGradChipBg.addEventListener('click', () => setGradPickerColor(state.bgColor));
+
+      
+      // --- Project Gallery Storage & Carousel Engine ---
+      const STORAGE_KEY_PROJECTS = 'bitsmithery_saved_projects_v1';
+
+      function createProjectThumbnail(scale = 1) {
+        const thumbCanvas = document.createElement('canvas');
+        thumbCanvas.width = state.width;
+        thumbCanvas.height = state.height;
+        const tctx = thumbCanvas.getContext('2d');
+        tctx.imageSmoothingEnabled = false;
+        tctx.drawImage(paintCanvas, 0, 0);
+        return thumbCanvas.toDataURL('image/png');
+      }
+
+      function loadSavedProjectsFromStorage() {
+        try {
+          const raw = localStorage.getItem(STORAGE_KEY_PROJECTS);
+          if (raw) {
+            const parsed = JSON.parse(raw);
+            if (Array.isArray(parsed) && parsed.length > 0) {
+              state.savedProjects = parsed;
+              return;
+            }
+          }
+        } catch (e) {
+          console.warn('Storage unavailable or corrupted:', e);
+        }
+
+        // Initialize default demo project using initial canvas
+        initStarterDemoProjects();
+      }
+
+      function saveProjectsToStorage() {
+        try {
+          localStorage.setItem(STORAGE_KEY_PROJECTS, JSON.stringify(state.savedProjects));
+        } catch (e) {
+          console.warn('Failed to write to localStorage:', e);
+        }
+      }
+
+      function initStarterDemoProjects() {
+        const defaultThumb = createProjectThumbnail();
+        const demoProject = {
+          id: 'proj_starter_forge',
+          name: 'Knight\'s Forge Anvil',
+          width: state.width,
+          height: state.height,
+          createdAt: Date.now() - 3600000,
+          updatedAt: Date.now() - 3600000,
+          thumbnail: defaultThumb,
+          activeLayerIndex: state.activeLayerIndex,
+          layers: state.layers.map(l => ({
+            id: l.id,
+            name: l.name,
+            visible: l.visible,
+            opacity: l.opacity,
+            dataUrl: l.canvas.toDataURL('image/png')
+          }))
+        };
+
+        // Create a second colorful starter demo: Magic Potion (32x32)
+        const pCanvas = document.createElement('canvas');
+        pCanvas.width = 32;
+        pCanvas.height = 32;
+        const pctx = pCanvas.getContext('2d');
+        pctx.imageSmoothingEnabled = false;
+        pctx.fillStyle = '#ffffff';
+        pctx.fillRect(0, 0, 32, 32);
+        // Draw cute retro potion sprite
+        pctx.fillStyle = '#804000';
+        pctx.fillRect(13, 4, 6, 3); // Cork
+        pctx.fillStyle = '#000000';
+        pctx.fillRect(12, 7, 8, 2); // Neck rim
+        pctx.fillStyle = '#00ffff';
+        pctx.fillRect(13, 9, 6, 4); // Glass neck
+        pctx.fillStyle = '#000000';
+        pctx.fillRect(8, 13, 16, 15); // Bottle outline
+        // Gradient liquid inside
+        for (let py = 15; py < 27; py++) {
+          const t = (py - 15) / 12;
+          pctx.fillStyle = interpolateRgbToHex('#9333ea', '#ec4899', t);
+          pctx.fillRect(9, py, 14, 1);
+        }
+        // Glass highlights
+        pctx.fillStyle = '#ffffff';
+        pctx.fillRect(10, 16, 2, 8);
+        pctx.fillRect(13, 18, 2, 2);
+
+        const potionProject = {
+          id: 'proj_starter_potion',
+          name: 'Mystic Elixir Potion',
+          width: 32,
+          height: 32,
+          createdAt: Date.now() - 7200000,
+          updatedAt: Date.now() - 7200000,
+          thumbnail: pCanvas.toDataURL('image/png'),
+          activeLayerIndex: 0,
+          layers: [{
+            id: 1,
+            name: 'Potion Sprite',
+            visible: true,
+            opacity: 1.0,
+            dataUrl: pCanvas.toDataURL('image/png')
+          }]
+        };
+
+        state.savedProjects = [demoProject, potionProject];
+        saveProjectsToStorage();
+      }
+
+      function interpolateRgbToHex(c1, c2, t) {
+        const rgb1 = hexToRgb(c1);
+        const rgb2 = hexToRgb(c2);
+        const r = Math.round(rgb1.r + (rgb2.r - rgb1.r) * t);
+        const g = Math.round(rgb1.g + (rgb2.g - rgb1.g) * t);
+        const b = Math.round(rgb1.b + (rgb2.b - rgb1.b) * t);
+        return rgbToHex(r, g, b);
+      }
+
+      function openSaveProjectModal() {
+        closeAllOverlays();
+        const currentThumb = createProjectThumbnail();
+        if (saveProjectPreviewImg) saveProjectPreviewImg.src = currentThumb;
+        if (saveProjectMetaInfo) {
+          saveProjectMetaInfo.textContent = `${state.width} x ${state.height} px • ${state.layers.length} Layer${state.layers.length > 1 ? 's' : ''}`;
+        }
+        if (inputSaveProjectName) {
+          inputSaveProjectName.value = state.currentProjectName || 'Forge Artwork';
+          inputSaveProjectName.focus();
+        }
+        if (modalSaveProject) modalSaveProject.classList.remove('hidden');
+      }
+
+      function closeSaveProjectModal() {
+        if (modalSaveProject) modalSaveProject.classList.add('hidden');
+      }
+
+      function saveCurrentProject(customName) {
+        const name = (customName || inputSaveProjectName.value || 'Untitled Project').trim();
+        state.currentProjectName = name;
+        const thumb = createProjectThumbnail();
+
+        const newProj = {
+          id: 'proj_' + Date.now() + '_' + Math.random().toString(36).substr(2, 5),
+          name: name,
+          width: state.width,
+          height: state.height,
+          createdAt: Date.now(),
+          updatedAt: Date.now(),
+          thumbnail: thumb,
+          activeLayerIndex: state.activeLayerIndex,
+          layers: state.layers.map(l => ({
+            id: l.id,
+            name: l.name,
+            visible: l.visible,
+            opacity: l.opacity,
+            dataUrl: l.canvas.toDataURL('image/png')
+          }))
+        };
+
+        state.savedProjects.unshift(newProj);
+        state.galleryActiveIndex = 0;
+        saveProjectsToStorage();
+        closeSaveProjectModal();
+
+        // Update window title
+        const winTitle = document.getElementById('window-title');
+        if (winTitle) winTitle.textContent = `${name} - Bit Smithery`;
+
+        statusHint.textContent = `Saved project "${name}" to in-app Gallery!`;
+        openProjectGalleryModal(0);
+      }
+
+      function openProjectGalleryModal(focusIndex = 0) {
+        closeAllOverlays();
+        loadSavedProjectsFromStorage();
+
+        if (state.savedProjects.length === 0) {
+          initStarterDemoProjects();
+        }
+
+        state.galleryActiveIndex = Math.max(0, Math.min(state.savedProjects.length - 1, focusIndex));
+        renderGalleryCarousel();
+        if (modalProjectGallery) modalProjectGallery.classList.remove('hidden');
+      }
+
+      function closeProjectGalleryModal() {
+        if (modalProjectGallery) modalProjectGallery.classList.add('hidden');
+      }
+
+      function renderGalleryCarousel() {
+        if (!galleryCarouselTrack) return;
+        galleryCarouselTrack.innerHTML = '';
+
+        const projects = state.savedProjects;
+        const total = projects.length;
+
+        if (total === 0) {
+          galleryCarouselTrack.innerHTML = `
+            <div class="text-gray-300 text-center py-12 w-full font-mono text-xs">
+              No saved projects yet. Click "+ Save Current Canvas" to add your first project!
+            </div>
+          `;
+          if (galleryCounterIndicator) galleryCounterIndicator.textContent = '0 Projects';
+          if (galleryActiveTitle) galleryActiveTitle.textContent = 'No Project Selected';
+          if (galleryActiveMeta) galleryActiveMeta.textContent = 'Save your artwork to display here';
+          return;
+        }
+
+        if (state.galleryActiveIndex >= total) state.galleryActiveIndex = total - 1;
+        if (state.galleryActiveIndex < 0) state.galleryActiveIndex = 0;
+
+        projects.forEach((proj, idx) => {
+          const isActive = (idx === state.galleryActiveIndex);
+
+          const card = document.createElement('div');
+          card.className = `project-carousel-item shrink-0 flex flex-col items-center justify-center cursor-pointer transition-all duration-300 ${isActive ? 'scale-105 z-20 opacity-100' : 'scale-90 z-10 opacity-60 hover:opacity-90'}`;
+          card.dataset.index = idx;
+          card.style.scrollSnapAlign = 'center';
+
+          // Outer Beveled Frame with Black Beveled Corners
+          const frameBox = document.createElement('div');
+          frameBox.className = `project-frame-box relative p-2.5 bg-[#141419] transition-shadow ${isActive ? 'ring-2 ring-blue-500 shadow-2xl' : ''}`;
+
+          // The 4 Black Beveled Corners encapsulating the frame
+          const cTL = document.createElement('div'); cTL.className = 'corner-bracket corner-tl';
+          const cTR = document.createElement('div'); cTR.className = 'corner-bracket corner-tr';
+          const cBL = document.createElement('div'); cBL.className = 'corner-bracket corner-bl';
+          const cBR = document.createElement('div'); cBR.className = 'corner-bracket corner-br';
+
+          frameBox.appendChild(cTL);
+          frameBox.appendChild(cTR);
+          frameBox.appendChild(cBL);
+          frameBox.appendChild(cBR);
+
+          // Artwork container (Slowly spins when active!)
+          const artBox = document.createElement('div');
+          artBox.className = `relative w-32 h-32 sm:w-36 sm:h-36 flex items-center justify-center overflow-hidden bg-white/95 border border-black/50 shadow-inner ${isActive ? 'project-spinning-card' : ''}`;
+
+          const img = document.createElement('img');
+          img.src = proj.thumbnail;
+          img.alt = proj.name;
+          img.className = 'pixelated max-w-full max-h-full object-contain pointer-events-none drop-shadow-md';
+
+          artBox.appendChild(img);
+          frameBox.appendChild(artBox);
+          card.appendChild(frameBox);
+
+          // Card Caption
+          const caption = document.createElement('div');
+          caption.className = `font-bold text-xs mt-2 truncate text-center max-w-[150px] font-mono ${isActive ? 'text-yellow-300 drop-shadow' : 'text-gray-300'}`;
+          caption.textContent = proj.name;
+          card.appendChild(caption);
+
+          card.addEventListener('click', (e) => {
+            e.stopPropagation();
+            selectGalleryProject(idx);
+          });
+
+          galleryCarouselTrack.appendChild(card);
+        });
+
+        updateActiveProjectInfo();
+
+        // Smoothly scroll active card to center
+        setTimeout(() => {
+          const activeCard = galleryCarouselTrack.querySelector(`.project-carousel-item[data-index="${state.galleryActiveIndex}"]`);
+          if (activeCard) {
+            activeCard.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+          }
+        }, 30);
+      }
+
+      function selectGalleryProject(idx) {
+        state.galleryActiveIndex = idx;
+        renderGalleryCarousel();
+      }
+
+      function updateActiveProjectInfo() {
+        const total = state.savedProjects.length;
+        if (total === 0) return;
+
+        const cur = state.savedProjects[state.galleryActiveIndex];
+        if (!cur) return;
+
+        if (galleryCounterIndicator) {
+          galleryCounterIndicator.textContent = `Project ${state.galleryActiveIndex + 1} of ${total}`;
+        }
+        if (galleryActiveTitle) {
+          galleryActiveTitle.textContent = cur.name;
+        }
+        if (galleryActiveMeta) {
+          const d = new Date(cur.updatedAt || cur.createdAt);
+          const dateStr = d.toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' });
+          const layerCount = cur.layers ? cur.layers.length : 1;
+          galleryActiveMeta.textContent = `${cur.width} x ${cur.height} px • ${layerCount} Layer${layerCount > 1 ? 's' : ''} • ${dateStr}`;
+        }
+      }
+
+      function loadProjectIntoCanvas(proj) {
+        if (!proj) return;
+        state.currentProjectName = proj.name;
+
+        // Resize canvas to project dimensions
+        state.width = proj.width;
+        state.height = proj.height;
+        paintCanvas.width = state.width;
+        paintCanvas.height = state.height;
+        previewCanvas.width = state.width;
+        previewCanvas.height = state.height;
+        gridCanvas.width = state.width;
+        gridCanvas.height = state.height;
+        paintCtx.imageSmoothingEnabled = false;
+        previewCtx.imageSmoothingEnabled = false;
+
+        // Restore layers from saved project
+        if (proj.layers && proj.layers.length > 0) {
+          let pendingImages = proj.layers.length;
+          const restoredLayers = [];
+
+          proj.layers.forEach((lData, idx) => {
+            const layerCanvas = document.createElement('canvas');
+            layerCanvas.width = state.width;
+            layerCanvas.height = state.height;
+            const lctx = layerCanvas.getContext('2d', { willReadFrequently: true });
+            lctx.imageSmoothingEnabled = false;
+
+            const layerObj = {
+              id: lData.id || (idx + 1),
+              name: lData.name || `Layer ${idx + 1}`,
+              visible: lData.visible !== undefined ? lData.visible : true,
+              opacity: lData.opacity !== undefined ? lData.opacity : 1.0,
+              canvas: layerCanvas,
+              ctx: lctx
+            };
+            restoredLayers[idx] = layerObj;
+
+            const img = new Image();
+            img.onload = () => {
+              lctx.drawImage(img, 0, 0);
+              pendingImages--;
+              if (pendingImages === 0) {
+                state.layers = restoredLayers;
+                state.activeLayerIndex = Math.max(0, Math.min(restoredLayers.length - 1, proj.activeLayerIndex || 0));
+                compositeLayers();
+                renderLayersList();
+                saveHistoryState();
+              }
+            };
+            img.src = lData.dataUrl;
+          });
+        }
+
+        updateCanvasDisplaySize();
+        drawGrid();
+        resetView();
+        closeProjectGalleryModal();
+
+        const winTitle = document.getElementById('window-title');
+        if (winTitle) winTitle.textContent = `${proj.name} - Bit Smithery`;
+
+        statusHint.textContent = `Loaded project "${proj.name}" (${proj.width} x ${proj.height} px).`;
+      }
+
+      function duplicateActiveProject() {
+        const cur = state.savedProjects[state.galleryActiveIndex];
+        if (!cur) return;
+
+        const copyName = `${cur.name} (Copy)`;
+        const newProj = JSON.parse(JSON.stringify(cur));
+        newProj.id = 'proj_' + Date.now() + '_' + Math.random().toString(36).substr(2, 5);
+        newProj.name = copyName;
+        newProj.createdAt = Date.now();
+        newProj.updatedAt = Date.now();
+
+        state.savedProjects.splice(state.galleryActiveIndex + 1, 0, newProj);
+        state.galleryActiveIndex++;
+        saveProjectsToStorage();
+        renderGalleryCarousel();
+        statusHint.textContent = `Duplicated project as "${copyName}".`;
+      }
+
+      function exportActiveProject() {
+        const cur = state.savedProjects[state.galleryActiveIndex];
+        if (!cur) return;
+
+        // Download PNG
+        const link = document.createElement('a');
+        link.download = `${cur.name.toLowerCase().replace(/[^a-z0-9_-]/g, '_')}-${cur.width}x${cur.height}.png`;
+        link.href = cur.thumbnail;
+        link.click();
+        statusHint.textContent = `Exported "${cur.name}" as PNG!`;
+      }
+
+      function openDeleteConfirmModal() {
+        const cur = state.savedProjects[state.galleryActiveIndex];
+        if (!cur) return;
+        state.deletingProjectId = cur.id;
+
+        if (deleteProjectTargetName) deleteProjectTargetName.textContent = `"${cur.name}"`;
+        if (modalConfirmDeleteProject) modalConfirmDeleteProject.classList.remove('hidden');
+      }
+
+      function closeDeleteConfirmModal() {
+        state.deletingProjectId = null;
+        if (modalConfirmDeleteProject) modalConfirmDeleteProject.classList.add('hidden');
+      }
+
+      function executeDeleteProject() {
+        if (!state.deletingProjectId) return;
+        const idx = state.savedProjects.findIndex(p => p.id === state.deletingProjectId);
+        if (idx !== -1) {
+          const removedName = state.savedProjects[idx].name;
+          state.savedProjects.splice(idx, 1);
+          saveProjectsToStorage();
+          if (state.galleryActiveIndex >= state.savedProjects.length) {
+            state.galleryActiveIndex = Math.max(0, state.savedProjects.length - 1);
+          }
+          renderGalleryCarousel();
+          statusHint.textContent = `Deleted project "${removedName}".`;
+        }
+        closeDeleteConfirmModal();
+      }
+
+      // Touch & Navigation Gestures on Carousel Track
+      let trackTouchStartX = 0;
+      let trackTouchStartTime = 0;
+
+      if (galleryCarouselTrack) {
+        galleryCarouselTrack.addEventListener('touchstart', (e) => {
+          if (e.touches.length === 1) {
+            trackTouchStartX = e.touches[0].clientX;
+            trackTouchStartTime = Date.now();
+          }
+        }, { passive: true });
+
+        galleryCarouselTrack.addEventListener('touchend', (e) => {
+          if (e.changedTouches.length === 1) {
+            const touchEndX = e.changedTouches[0].clientX;
+            const diffX = touchEndX - trackTouchStartX;
+            const timeDiff = Date.now() - trackTouchStartTime;
+
+            // Swipe threshold: > 40px within 600ms
+            if (Math.abs(diffX) > 40 && timeDiff < 600) {
+              if (diffX < 0) {
+                // Swipe Left -> Next Project
+                navigateGalleryNext();
+              } else {
+                // Swipe Right -> Prev Project
+                navigateGalleryPrev();
+              }
+            }
+          }
+        }, { passive: true });
+      }
+
+      function navigateGalleryPrev() {
+        if (state.savedProjects.length <= 1) return;
+        state.galleryActiveIndex = (state.galleryActiveIndex - 1 + state.savedProjects.length) % state.savedProjects.length;
+        renderGalleryCarousel();
+      }
+
+      function navigateGalleryNext() {
+        if (state.savedProjects.length <= 1) return;
+        state.galleryActiveIndex = (state.galleryActiveIndex + 1) % state.savedProjects.length;
+        renderGalleryCarousel();
+      }
+
+      // Attach Gallery Action Listeners
+      if (btnQuickGallery) btnQuickGallery.addEventListener('click', () => openProjectGalleryModal(0));
+      if (actionOpenGallery) actionOpenGallery.addEventListener('click', () => openProjectGalleryModal(0));
+      if (actionSaveProject) actionSaveProject.addEventListener('click', openSaveProjectModal);
+
+      if (btnCloseGalleryModal) btnCloseGalleryModal.addEventListener('click', closeProjectGalleryModal);
+      if (btnCloseGalleryBottom) btnCloseGalleryBottom.addEventListener('click', closeProjectGalleryModal);
+      if (btnGallerySaveCurrent) btnGallerySaveCurrent.addEventListener('click', openSaveProjectModal);
+
+      if (btnGalleryPrev) btnGalleryPrev.addEventListener('click', navigateGalleryPrev);
+      if (btnGalleryNext) btnGalleryNext.addEventListener('click', navigateGalleryNext);
+
+      if (btnGalleryLoad) {
+        btnGalleryLoad.addEventListener('click', () => {
+          const cur = state.savedProjects[state.galleryActiveIndex];
+          if (cur) loadProjectIntoCanvas(cur);
+        });
+      }
+      if (btnGalleryDuplicate) btnGalleryDuplicate.addEventListener('click', duplicateActiveProject);
+      if (btnGalleryExport) btnGalleryExport.addEventListener('click', exportActiveProject);
+      if (btnGalleryDelete) btnGalleryDelete.addEventListener('click', openDeleteConfirmModal);
+
+      // Save Project Modal Handlers
+      if (btnCloseSaveProjectModal) btnCloseSaveProjectModal.addEventListener('click', closeSaveProjectModal);
+      if (btnCancelSaveProject) btnCancelSaveProject.addEventListener('click', closeSaveProjectModal);
+      if (btnConfirmSaveProject) btnConfirmSaveProject.addEventListener('click', () => saveCurrentProject());
+
+      // Delete Confirm Handlers
+      if (btnCloseDeleteModal) btnCloseDeleteModal.addEventListener('click', closeDeleteConfirmModal);
+      if (btnCancelDeleteAction) btnCancelDeleteAction.addEventListener('click', closeDeleteConfirmModal);
+      if (btnConfirmDeleteAction) btnConfirmDeleteAction.addEventListener('click', executeDeleteProject);
+
+      // Load saved projects from storage on startup
+      loadSavedProjectsFromStorage();
 
       initPalette();
       updateColorDisplay();
