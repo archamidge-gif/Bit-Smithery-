@@ -2071,6 +2071,7 @@
         // Project Gallery state
         currentProjectName: 'Knight\'s Forge',
         savedProjects: [],
+        projectsInitialized: false,
         galleryActiveIndex: 0,
         deletingProjectId: null,
 
@@ -8107,24 +8108,27 @@
 
       function createProjectThumbnail(scale = 1) {
         const thumbCanvas = document.createElement('canvas');
-        const maxDim = 128;
+        const maxDim = 128 * (scale || 1);
         const aspect = state.width / state.height;
         let tw = maxDim, th = maxDim;
         if (aspect >= 1) {
-          th = Math.round(maxDim / aspect);
+          th = Math.max(1, Math.round(maxDim / aspect));
         } else {
-          tw = Math.round(maxDim * aspect);
+          tw = Math.max(1, Math.round(maxDim * aspect));
         }
         thumbCanvas.width = tw;
         thumbCanvas.height = th;
         const tctx = thumbCanvas.getContext('2d');
         tctx.imageSmoothingEnabled = false;
 
+        // Ensure layers are composited onto paintCanvas
+        compositeLayers();
+
         // Draw white background then downscaled composite artwork
         tctx.fillStyle = '#ffffff';
         tctx.fillRect(0, 0, tw, th);
-        if (state.compositeCanvas) {
-          tctx.drawImage(state.compositeCanvas, 0, 0, tw, th);
+        if (paintCanvas) {
+          tctx.drawImage(paintCanvas, 0, 0, state.width, state.height, 0, 0, tw, th);
         }
         return thumbCanvas.toDataURL('image/png');
       }
@@ -8132,23 +8136,19 @@
       function loadSavedProjectsFromStorage() {
         try {
           let raw = localStorage.getItem(STORAGE_KEY_PROJECTS);
-          if (!raw) {
+          if (raw === null) {
             raw = localStorage.getItem(STORAGE_KEY_PROJECTS_V1);
           }
-          if (raw) {
+          if (raw !== null) {
             const parsed = JSON.parse(raw);
-            if (Array.isArray(parsed) && parsed.length > 0) {
-              const freshForge = createForgeStarterProject();
+            if (Array.isArray(parsed)) {
               state.savedProjects = parsed.map(p => {
-                if (p.id === 'proj_starter_forge') {
-                  return freshForge;
+                if (!p.thumbnail && p.layers && p.layers.length > 0 && p.layers[0].dataUrl) {
+                  p.thumbnail = p.layers[0].dataUrl;
                 }
                 return p;
               });
-              if (!state.savedProjects.some(p => p.id === 'proj_starter_forge')) {
-                state.savedProjects.unshift(freshForge);
-              }
-              saveProjectsToStorage();
+              state.projectsInitialized = true;
               return;
             }
           }
@@ -8156,8 +8156,10 @@
           console.warn('Storage unavailable or corrupted:', e);
         }
 
-        // Initialize default demo project using fresh forge and potion artwork
-        initStarterDemoProjects();
+        // Initialize default demo project using fresh forge and potion artwork only on initial load
+        if (!state.projectsInitialized) {
+          initStarterDemoProjects();
+        }
       }
 
       function saveProjectsToStorage() {
@@ -8218,6 +8220,7 @@
         };
 
         state.savedProjects = [demoProject, potionProject];
+        state.projectsInitialized = true;
         saveProjectsToStorage();
       }
 
@@ -8287,10 +8290,6 @@
       function openProjectGalleryModal(focusIndex = 0) {
         closeAllOverlays();
         loadSavedProjectsFromStorage();
-
-        if (state.savedProjects.length === 0) {
-          initStarterDemoProjects();
-        }
 
         state.galleryActiveIndex = Math.max(0, Math.min(state.savedProjects.length - 1, focusIndex));
         renderGalleryCarousel();
@@ -8458,6 +8457,13 @@
                 compositeLayers();
                 renderLayersList();
                 saveHistoryState();
+
+                // Update project thumbnail if previously missing or blank
+                const freshThumb = createProjectThumbnail();
+                if (proj.thumbnail !== freshThumb) {
+                  proj.thumbnail = freshThumb;
+                  saveProjectsToStorage();
+                }
               }
             };
             img.src = lData.dataUrl;
