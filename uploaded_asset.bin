@@ -147,12 +147,12 @@
       cursor: pointer;
       position: relative;
       touch-action: manipulation;
-      height: 52px !important;
-      min-height: 52px !important;
-      max-height: 52px !important;
+      height: 62px !important;
+      min-height: 62px !important;
+      max-height: 62px !important;
       box-sizing: border-box !important;
       overflow: hidden !important;
-      padding: 4px 2px !important;
+      padding: 3px 2px !important;
     }
 
     .tool-btn:hover {
@@ -581,6 +581,7 @@
 
         <!-- Magic Wand Free-Form SVG Contour (Conforms exactly to selected pixels) -->
         <svg id="magic-svg" class="hidden absolute inset-0 w-full h-full pointer-events-none z-10 overflow-visible">
+          <path id="magic-path-fill" d="" fill="rgba(59, 130, 246, 0.15)" stroke="none"/>
           <path id="magic-path-black" d="" fill="none" stroke="#000000" stroke-width="1.5" class="lasso-ants-path"/>
           <path id="magic-path-white" d="" fill="none" stroke="#ffffff" stroke-width="1.5" stroke-dasharray="4, 4" stroke-dashoffset="4" class="lasso-ants-path"/>
         </svg>
@@ -658,6 +659,21 @@
             ✕ Cancel
           </button>
         </div>
+      </div>
+
+      <!-- Finger / Pointer Magnifier Bubble (Loupe) -->
+      <div id="magnifier-bubble" class="hidden absolute z-40 pointer-events-none select-none rounded-full border-2 border-[#000080] bg-[#808080] shadow-2xl overflow-hidden" style="width: 104px; height: 104px; box-shadow: 0 0 0 2px #ffffff, 0 8px 24px rgba(0,0,0,0.55);">
+        <canvas id="magnifier-canvas" width="104" height="104" class="pixelated block w-full h-full"></canvas>
+        <!-- Polygon Shape Border SVG (used for triangle / pentagon) -->
+        <svg id="magnifier-shape-svg" viewBox="0 0 100 100" preserveAspectRatio="none" class="hidden absolute inset-0 w-full h-full pointer-events-none z-10">
+          <polygon id="magnifier-shape-outer" points="" fill="none" stroke="#ffffff" stroke-width="5" stroke-linejoin="round"/>
+          <polygon id="magnifier-shape-inner" points="" fill="none" stroke="#000080" stroke-width="2.5" stroke-linejoin="round"/>
+        </svg>
+        <!-- Center Pixel Reticle -->
+        <div class="absolute inset-0 flex items-center justify-center pointer-events-none z-10">
+          <div class="w-2.5 h-2.5 border border-black/80 shadow-[0_0_0_1px_rgba(255,255,255,0.85)]"></div>
+        </div>
+        <div id="magnifier-coords" class="absolute top-1.5 left-1/2 -translate-x-1/2 bg-black/80 text-white font-mono text-[9px] px-1.5 py-0.5 rounded leading-tight whitespace-nowrap z-20">0, 0</div>
       </div>
 
       <!-- Floating Move Toolbar (Active during Move Mode) -->
@@ -766,6 +782,10 @@
                 <span>▦ Toggle 1-Pixel Grid Overlay</span>
                 <span id="grid-check-indicator" class="font-bold text-blue-800">✓</span>
               </button>
+              <button id="action-loupe-settings" type="button" class="w-full bevel-raised py-2.5 px-3 text-left font-bold text-sm bg-blue-100 hover:bg-white text-blue-950 active:bevel-sunken flex justify-between items-center">
+                <span>🔎 Loupe / Magnifier Settings...</span>
+                <span id="loupe-menu-status" class="text-xs font-mono font-bold text-blue-900">ON</span>
+              </button>
               <button id="btn-toggle-grid" class="hidden">Grid: ON</button>
               <div class="border-t border-gray-400 my-1"></div>
               <div class="text-xs font-bold text-gray-700">Zoom Presets:</div>
@@ -873,15 +893,15 @@
                 </button>
 
                 <button class="tool-btn py-2" data-tool="fill" title="Splash (Ink Splatter)">
-                  <span class="flex items-center justify-center w-6 h-6 mx-auto">
-                    <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor"><path d="M12 6c-1.5 0-2.5 1.5-3 2.5C7.5 10 5 11 5 13.5c0 3 3 5.5 7 5.5s7-2.5 7-5.5c0-2.5-2.5-3.5-4-5-.5-1-1.5-2.5-3-2.5z"/><circle cx="12" cy="3" r="1.5"/><circle cx="4" cy="9" r="1.2"/><circle cx="20" cy="10" r="1.2"/><circle cx="3.5" cy="16" r="1"/><circle cx="20.5" cy="16" r="1"/><circle cx="8" cy="21" r="1.2"/><circle cx="16" cy="21" r="1.2"/></svg>
+                  <span class="flex items-center justify-center w-8 h-8 mx-auto">
+                    <img src="data:image/png;base64,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" alt="Splash" class="w-8 h-8 object-contain pixelated" />
                   </span>
                   <span class="text-[10px] font-bold mt-0.5">Splash</span>
                 </button>
 
                 <button class="tool-btn py-2" data-tool="picker" title="Sample (Chemical Glass Dropper)">
-                  <span class="flex items-center justify-center w-6 h-6 mx-auto">
-                    <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M14.5 3.5a3 3 0 0 0-4 0l-1 1 5 5 1-1a3 3 0 0 0-1-5z" fill="#475569" stroke="#1e293b"/><line x1="9" y1="5" x2="14" y2="10" stroke="#1e293b" stroke-width="2"/><path d="M8.5 6.5l-4 4c-.5.5-.8 1.2-.8 2l.3 2.5 4.5 4.5 2.5.3c.8 0 1.5-.3 2-.8l4-4-8.5-8.5z" fill="#e0f2fe" stroke="#0284c7"/><circle cx="2.5" cy="21.5" r="1.5" fill="#0284c7"/></svg>
+                  <span class="flex items-center justify-center w-8 h-8 mx-auto">
+                    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAIAAAACACAYAAADDPmHLAAADDUlEQVR4nO3d226rMBRF0Z2q///L9KFJm4CvsG1srznejnSUVPbEJtASMwAAoOjR6HW3G98bFTwnoWTSY4jhJh4Df2Xi9wihsysD7jnxe4TQydmBTk7+tuXbeDyyb00EHdQOcnRmSyY9+kOkYyCEhmoGNzjDVyZ+LxECETTyVfj/mk9+5vVanm9IKw3gwHvyW78uwkoCOMxI60mKvD5lNJALoPvkZ96HCJxVbQG9l2e2g/ZSAXyM/l2TEXhfqnD07fEiBRd1sjja7xFbAYY4+hPvTy1OTn8MxBpctoB3NYcml/fuF1oBhlr+X9gG2mALEEcA4ghAHAGIIwBxBCCOAMQRgLhQAB8X6Dxu9HgI/Bxj/GCTc78UzKzMhS1AXCyAobYBlv92XLaAUW4YoV5qCxhiFeDob6vqHKB3BHdvPQpyARwPv06TEnkfinBWsgJ0j4DJ7+f0x8BWEbDs91UaQPiQdJ6szF8H81GjgVmeD7Dt/g0nMzwhJPRiROBklmcEEUEjMz0ljAgamO05gbH3IISTZnxSKBE4mnnQ2BIczPz7AKHJ5lpBpZkDMCOCy2YPwIwILlkhADMiOG2VAMyI4JQVz5r5mFhhpRXgJTbRrAYBqx8VXCvIWHEFeMd5QcbqAZgRQZJCAGZEEKUSgBkRBCkFYEYEB6pnxFwreFJbAV64VvAkV3yA9LUC1RXgnfR5AQH8ko2AAP5JRkAAn+QiIIAjqQhkznZPkLhWMEvtdw36iGNh5jgebAFpSx3tIQQgjgDEuT8qdnV3nBS03IdYAcQRgDgCEEcA4ghAHAGIIwBxBCCOAMQRgDgCEDfLvYCzl+BXvZ179ZbE37iwAogjAHEEIG6Kc4DSL6NQ+bqZ2i/nSI0LK4A4AhBHAOIIQBwBiCMAcQQgjgDEEYA4AhBHAOIIQNwUN4NGstrtJlYAcQQgjgDEhc4BXL7UufaXFgZ2ddsfelxYAcQRgDgCEEcA4ghAHAGIIwBxBCCOAMQRgDgCEOd5e3usi9y/Rrh9P/S4sAKIIwBxBAAAAACo+QGlOJLll3jubQAAAABJRU5ErkJggg==" alt="Sample" class="w-8 h-8 object-contain pixelated" />
                   </span>
                   <span class="text-[10px] font-bold mt-0.5">Sample</span>
                 </button>
@@ -907,7 +927,9 @@
                 </button>
 
                 <button class="tool-btn py-2" data-tool="spray" title="Airbrush / Spray">
-                  <span class="text-xl">💨</span>
+                  <span class="flex items-center justify-center w-8 h-8 mx-auto">
+                    <img src="data:image/png;base64,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" alt="Spray" class="w-8 h-8 object-contain pixelated" />
+                  </span>
                   <span class="text-[10px] font-bold mt-0.5">Spray</span>
                 </button>
 
@@ -922,13 +944,15 @@
                 </button>
 
                 <button class="tool-btn py-2" data-tool="free-select" title="Cutout (Free-Form Select)">
-                  <span class="text-xl">✂️</span>
+                  <span class="flex items-center justify-center w-8 h-8 mx-auto">
+                    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAIAAAACACAYAAADDPmHLAAAINUlEQVR4Aexdi3Kkug6cvv//z3unJ1EOMBaWX1gCp6IYbD1arYZkK1XZ/73Wx6MZ6CaAf6/Xv5w9mmlj8zkOeW5MZXJrEgDBiFmqiS9Xi/9TfMiHmKVn8eVq8T/zqRIAC9POEufOGE/L+d35nP3TWnpkPK02R7EAWoqlQPbOl6rhca9337X5zAJgAdoIMpmXNiK3t5zskzYCF/PSSnKbBGBNitcLmr0MH9Y6hlQuXaz9aRxy39KYtQ5zZQWQS0ZQYkyomfhw1Xy4n6tHn4iW64u8iJ31Jz5cz/xy9ST2VAC5JDkQUuS45uJydY/5vN/n+snxofWXi8vVZd5TAdAhZSxMS51Z9xhPs/rf0Y/901p6YzytNocqAE09LcVSILV8Wv1UDs97Wh9a37W9aPm0+lInKQAtSCsiyWpXLa+Go7bO1XEafq3fVnxaXg0H6yUFwINlz2DgSwCaWjR19aJJy6/h6VV3VB4Nt9ZnLxxafg3PlwBSQLSkKd+WvavqtGBsib2qv5I6JgG0NN0jVlNvj9wjcnjGe+x3J4BIwI+NrPs8A6n57gSQSlHyOknFl+5p9VLgS3Nf4a/h1PoahclaLyuAUQBXXh8MLAH4mMM0FKEEoL1ep7F3KOwd3wHu5zaUAD6I15euDCwBdKUzXrJwAvD6mvWKSySprVkBXN3Y1fU0YnrvX92Xtd5OANZ/O/YmZ+W7hoHUfHcCuAZGexWrutsr2TJ4w2ND/eNlEsBVDV5V56f1679e1V9JnS8BpF4TpKokKf1LrTR/qX8pHqt/KY5SfysO8dPya3P9EoAkWuszGEgKQFOLpq5Wqmrz1sa14pX42vq1cVJXW7W82jyZJykAHmhBWhHG1FjvfDUYZsT07lvLp81RelYFIA6plcVoqTPrHuNpVv87+rF/WktvjKfV5jgVQE49tYVr45JN/uOfJUiejN3sWLeWj1xcbn4k6FQAdMglIQgx+msmPlw1n9J9TJq94OxZn7yISf7UKj5cU+eyl5ub+GUFQEdrMoLSjHmGWcen0YRxcD2NQ+5b8FnnxVwmAdCRSWm89mBfT9/gofz1fKjzhePP8foLzodWUtksAElaWkDieq6eSGdfHvDUzqVYAJ+GX693vdeUj1OyD09nd4An+U9xdQeyT/gexvtzv2e9qxIAk78rfv4YBK+XzWHgbAZWRNUCkAI9QEiu3Gp6yk6e0lz+03NDXhO+0yK2w56cNwtAIAsoWWW/11pErmFYRbgK8hXhNIIQTmU1hpncugngWE3Acj2eld5XkVowtFM8FXmq8B5AkDexw1HX22EC2KKURrhu99f1ngHyI7Y/GXd3iQC28EsbbHqaKp7eLdZXQ3wJ7lJOdhgbby4XgOC1NF1CouT9WmuHWBu3AZDDb+Fgk27I5TQBSDdCAlfZ45ojjz5mKx1mqf8JkGMf7FPsJOyyo+kC2HYqxBxJ2/pUX1uHavUrAMJ+pLeCsCrX0iBXAvgDD7z5+rvrd5Ebbu68Fgkwpp9aPJs4nwIgQAAvALzsahwybZuU97TtXo9rAEN66IHtN4dfAfwC/BAIQG67rTJwWbslficC8MH9vvT+6V8AwiAAuey2jhp+N4DjE8URALkA+ouAeXsZ4Btfos9YAmADANy9XgF/mMiVweIJQJoCIJdTV8AHjkoS4gqADQNzyQfm1icHv1a7xBYAuwbKhwDg820E+G9lrhIDUOLu1Te+AMgsYBsGgM/gGXM0QD9L+R73gt7fQwAkHwAX1YDzcwkEzv2A83PJE2S9jwCCEO4N5r0EAKSfTiC9r00DSPsD6X0tT4D9ewmAhANjhgSMyUvME+1+AphIZsTSSwARp7bB3Hp5PwGM+AUPWR6Vl7kn2v0EkCKzdHil/qmaQfbuJYDRgxudf4Jo7iWAMwKtw7P6ndUKdHYfAVgGRx9aakDcp6XOtnsWn62/8+t7CKB0KPQ/WsmgGFvi79j3HgJwTLB3aPEFMOtpnFX3V1G9lvgC6MXEQ/MsATx08NJ2bAHMfg3Pri9TbFhjC6Ch8RX6w0BcAXh5+rzg+Jln8de4AihuNREA3PJ3/IlO1a1nC0Cl5TkHMQXg7bV7IZ7e0owpgN4sPDhfPAF4fdq84sqIO54AMg2Zj4GfHwCBn9UceC/H5wrgXnOs7iaWALy/Zr3jS8gklgASDaytNgaeKQBg/30f2N+3cRoqOo4AorxeB+Ecpao4AhjFwMPzPk8AQPp1D6T3by6QGAII9lpt+SvjV+sthgB6sQKcP+XA+XkvHI7yPEsAjoj3AsW/AHq9/gHb0w3Y/HIT7IU7V6fx3L8AGhtc4ecMPEMAQNlTDZT5n3PcdDo6+BkCGM1i4Py+BdDj+yhQ9zQDdXFbMfTAv8034Nq3AFobBtqGCLTFt+K/IP7eAriAwOgl7isAoM/TC/TJ41Qp9xQA0HdoQN98jsTgVwABfoAyzdF5H34FYGI34QSMeVqBMXkTLXDrKruXAICxQwLG5r9q6ps69xEAcM1wgGvqbIY08vIeAgCuHQpwbb2BCvApgJIfnIA5wwDsdUv6GTjsVGqfAkghXXtDGIgtAMD+FI6gD5hbv0NPcQUA+CAf8IGjUgwxBQD4Ih3ohqdyjtVh8QQA+CQb8IkrI41YAgB8kwz4xpcQQxwBADHIBWLg/BVDDAEAoUhV/3fSX9I9Lb4FACASmbvBAiGw+xQAEIK83cC1G8B1Lz4FoJG59rszsATQndK6hLOilgBmMe+k7hKAk0HMgrEEMIt5J3WXAJwMYhaMJYBZzDupuwTgZBCzYCwBzGLeSd0lgMmDmF3+/wAAAP//TvOlCQAAAAZJREFUAwAigTkf3yL9IwAAAABJRU5ErkJggg==" alt="Cutout" class="w-8 h-8 object-contain pixelated" />
+                  </span>
                   <span class="text-[10px] font-bold mt-0.5">Cutout</span>
                 </button>
 
                 <button class="tool-btn py-2" data-tool="magic-select" title="Smart Select (Tone & Perimeter)">
-                  <span class="flex items-center justify-center w-6 h-6 mx-auto">
-                    <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none"><path d="M12 2C7 6 5 11 5 16c0 3 2 5 5 6l2-20z" fill="#1e293b"/><path d="M12 2c5 4 7 9 7 14 0 3-2 5-5 6l-2-20z" fill="#93c5fd"/><path d="M12 2c5 4 7 9 7 14 0 3-2 5-5 6 L12 2Z" stroke="#000000" stroke-width="1.8" stroke-dasharray="2, 2" fill="none"/></svg>
+                  <span class="flex items-center justify-center w-8 h-8 mx-auto">
+                    <img src="data:image/png;base64,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" alt="Smart Select" class="w-8 h-8 object-contain pixelated" />
                   </span>
                   <span class="text-[10px] font-bold mt-0.5">Smart Select</span>
                 </button>
@@ -1992,6 +2016,100 @@
     </div>
   </div>
 
+  <!-- Loupe / Magnifier Settings Modal -->
+  <div id="modal-loupe-settings" class="hidden fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-3 select-none">
+    <div class="bevel-raised bg-[#c0c0c0] w-[420px] max-w-full p-1 flex flex-col shadow-2xl">
+      <div class="bg-gradient-to-r from-[#000080] to-[#1084d0] text-white px-2.5 py-1.5 font-bold text-xs flex justify-between items-center">
+        <div class="flex items-center gap-1.5">
+          <span>🔎</span>
+          <span>Loupe / Magnifier Settings</span>
+        </div>
+        <button id="btn-close-loupe-modal" type="button" class="w-5 h-5 bevel-raised bg-[#c0c0c0] text-black text-xs leading-none font-bold">✕</button>
+      </div>
+
+      <div class="p-3 text-xs flex flex-col gap-3 bg-[#dfdfdf] bevel-sunken max-h-[82vh] overflow-y-auto">
+        <!-- Enable/Disable Toggle -->
+        <label class="bevel-raised p-2 bg-[#ffffd0] flex items-center justify-between cursor-pointer border border-yellow-400">
+          <div class="flex flex-col">
+            <span class="font-bold text-xs text-gray-900">Enable Magnifier Loupe</span>
+            <span class="text-[10px] text-gray-600">Shows a zoomed bubble while interacting with tools</span>
+          </div>
+          <input type="checkbox" id="loupe-enable-checkbox" checked class="w-5 h-5 cursor-pointer">
+        </label>
+
+        <!-- Bubble Size -->
+        <div class="bevel-raised p-2 bg-[#c0c0c0] flex flex-col gap-1">
+          <div class="flex justify-between items-center font-bold text-gray-800">
+            <span>Bubble Size:</span>
+            <span id="loupe-size-val" class="font-mono text-blue-900">104 px</span>
+          </div>
+          <input type="range" id="loupe-size-slider" min="64" max="180" step="4" value="104" class="w-full cursor-pointer">
+        </div>
+
+        <!-- Bubble Shape -->
+        <div class="bevel-raised p-2 bg-[#c0c0c0] flex flex-col gap-1.5">
+          <div class="font-bold text-gray-800">Bubble Shape:</div>
+          <div class="grid grid-cols-3 gap-1.5" id="loupe-shape-group">
+            <button type="button" class="loupe-shape-btn bevel-raised py-1.5 px-1 font-bold text-[11px]" data-shape="circle">● Circle</button>
+            <button type="button" class="loupe-shape-btn bevel-raised py-1.5 px-1 font-bold text-[11px]" data-shape="oval">⬭ Oval</button>
+            <button type="button" class="loupe-shape-btn bevel-raised py-1.5 px-1 font-bold text-[11px]" data-shape="triangle">▲ Triangle</button>
+            <button type="button" class="loupe-shape-btn bevel-raised py-1.5 px-1 font-bold text-[11px]" data-shape="square">■ Square</button>
+            <button type="button" class="loupe-shape-btn bevel-raised py-1.5 px-1 font-bold text-[11px]" data-shape="rectangle">▬ Rectangle</button>
+            <button type="button" class="loupe-shape-btn bevel-raised py-1.5 px-1 font-bold text-[11px]" data-shape="pentagon">⬟ Pentagon</button>
+          </div>
+        </div>
+
+        <!-- Location Relative to Finger / Corner Lock -->
+        <div class="bevel-raised p-2 bg-[#c0c0c0] flex flex-col gap-1.5">
+          <div class="font-bold text-gray-800">Loupe Location:</div>
+          <div class="text-[10px] text-gray-600 font-semibold">Relative to Finger:</div>
+          <div class="grid grid-cols-3 gap-1" id="loupe-pos-group">
+            <button type="button" class="loupe-pos-btn bevel-raised py-1 px-1 font-bold text-[10px]" data-pos="top-left">↖ Diag Up-Left</button>
+            <button type="button" class="loupe-pos-btn bevel-raised py-1 px-1 font-bold text-[10px]" data-pos="above">↑ Above</button>
+            <button type="button" class="loupe-pos-btn bevel-raised py-1 px-1 font-bold text-[10px]" data-pos="top-right">↗ Diag Up-Right</button>
+            <button type="button" class="loupe-pos-btn bevel-raised py-1 px-1 font-bold text-[10px]" data-pos="bottom-left">↙ Diag Dn-Left</button>
+            <button type="button" class="loupe-pos-btn bevel-raised py-1 px-1 font-bold text-[10px]" data-pos="below">↓ Below</button>
+            <button type="button" class="loupe-pos-btn bevel-raised py-1 px-1 font-bold text-[10px]" data-pos="bottom-right">↘ Diag Dn-Right</button>
+          </div>
+          <div class="text-[10px] text-gray-600 font-semibold mt-1">Or Lock to Screen Corner:</div>
+          <div class="grid grid-cols-2 gap-1">
+            <button type="button" class="loupe-pos-btn bevel-raised py-1 px-1 font-bold text-[10px]" data-pos="lock-tl">📌 Top-Left Corner</button>
+            <button type="button" class="loupe-pos-btn bevel-raised py-1 px-1 font-bold text-[10px]" data-pos="lock-tr">📌 Top-Right Corner</button>
+            <button type="button" class="loupe-pos-btn bevel-raised py-1 px-1 font-bold text-[10px]" data-pos="lock-bl">📌 Bottom-Left Corner</button>
+            <button type="button" class="loupe-pos-btn bevel-raised py-1 px-1 font-bold text-[10px]" data-pos="lock-br">📌 Bottom-Right Corner</button>
+          </div>
+        </div>
+
+        <!-- Distance from Finger (0 - 200 px) -->
+        <div id="loupe-distance-row" class="bevel-raised p-2 bg-[#c0c0c0] flex flex-col gap-1">
+          <div class="flex justify-between items-center font-bold text-gray-800">
+            <span>Distance from Finger:</span>
+            <span id="loupe-dist-val" class="font-mono text-blue-900">28 px</span>
+          </div>
+          <input type="range" id="loupe-dist-slider" min="0" max="200" step="4" value="28" class="w-full cursor-pointer">
+        </div>
+
+        <!-- Coordinates Display Location -->
+        <div class="bevel-raised p-2 bg-[#c0c0c0] flex flex-col gap-1.5">
+          <div class="font-bold text-gray-800">Coordinates Location Inside Bubble:</div>
+          <div class="grid grid-cols-5 gap-1" id="loupe-coords-group">
+            <button type="button" class="loupe-coords-btn bevel-raised py-1 px-1 font-bold text-[10px]" data-cpos="top">Top</button>
+            <button type="button" class="loupe-coords-btn bevel-raised py-1 px-1 font-bold text-[10px]" data-cpos="bottom">Bottom</button>
+            <button type="button" class="loupe-coords-btn bevel-raised py-1 px-1 font-bold text-[10px]" data-cpos="left">Left</button>
+            <button type="button" class="loupe-coords-btn bevel-raised py-1 px-1 font-bold text-[10px]" data-cpos="right">Right</button>
+            <button type="button" class="loupe-coords-btn bevel-raised py-1 px-1 font-bold text-[10px]" data-cpos="hidden">Off</button>
+          </div>
+        </div>
+
+        <!-- Footer Buttons -->
+        <div class="flex justify-between items-center pt-1 border-t border-gray-400">
+          <button id="btn-reset-loupe" type="button" class="bevel-raised px-3 py-1.5 font-bold text-xs bg-gray-200 hover:bg-white active:bevel-sunken">↺ Reset Default</button>
+          <button id="btn-done-loupe-modal" type="button" class="bevel-raised px-5 py-1.5 font-bold text-xs bg-blue-100 text-blue-900 hover:bg-white active:bevel-sunken">Done ✓</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- Hidden File Input for Opening Images -->
   <input type="file" id="file-input-image" accept="image/*" class="hidden">
 
@@ -2085,7 +2203,16 @@
         gradientColor2: '#ffffff',
         gradientType: 'linear-drag', // 'linear-drag', 'horizontal', 'vertical', 'radial'
         gradientDither: 'none', // 'none', 'bayer', 'checker'
-        gradientTarget: 'fill' // 'fill', 'stroke', 'both'
+        gradientTarget: 'fill', // 'fill', 'stroke', 'both'
+
+        loupe: {
+          enabled: true,
+          size: 104,
+          shape: 'circle', // circle, oval, triangle, square, rectangle, pentagon
+          position: 'above', // above, below, top-left, top-right, bottom-left, bottom-right, lock-tl, lock-tr, lock-bl, lock-br
+          distance: 28, // 0 to 200 px
+          coordsPos: 'top' // top, bottom, left, right, hidden
+        }
       };
 
       // --- DOM Elements ---
@@ -2134,8 +2261,13 @@
       const lassoPolyBlack = document.getElementById('lasso-poly-black');
       const lassoPolyWhite = document.getElementById('lasso-poly-white');
       const magicSvg = document.getElementById('magic-svg');
+      const magicPathFill = document.getElementById('magic-path-fill');
       const magicPathBlack = document.getElementById('magic-path-black');
       const magicPathWhite = document.getElementById('magic-path-white');
+      const magnifierBubble = document.getElementById('magnifier-bubble');
+      const magnifierCanvas = document.getElementById('magnifier-canvas');
+      const magnifierCtx = magnifierCanvas ? magnifierCanvas.getContext('2d') : null;
+      const magnifierCoords = document.getElementById('magnifier-coords');
       const btnSelInvert = document.getElementById('btn-sel-invert');
       const btnSelDeselect = document.getElementById('btn-sel-deselect');
       const modalSelCustomSize = document.getElementById('modal-sel-custom-size');
@@ -2925,13 +3057,13 @@
         'eraser': { name: 'Eraser', icon: '🧹', hint: 'Eraser: Erases pixels on active layer.' },
         'fill': {
           name: 'Splash',
-          iconHtml: `<svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor"><path d="M12 6c-1.5 0-2.5 1.5-3 2.5C7.5 10 5 11 5 13.5c0 3 3 5.5 7 5.5s7-2.5 7-5.5c0-2.5-2.5-3.5-4-5-.5-1-1.5-2.5-3-2.5z"/><circle cx="12" cy="3" r="1.5"/><circle cx="4" cy="9" r="1.2"/><circle cx="20" cy="10" r="1.2"/><circle cx="3.5" cy="16" r="1"/><circle cx="20.5" cy="16" r="1"/><circle cx="8" cy="21" r="1.2"/><circle cx="16" cy="21" r="1.2"/></svg>`,
+          iconHtml: `<img src="data:image/png;base64,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" alt="Splash" class="w-5 h-5 object-contain pixelated" />`,
           icon: '🪣',
           hint: 'Splash: Flood fill contiguous color.'
         },
         'picker': {
           name: 'Sample',
-          iconHtml: `<svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M14.5 3.5a3 3 0 0 0-4 0l-1 1 5 5 1-1a3 3 0 0 0-1-5z" fill="#475569" stroke="#1e293b"/><line x1="9" y1="5" x2="14" y2="10" stroke="#1e293b" stroke-width="2"/><path d="M8.5 6.5l-4 4c-.5.5-.8 1.2-.8 2l.3 2.5 4.5 4.5 2.5.3c.8 0 1.5-.3 2-.8l4-4-8.5-8.5z" fill="#e0f2fe" stroke="#0284c7"/><circle cx="2.5" cy="21.5" r="1.5" fill="#0284c7"/></svg>`,
+          iconHtml: `<img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAIAAAACACAYAAADDPmHLAAADDUlEQVR4nO3d226rMBRF0Z2q///L9KFJm4CvsG1srznejnSUVPbEJtASMwAAoOjR6HW3G98bFTwnoWTSY4jhJh4Df2Xi9wihsysD7jnxe4TQydmBTk7+tuXbeDyyb00EHdQOcnRmSyY9+kOkYyCEhmoGNzjDVyZ+LxECETTyVfj/mk9+5vVanm9IKw3gwHvyW78uwkoCOMxI60mKvD5lNJALoPvkZ96HCJxVbQG9l2e2g/ZSAXyM/l2TEXhfqnD07fEiBRd1sjja7xFbAYY4+hPvTy1OTn8MxBpctoB3NYcml/fuF1oBhlr+X9gG2mALEEcA4ghAHAGIIwBxBCCOAMQRgLhQAB8X6Dxu9HgI/Bxj/GCTc78UzKzMhS1AXCyAobYBlv92XLaAUW4YoV5qCxhiFeDob6vqHKB3BHdvPQpyARwPv06TEnkfinBWsgJ0j4DJ7+f0x8BWEbDs91UaQPiQdJ6szF8H81GjgVmeD7Dt/g0nMzwhJPRiROBklmcEEUEjMz0ljAgamO05gbH3IISTZnxSKBE4mnnQ2BIczPz7AKHJ5lpBpZkDMCOCy2YPwIwILlkhADMiOG2VAMyI4JQVz5r5mFhhpRXgJTbRrAYBqx8VXCvIWHEFeMd5QcbqAZgRQZJCAGZEEKUSgBkRBCkFYEYEB6pnxFwreFJbAV64VvAkV3yA9LUC1RXgnfR5AQH8ko2AAP5JRkAAn+QiIIAjqQhkznZPkLhWMEvtdw36iGNh5jgebAFpSx3tIQQgjgDEuT8qdnV3nBS03IdYAcQRgDgCEEcA4ghAHAGIIwBxBCCOAMQRgDgCEDfLvYCzl+BXvZ179ZbE37iwAogjAHEEIG6Kc4DSL6NQ+bqZ2i/nSI0LK4A4AhBHAOIIQBwBiCMAcQQgjgDEEYA4AhBHAOIIQNwUN4NGstrtJlYAcQQgjgDEhc4BXL7UufaXFgZ2ddsfelxYAcQRgDgCEEcA4ghAHAGIIwBxBCCOAMQRgDgCEOd5e3usi9y/Rrh9P/S4sAKIIwBxBAAAAACo+QGlOJLll3jubQAAAABJRU5ErkJggg==" alt="Sample" class="w-5 h-5 object-contain pixelated" />`,
           icon: '🧪',
           hint: 'Sample: Click to sample pixel color.'
         },
@@ -2942,12 +3074,12 @@
           hint: 'Focus: Click or pinch to zoom.'
         },
         'brush': { name: 'Brush', icon: '🖌️', hint: 'Brush: Paints with custom shape and size.' },
-        'spray': { name: 'Airbrush', icon: '💨', hint: 'Airbrush: Sprays random pixel dots.' },
+        'spray': { name: 'Airbrush', iconHtml: `<img src="data:image/png;base64,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" alt="Spray" class="w-5 h-5 object-contain pixelated" />`, icon: '💨', hint: 'Airbrush: Sprays random pixel dots.' },
         'select': { name: 'Select', icon: '⬚', hint: 'Select: Drag box to move/copy/cut.' },
-        'free-select': { name: 'Cutout', icon: '✂️', hint: 'Cutout: Drag freehand to cut out a region.' },
+        'free-select': { name: 'Cutout', iconHtml: `<img src="data:image/png;base64,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" alt="Cutout" class="w-5 h-5 object-contain pixelated" />`, icon: '✂️', hint: 'Cutout: Drag freehand to cut out a region.' },
         'magic-select': {
           name: 'Smart Select',
-          iconHtml: `<svg class="w-4 h-4" viewBox="0 0 24 24" fill="none"><path d="M12 2C7 6 5 11 5 16c0 3 2 5 5 6l2-20z" fill="#1e293b"/><path d="M12 2c5 4 7 9 7 14 0 3-2 5-5 6l-2-20z" fill="#93c5fd"/><path d="M12 2c5 4 7 9 7 14 0 3-2 5-5 6 L12 2Z" stroke="#000000" stroke-width="1.8" stroke-dasharray="2, 2" fill="none"/></svg>`,
+          iconHtml: `<img src="data:image/png;base64,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" alt="Smart Select" class="w-5 h-5 object-contain pixelated" />`,
           icon: '🍃',
           hint: 'Smart Select: Click to select like colors (Adjacent or Global).'
         },
@@ -3857,6 +3989,283 @@
         };
       }
 
+      // --- Magnifier Bubble (Loupe) Engine ---
+      const STORAGE_KEY_LOUPE = 'bitsmithery_loupe_prefs_v1';
+      const magnifierShapeSvg = document.getElementById('magnifier-shape-svg');
+      const magnifierShapeOuter = document.getElementById('magnifier-shape-outer');
+      const magnifierShapeInner = document.getElementById('magnifier-shape-inner');
+
+      function loadLoupePrefs() {
+        try {
+          const raw = localStorage.getItem(STORAGE_KEY_LOUPE);
+          if (raw) {
+            const parsed = JSON.parse(raw);
+            if (parsed && typeof parsed === 'object') {
+              Object.assign(state.loupe, parsed);
+            }
+          }
+        } catch (e) {}
+      }
+
+      function saveLoupePrefs() {
+        try {
+          localStorage.setItem(STORAGE_KEY_LOUPE, JSON.stringify(state.loupe));
+        } catch (e) {}
+      }
+
+      function getLoupeDimensions() {
+        const sz = Math.max(64, Math.min(180, state.loupe.size || 104));
+        const sh = state.loupe.shape || 'circle';
+        if (sh === 'oval') {
+          return { w: Math.round(sz * 1.32), h: Math.round(sz * 0.84) };
+        }
+        if (sh === 'rectangle') {
+          return { w: Math.round(sz * 1.36), h: Math.round(sz * 0.84) };
+        }
+        return { w: sz, h: sz };
+      }
+
+      function applyLoupeAppearance() {
+        if (!magnifierBubble || !magnifierCanvas) return;
+        const { w, h } = getLoupeDimensions();
+        const sh = state.loupe.shape || 'circle';
+
+        magnifierBubble.style.width = `${w}px`;
+        magnifierBubble.style.height = `${h}px`;
+        magnifierCanvas.width = w;
+        magnifierCanvas.height = h;
+
+        // Reset shape styles
+        magnifierBubble.style.clipPath = 'none';
+        magnifierBubble.style.webkitClipPath = 'none';
+        magnifierBubble.style.borderRadius = '0px';
+        magnifierBubble.style.border = '2px solid #000080';
+        magnifierBubble.style.boxShadow = '0 0 0 2px #ffffff, 0 8px 24px rgba(0,0,0,0.55)';
+        if (magnifierShapeSvg) magnifierShapeSvg.classList.add('hidden');
+
+        if (sh === 'circle' || sh === 'oval') {
+          magnifierBubble.style.borderRadius = '50%';
+        } else if (sh === 'square' || sh === 'rectangle') {
+          magnifierBubble.style.borderRadius = '6px';
+        } else if (sh === 'triangle') {
+          const polyPts = '50% 4%, 97% 96%, 3% 96%';
+          const svgPts = '50,4 97,96 3,96';
+          magnifierBubble.style.clipPath = `polygon(${polyPts})`;
+          magnifierBubble.style.webkitClipPath = `polygon(${polyPts})`;
+          magnifierBubble.style.border = 'none';
+          magnifierBubble.style.boxShadow = 'none';
+          if (magnifierShapeSvg && magnifierShapeOuter && magnifierShapeInner) {
+            magnifierShapeOuter.setAttribute('points', svgPts);
+            magnifierShapeInner.setAttribute('points', svgPts);
+            magnifierShapeSvg.classList.remove('hidden');
+          }
+        } else if (sh === 'pentagon') {
+          const polyPts = '50% 3%, 97% 37%, 79% 96%, 21% 96%, 3% 37%';
+          const svgPts = '50,3 97,37 79,96 21,96 3,37';
+          magnifierBubble.style.clipPath = `polygon(${polyPts})`;
+          magnifierBubble.style.webkitClipPath = `polygon(${polyPts})`;
+          magnifierBubble.style.border = 'none';
+          magnifierBubble.style.boxShadow = 'none';
+          if (magnifierShapeSvg && magnifierShapeOuter && magnifierShapeInner) {
+            magnifierShapeOuter.setAttribute('points', svgPts);
+            magnifierShapeInner.setAttribute('points', svgPts);
+            magnifierShapeSvg.classList.remove('hidden');
+          }
+        }
+
+        // Apply coordinate badge position
+        if (magnifierCoords) {
+          const cpos = state.loupe.coordsPos || 'top';
+          magnifierCoords.className = 'absolute bg-black/80 text-white font-mono text-[9px] px-1.5 py-0.5 rounded leading-tight whitespace-nowrap z-20';
+          magnifierCoords.style.top = '';
+          magnifierCoords.style.bottom = '';
+          magnifierCoords.style.left = '';
+          magnifierCoords.style.right = '';
+          magnifierCoords.style.transform = '';
+
+          if (cpos === 'hidden') {
+            magnifierCoords.classList.add('hidden');
+          } else if (cpos === 'top') {
+            magnifierCoords.style.top = sh === 'triangle' ? '22%' : '4px';
+            magnifierCoords.style.left = '50%';
+            magnifierCoords.style.transform = 'translateX(-50%)';
+          } else if (cpos === 'bottom') {
+            magnifierCoords.style.bottom = '5px';
+            magnifierCoords.style.left = '50%';
+            magnifierCoords.style.transform = 'translateX(-50%)';
+          } else if (cpos === 'left') {
+            magnifierCoords.style.left = sh === 'triangle' ? '14%' : '4px';
+            magnifierCoords.style.top = sh === 'triangle' ? '66%' : '50%';
+            magnifierCoords.style.transform = 'translateY(-50%)';
+          } else if (cpos === 'right') {
+            magnifierCoords.style.right = sh === 'triangle' ? '14%' : '4px';
+            magnifierCoords.style.top = sh === 'triangle' ? '66%' : '50%';
+            magnifierCoords.style.transform = 'translateY(-50%)';
+          }
+        }
+
+        const menuStatus = document.getElementById('loupe-menu-status');
+        if (menuStatus) {
+          menuStatus.textContent = state.loupe.enabled ? 'ON' : 'OFF';
+        }
+      }
+
+      function getEventClientXY(e) {
+        if (!e) return null;
+        let cx = e.clientX;
+        let cy = e.clientY;
+        if (cx === undefined || cy === undefined) {
+          const t = (e.touches && e.touches[0]) || (e.changedTouches && e.changedTouches[0]);
+          if (t) {
+            cx = t.clientX;
+            cy = t.clientY;
+          }
+        }
+        if (cx === undefined || cy === undefined) return null;
+        return { clientX: cx, clientY: cy };
+      }
+
+      function updateMagnifierBubble(e, px, py) {
+        if (!magnifierBubble || !magnifierCtx || !canvasContainer) return;
+        if (!state.loupe.enabled) {
+          hideMagnifierBubble();
+          return;
+        }
+        // Skip during 2-finger pinch/pan
+        if (touchState && touchState.isPinching) {
+          hideMagnifierBubble();
+          return;
+        }
+        const pt = getEventClientXY(e);
+        if (!pt) return;
+
+        const cRect = canvasContainer.getBoundingClientRect();
+        const { w: bw, h: bh } = getLoupeDimensions();
+        const fx = pt.clientX - cRect.left;
+        const fy = pt.clientY - cRect.top;
+        const dist = Math.max(0, Math.min(200, Number(state.loupe.distance ?? 28)));
+        const pos = state.loupe.position || 'above';
+
+        let left = 0;
+        let top = 0;
+
+        if (pos === 'lock-tl') {
+          left = 10;
+          top = 52;
+        } else if (pos === 'lock-tr') {
+          left = cRect.width - bw - 10;
+          top = 42;
+        } else if (pos === 'lock-bl') {
+          left = 10;
+          top = cRect.height - bh - 10;
+        } else if (pos === 'lock-br') {
+          left = cRect.width - bw - 10;
+          top = cRect.height - bh - 10;
+        } else if (pos === 'below') {
+          left = fx - bw / 2;
+          top = fy + dist;
+          if (top + bh > cRect.height - 8) {
+            top = fy - bh - dist;
+          }
+        } else if (pos === 'top-left') {
+          const d = Math.round(dist * 0.707);
+          left = fx - bw - d;
+          top = fy - bh - d;
+        } else if (pos === 'top-right') {
+          const d = Math.round(dist * 0.707);
+          left = fx + d;
+          top = fy - bh - d;
+        } else if (pos === 'bottom-left') {
+          const d = Math.round(dist * 0.707);
+          left = fx - bw - d;
+          top = fy + d;
+        } else if (pos === 'bottom-right') {
+          const d = Math.round(dist * 0.707);
+          left = fx + d;
+          top = fy + d;
+        } else {
+          // Default: 'above'
+          left = fx - bw / 2;
+          top = fy - bh - dist;
+          if (top < 8) {
+            top = fy + Math.max(24, dist);
+          }
+        }
+
+        left = Math.max(8, Math.min(cRect.width - bw - 8, left));
+        top = Math.max(8, Math.min(cRect.height - bh - 8, top));
+
+        magnifierBubble.style.left = `${left}px`;
+        magnifierBubble.style.top = `${top}px`;
+        magnifierBubble.classList.remove('hidden');
+
+        // Render zoomed-in pixel neighborhood centered on (px, py)
+        const baseSpan = 13; // ~13 pixels across
+        const aspect = bw / bh;
+        const spanX = aspect >= 1 ? Math.round(baseSpan * aspect) : baseSpan;
+        const spanY = aspect < 1 ? Math.round(baseSpan / aspect) : baseSpan;
+        const radX = Math.floor(spanX / 2);
+        const radY = Math.floor(spanY / 2);
+        const cellW = bw / spanX;
+        const cellH = bh / spanY;
+
+        magnifierCtx.imageSmoothingEnabled = false;
+        magnifierCtx.clearRect(0, 0, bw, bh);
+        magnifierCtx.fillStyle = '#808080';
+        magnifierCtx.fillRect(0, 0, bw, bh);
+
+        const srcX0 = px - radX;
+        const srcY0 = py - radY;
+
+        const clipX0 = Math.max(0, srcX0);
+        const clipY0 = Math.max(0, srcY0);
+        const clipX1 = Math.min(state.width, srcX0 + spanX);
+        const clipY1 = Math.min(state.height, srcY0 + spanY);
+        const cw = clipX1 - clipX0;
+        const ch = clipY1 - clipY0;
+
+        if (cw > 0 && ch > 0) {
+          const dx = (clipX0 - srcX0) * cellW;
+          const dy = (clipY0 - srcY0) * cellH;
+          const dw = cw * cellW;
+          const dh = ch * cellH;
+
+          magnifierCtx.fillStyle = '#ffffff';
+          magnifierCtx.fillRect(dx, dy, dw, dh);
+
+          magnifierCtx.drawImage(paintCanvas, clipX0, clipY0, cw, ch, dx, dy, dw, dh);
+          magnifierCtx.drawImage(previewCanvas, clipX0, clipY0, cw, ch, dx, dy, dw, dh);
+        }
+
+        // Subtle pixel grid inside magnifier
+        magnifierCtx.strokeStyle = 'rgba(128, 128, 128, 0.25)';
+        magnifierCtx.lineWidth = 1;
+        for (let i = 1; i < spanX; i++) {
+          const posX = Math.round(i * cellW) + 0.5;
+          magnifierCtx.beginPath();
+          magnifierCtx.moveTo(posX, 0);
+          magnifierCtx.lineTo(posX, bh);
+          magnifierCtx.stroke();
+        }
+        for (let j = 1; j < spanY; j++) {
+          const posY = Math.round(j * cellH) + 0.5;
+          magnifierCtx.beginPath();
+          magnifierCtx.moveTo(0, posY);
+          magnifierCtx.lineTo(bw, posY);
+          magnifierCtx.stroke();
+        }
+
+        if (magnifierCoords) {
+          magnifierCoords.textContent = `${px}, ${py}`;
+        }
+      }
+
+      function hideMagnifierBubble() {
+        if (magnifierBubble) {
+          magnifierBubble.classList.add('hidden');
+        }
+      }
+
       // --- Pixel Math & Drawing Algorithms ---
       function putPixel(ctx, x, y, color, size = 1) {
         if (x < 0 || x >= state.width || y < 0 || y >= state.height) return;
@@ -4729,6 +5138,35 @@
         return hSegments.concat(vSegments).join(' ');
       }
 
+      function generateMagicFillPath(mask, canvasW, canvasH, z, offsetX = 0, offsetY = 0) {
+        if (!mask) return '';
+        const runs = [];
+        for (let y = 0; y < canvasH; y++) {
+          let inRun = false;
+          let startX = 0;
+          for (let x = 0; x < canvasW; x++) {
+            const val = mask[y * canvasW + x];
+            if (val && !inRun) {
+              inRun = true;
+              startX = x;
+            } else if (!val && inRun) {
+              inRun = false;
+              const rx = (startX + offsetX) * z;
+              const ry = (y + offsetY) * z;
+              const rw = (x - startX) * z;
+              runs.push(`M ${rx} ${ry} h ${rw} v ${z} h ${-rw} Z`);
+            }
+          }
+          if (inRun) {
+            const rx = (startX + offsetX) * z;
+            const ry = (y + offsetY) * z;
+            const rw = (canvasW - startX) * z;
+            runs.push(`M ${rx} ${ry} h ${rw} v ${z} h ${-rw} Z`);
+          }
+        }
+        return runs.join(' ');
+      }
+
       function clearSelectionBox(shouldCancel = false) {
         if (state.selectionMoving) {
           if (shouldCancel) {
@@ -4758,6 +5196,7 @@
         selectionBox.style.width = `${s.w * z}px`;
         selectionBox.style.height = `${s.h * z}px`;
         selectionBox.classList.remove('hidden');
+        if (btnSelectionEdit) btnSelectionEdit.classList.remove('hidden');
 
         const selRectSvg = document.getElementById('selection-rect-svg');
         const selHandles = selectionBox.querySelectorAll('.sel-handle');
@@ -4787,7 +5226,9 @@
           const offsetDx = (s.x - (s.origX !== undefined ? s.origX : s.x));
           const offsetDy = (s.y - (s.origY !== undefined ? s.origY : s.y));
 
+          const fillD = generateMagicFillPath(mask, state.width, state.height, z, offsetDx, offsetDy);
           const pathD = generateMagicBoundaryPath(mask, state.width, state.height, z, offsetDx, offsetDy);
+          if (magicPathFill) magicPathFill.setAttribute('d', fillD);
           if (magicPathBlack) magicPathBlack.setAttribute('d', pathD);
           if (magicPathWhite) magicPathWhite.setAttribute('d', pathD);
           if (magicSvg) magicSvg.classList.remove('hidden');
@@ -5642,6 +6083,9 @@
 
         const coords = getCanvasCoordinates(e);
         state.isDrawing = true;
+        if (state.tool !== 'zoom') {
+          updateMagnifierBubble(e, coords.x, coords.y);
+        }
         state.mouseButton = e.button === 2 ? 2 : 0;
         state.startX = coords.x;
         state.startY = coords.y;
@@ -5740,6 +6184,9 @@
         statusCoords.textContent = `${coords.x}, ${coords.y}`;
 
         if (!state.isDrawing) return;
+        if (state.tool !== 'zoom') {
+          updateMagnifierBubble(e, coords.x, coords.y);
+        }
 
         state.lastX = coords.x;
         state.lastY = coords.y;
@@ -5791,14 +6238,31 @@
           } else if (state.tool === 'roundrect') {
             drawBresenhamRoundRect(previewCtx, state.startX, state.startY, coords.x, coords.y, strokeCol, fillCol, state.shapeMode, activeGrad);
           } else if (state.tool === 'select') {
-            drawBresenhamRect(previewCtx, state.startX, state.startY, coords.x, coords.y, '#000000', '', 'outline');
+            const sx = Math.min(state.startX, coords.x);
+            const sy = Math.min(state.startY, coords.y);
+            const sw = Math.abs(coords.x - state.startX) + 1;
+            const sh = Math.abs(coords.y - state.startY) + 1;
+            const z = state.zoom;
+            const selRectSvg = document.getElementById('selection-rect-svg');
+            if (selRectSvg) selRectSvg.classList.remove('hidden');
+            selectionBox.querySelectorAll('.sel-handle').forEach(h => h.classList.add('hidden'));
+            if (btnSelectionEdit) btnSelectionEdit.classList.add('hidden');
+            selectionBox.classList.add('bg-blue-500/10');
+            selectionBox.style.left = `${sx * z}px`;
+            selectionBox.style.top = `${sy * z}px`;
+            selectionBox.style.width = `${sw * z}px`;
+            selectionBox.style.height = `${sh * z}px`;
+            selectionBox.classList.remove('hidden');
           }
         } else if (state.tool === 'free-select' && state.lassoPoints.length > 0) {
           state.lassoPoints.push({ x: coords.x, y: coords.y });
           previewCtx.clearRect(0, 0, state.width, state.height);
-          for (let i = 0; i < state.lassoPoints.length - 1; i++) {
-            drawBresenhamLine(previewCtx, state.lassoPoints[i].x, state.lassoPoints[i].y, state.lassoPoints[i + 1].x, state.lassoPoints[i + 1].y, '#000000', 1);
-          }
+          const z = state.zoom;
+          const ptsStr = state.lassoPoints.map(p => `${p.x * z},${p.y * z}`).join(' ');
+          if (lassoPolyFill) lassoPolyFill.setAttribute('points', ptsStr);
+          if (lassoPolyBlack) lassoPolyBlack.setAttribute('points', ptsStr);
+          if (lassoPolyWhite) lassoPolyWhite.setAttribute('points', ptsStr);
+          if (lassoSvg) lassoSvg.classList.remove('hidden');
         } else if (state.tool === 'curve' && state.curveP0) {
           showLiveDimension(state.curveP0.x, state.curveP0.y, coords.x, coords.y);
           const strokeCol = state.mouseButton === 2 ? state.bgColor : state.fgColor;
@@ -5828,6 +6292,7 @@
       }
 
       function onPointerUp(e) {
+        hideMagnifierBubble();
         if (!state.isDrawing) return;
         state.isDrawing = false;
         const coords = getCanvasCoordinates(e);
@@ -5883,8 +6348,14 @@
 
           if (w > 1 && h > 1) {
             createSelection(x, y, w, h);
+          } else {
+            clearSelectionBox();
           }
-        } else if (state.tool === 'free-select' && state.lassoPoints.length > 5) {
+        } else if (state.tool === 'free-select') {
+          if (state.lassoPoints.length <= 5) {
+            if (lassoSvg) lassoSvg.classList.add('hidden');
+            state.lassoPoints = [];
+          } else {
           previewCtx.clearRect(0, 0, state.width, state.height);
           const pts = state.lassoPoints;
           const minX = Math.max(0, Math.min(...pts.map(p => p.x)));
@@ -5920,6 +6391,7 @@
             updateSelectionBoxDisplay();
           }
           state.lassoPoints = [];
+          }
         } else if (state.tool === 'curve' && state.curveP0) {
           const strokeCol = state.mouseButton === 2 ? state.bgColor : state.fgColor;
           if (state.curveStep === 0) {
@@ -6392,6 +6864,7 @@
         if (e.touches.length >= 2) {
           e.preventDefault();
           touchState.tapCandidate = null;
+          hideMagnifierBubble();
           if (state.isDrawing) {
             state.isDrawing = false;
             if (state.historyIndex >= 0 && state.history[state.historyIndex]) {
@@ -6442,6 +6915,9 @@
               tool: state.tool,
               time: Date.now()
             };
+            if (state.tool !== 'zoom') {
+              updateMagnifierBubble(e, coords.x, coords.y);
+            }
             return;
           }
 
@@ -6565,6 +7041,7 @@
         if (touchState.tapCandidate) {
           const cand = touchState.tapCandidate;
           touchState.tapCandidate = null;
+          hideMagnifierBubble();
           executeTapTool(cand);
           return;
         }
@@ -6576,6 +7053,7 @@
       }, { passive: false });
 
       window.addEventListener('touchcancel', (e) => {
+        hideMagnifierBubble();
         touchState.isPinching = false;
         touchState.isBgPanning = false;
         touchState.gestureEndedAt = Date.now();
@@ -6763,8 +7241,44 @@
         saveHistoryState();
       }
 
+      // --- Commit Pending Edits Helper ---
+      function commitAllPendingEdits() {
+        if (state.stagedShape) commitStagedShape();
+        if (state.stagedText) commitStagedText();
+        if (state.selectionMoving) commitMoveSelection();
+        compositeLayers();
+      }
+
+      function triggerCanvasDownload(canvasEl, filename) {
+        if (canvasEl.toBlob) {
+          canvasEl.toBlob((blob) => {
+            if (blob) {
+              const url = URL.createObjectURL(blob);
+              const link = document.createElement('a');
+              link.download = filename;
+              link.href = url;
+              document.body.appendChild(link);
+              link.click();
+              document.body.removeChild(link);
+              setTimeout(() => URL.revokeObjectURL(url), 4000);
+              return;
+            }
+            const link = document.createElement('a');
+            link.download = filename;
+            link.href = canvasEl.toDataURL('image/png');
+            link.click();
+          }, 'image/png');
+        } else {
+          const link = document.createElement('a');
+          link.download = filename;
+          link.href = canvasEl.toDataURL('image/png');
+          link.click();
+        }
+      }
+
       // --- File Download & Export ---
       function downloadCanvasPNG(scale = 1) {
+        commitAllPendingEdits();
         const outCanvas = document.createElement('canvas');
         outCanvas.width = state.width * scale;
         outCanvas.height = state.height * scale;
@@ -6773,10 +7287,8 @@
 
         octx.drawImage(paintCanvas, 0, 0, outCanvas.width, outCanvas.height);
 
-        const link = document.createElement('a');
-        link.download = `pixel-art-${state.width}x${state.height}${scale > 1 ? '-' + scale + 'x' : ''}.png`;
-        link.href = outCanvas.toDataURL('image/png');
-        link.click();
+        const filename = `pixel-art-${state.width}x${state.height}${scale > 1 ? '-' + scale + 'x' : ''}.png`;
+        triggerCanvasDownload(outCanvas, filename);
       }
 
       // File Opening
@@ -8133,7 +8645,88 @@
         return thumbCanvas.toDataURL('image/png');
       }
 
-      function loadSavedProjectsFromStorage() {
+      // IndexedDB Storage for large multi-layer & custom-dimension projects (avoids 5MB localStorage limit)
+      const IDB_NAME = 'BitSmitheryDB';
+      const IDB_STORE = 'projects';
+      let idbPromise = null;
+
+      function openProjectsDB() {
+        if (idbPromise) return idbPromise;
+        idbPromise = new Promise((resolve, reject) => {
+          if (!window.indexedDB) {
+            reject(new Error('IndexedDB not supported'));
+            return;
+          }
+          const req = indexedDB.open(IDB_NAME, 1);
+          req.onupgradeneeded = (e) => {
+            const db = e.target.result;
+            if (!db.objectStoreNames.contains(IDB_STORE)) {
+              db.createObjectStore(IDB_STORE, { keyPath: 'id' });
+            }
+          };
+          req.onsuccess = () => resolve(req.result);
+          req.onerror = () => reject(req.error);
+        });
+        return idbPromise;
+      }
+
+      async function saveProjectsToIndexedDB(projects) {
+        try {
+          const db = await openProjectsDB();
+          return new Promise((resolve, reject) => {
+            const tx = db.transaction(IDB_STORE, 'readwrite');
+            const store = tx.objectStore(IDB_STORE);
+            store.clear();
+            projects.forEach((p, orderIdx) => {
+              store.put({ ...p, _order: orderIdx });
+            });
+            tx.oncomplete = () => resolve(true);
+            tx.onerror = () => reject(tx.error);
+          });
+        } catch (e) {
+          console.warn('IndexedDB save failed:', e);
+          return false;
+        }
+      }
+
+      async function loadProjectsFromIndexedDB() {
+        try {
+          const db = await openProjectsDB();
+          return new Promise((resolve, reject) => {
+            const tx = db.transaction(IDB_STORE, 'readonly');
+            const store = tx.objectStore(IDB_STORE);
+            const req = store.getAll();
+            req.onsuccess = () => {
+              const items = req.result || [];
+              items.sort((a, b) => (a._order ?? 0) - (b._order ?? 0));
+              resolve(items);
+            };
+            req.onerror = () => reject(req.error);
+          });
+        } catch (e) {
+          console.warn('IndexedDB load failed:', e);
+          return null;
+        }
+      }
+
+      async function loadSavedProjectsFromStorage() {
+        // 1. Try IndexedDB first (handles large multi-layer custom-dimension projects)
+        const idbItems = await loadProjectsFromIndexedDB();
+        if (Array.isArray(idbItems) && idbItems.length > 0) {
+          state.savedProjects = idbItems.map(p => {
+            if (!p.thumbnail && p.layers && p.layers.length > 0 && p.layers[0].dataUrl) {
+              p.thumbnail = p.layers[0].dataUrl;
+            }
+            return p;
+          });
+          state.projectsInitialized = true;
+          if (modalProjectGallery && !modalProjectGallery.classList.contains('hidden')) {
+            renderGalleryCarousel();
+          }
+          return;
+        }
+
+        // 2. Fallback / migrate from localStorage if present
         try {
           let raw = localStorage.getItem(STORAGE_KEY_PROJECTS);
           if (raw === null) {
@@ -8149,6 +8742,7 @@
                 return p;
               });
               state.projectsInitialized = true;
+              saveProjectsToIndexedDB(state.savedProjects);
               return;
             }
           }
@@ -8156,17 +8750,18 @@
           console.warn('Storage unavailable or corrupted:', e);
         }
 
-        // Initialize default demo project using fresh forge and potion artwork only on initial load
+        // 3. Initialize default demo projects only on first-ever load
         if (!state.projectsInitialized) {
           initStarterDemoProjects();
         }
       }
 
       function saveProjectsToStorage() {
+        saveProjectsToIndexedDB(state.savedProjects);
         try {
           localStorage.setItem(STORAGE_KEY_PROJECTS, JSON.stringify(state.savedProjects));
         } catch (e) {
-          console.warn('Failed to write to localStorage:', e);
+          // Expected for large multi-layer/custom-dimension projects exceeding 5MB localStorage quota; IndexedDB holds full data
         }
       }
 
@@ -8235,6 +8830,7 @@
 
       function openSaveProjectModal() {
         closeAllOverlays();
+        commitAllPendingEdits();
         const currentThumb = createProjectThumbnail();
         if (saveProjectPreviewImg) saveProjectPreviewImg.src = currentThumb;
         if (saveProjectMetaInfo) {
@@ -8252,6 +8848,7 @@
       }
 
       function saveCurrentProject(customName) {
+        commitAllPendingEdits();
         const name = (customName || inputSaveProjectName.value || 'Untitled Project').trim();
         state.currentProjectName = name;
         const thumb = createProjectThumbnail();
@@ -8275,6 +8872,7 @@
         };
 
         state.savedProjects.unshift(newProj);
+        state.projectsInitialized = true;
         state.galleryActiveIndex = 0;
         saveProjectsToStorage();
         closeSaveProjectModal();
@@ -8283,13 +8881,15 @@
         const winTitle = document.getElementById('window-title');
         if (winTitle) winTitle.textContent = `${name} - Bit Smithery`;
 
-        statusHint.textContent = `Saved project "${name}" to in-app Gallery!`;
+        statusHint.textContent = `Saved project "${name}" (${state.width}x${state.height}, ${state.layers.length} layer${state.layers.length > 1 ? 's' : ''}) to in-app Gallery!`;
         openProjectGalleryModal(0);
       }
 
       function openProjectGalleryModal(focusIndex = 0) {
         closeAllOverlays();
-        loadSavedProjectsFromStorage();
+        if (!state.projectsInitialized) {
+          loadSavedProjectsFromStorage();
+        }
 
         state.galleryActiveIndex = Math.max(0, Math.min(state.savedProjects.length - 1, focusIndex));
         renderGalleryCarousel();
@@ -8413,6 +9013,12 @@
         if (!proj) return;
         state.currentProjectName = proj.name;
 
+        clearStagedShape();
+        cancelStagedText();
+        clearSelectionBox(true);
+        state.history = [];
+        state.historyIndex = -1;
+
         // Resize canvas to project dimensions
         state.width = proj.width;
         state.height = proj.height;
@@ -8424,13 +9030,18 @@
         gridCanvas.height = state.height;
         paintCtx.imageSmoothingEnabled = false;
         previewCtx.imageSmoothingEnabled = false;
+        statusDimensions.textContent = `${state.width} x ${state.height} px`;
 
         // Restore layers from saved project
         if (proj.layers && proj.layers.length > 0) {
           let pendingImages = proj.layers.length;
           const restoredLayers = [];
+          let maxId = 0;
 
           proj.layers.forEach((lData, idx) => {
+            const lid = lData.id || (idx + 1);
+            if (lid > maxId) maxId = lid;
+
             const layerCanvas = document.createElement('canvas');
             layerCanvas.width = state.width;
             layerCanvas.height = state.height;
@@ -8438,7 +9049,7 @@
             lctx.imageSmoothingEnabled = false;
 
             const layerObj = {
-              id: lData.id || (idx + 1),
+              id: lid,
               name: lData.name || `Layer ${idx + 1}`,
               visible: lData.visible !== undefined ? lData.visible : true,
               opacity: lData.opacity !== undefined ? lData.opacity : 1.0,
@@ -8447,11 +9058,10 @@
             };
             restoredLayers[idx] = layerObj;
 
-            const img = new Image();
-            img.onload = () => {
-              lctx.drawImage(img, 0, 0);
+            const finishOne = () => {
               pendingImages--;
               if (pendingImages === 0) {
+                state.layerCounter = maxId + 1;
                 state.layers = restoredLayers;
                 state.activeLayerIndex = Math.max(0, Math.min(restoredLayers.length - 1, proj.activeLayerIndex || 0));
                 compositeLayers();
@@ -8466,6 +9076,13 @@
                 }
               }
             };
+
+            const img = new Image();
+            img.onload = () => {
+              lctx.drawImage(img, 0, 0);
+              finishOne();
+            };
+            img.onerror = finishOne;
             img.src = lData.dataUrl;
           });
         }
@@ -8503,12 +9120,53 @@
         const cur = state.savedProjects[state.galleryActiveIndex];
         if (!cur) return;
 
-        // Download PNG
-        const link = document.createElement('a');
-        link.download = `${cur.name.toLowerCase().replace(/[^a-z0-9_-]/g, '_')}-${cur.width}x${cur.height}.png`;
-        link.href = cur.thumbnail;
-        link.click();
-        statusHint.textContent = `Exported "${cur.name}" as PNG!`;
+        const filename = `${cur.name.toLowerCase().replace(/[^a-z0-9_-]/g, '_')}-${cur.width}x${cur.height}.png`;
+
+        if (!cur.layers || cur.layers.length === 0) {
+          const link = document.createElement('a');
+          link.download = filename;
+          link.href = cur.thumbnail;
+          link.click();
+          statusHint.textContent = `Exported "${cur.name}" as PNG!`;
+          return;
+        }
+
+        const outCanvas = document.createElement('canvas');
+        outCanvas.width = cur.width;
+        outCanvas.height = cur.height;
+        const octx = outCanvas.getContext('2d');
+        octx.imageSmoothingEnabled = false;
+
+        const loadedImgs = new Array(cur.layers.length);
+        let remaining = cur.layers.length;
+
+        const finalizeExport = () => {
+          for (let i = 0; i < cur.layers.length; i++) {
+            const l = cur.layers[i];
+            const im = loadedImgs[i];
+            if (im && l.visible !== false && (l.opacity ?? 1.0) > 0) {
+              octx.globalAlpha = l.opacity ?? 1.0;
+              octx.drawImage(im, 0, 0);
+            }
+          }
+          octx.globalAlpha = 1.0;
+          triggerCanvasDownload(outCanvas, filename);
+          statusHint.textContent = `Exported "${cur.name}" (${cur.width}x${cur.height}) as full-res PNG!`;
+        };
+
+        cur.layers.forEach((lData, idx) => {
+          const im = new Image();
+          im.onload = () => {
+            loadedImgs[idx] = im;
+            remaining--;
+            if (remaining === 0) finalizeExport();
+          };
+          im.onerror = () => {
+            remaining--;
+            if (remaining === 0) finalizeExport();
+          };
+          im.src = lData.dataUrl;
+        });
       }
 
       function openDeleteConfirmModal() {
@@ -8616,6 +9274,131 @@
       if (btnCloseDeleteModal) btnCloseDeleteModal.addEventListener('click', closeDeleteConfirmModal);
       if (btnCancelDeleteAction) btnCancelDeleteAction.addEventListener('click', closeDeleteConfirmModal);
       if (btnConfirmDeleteAction) btnConfirmDeleteAction.addEventListener('click', executeDeleteProject);
+
+      // --- Loupe Settings Modal Controls ---
+      const actionLoupeSettings = document.getElementById('action-loupe-settings');
+      const modalLoupeSettings = document.getElementById('modal-loupe-settings');
+      const btnCloseLoupeModal = document.getElementById('btn-close-loupe-modal');
+      const btnDoneLoupeModal = document.getElementById('btn-done-loupe-modal');
+      const btnResetLoupe = document.getElementById('btn-reset-loupe');
+      const loupeEnableCheckbox = document.getElementById('loupe-enable-checkbox');
+      const loupeSizeSlider = document.getElementById('loupe-size-slider');
+      const loupeSizeVal = document.getElementById('loupe-size-val');
+      const loupeDistSlider = document.getElementById('loupe-dist-slider');
+      const loupeDistVal = document.getElementById('loupe-dist-val');
+      const loupeDistanceRow = document.getElementById('loupe-distance-row');
+
+      function syncLoupeSettingsUI() {
+        if (loupeEnableCheckbox) loupeEnableCheckbox.checked = !!state.loupe.enabled;
+        if (loupeSizeSlider) loupeSizeSlider.value = state.loupe.size;
+        if (loupeSizeVal) loupeSizeVal.textContent = `${state.loupe.size} px`;
+        if (loupeDistSlider) loupeDistSlider.value = state.loupe.distance;
+        if (loupeDistVal) loupeDistVal.textContent = `${state.loupe.distance} px`;
+
+        const isLocked = (state.loupe.position || '').startsWith('lock-');
+        if (loupeDistanceRow) {
+          loupeDistanceRow.style.opacity = isLocked ? '0.5' : '1';
+        }
+        if (loupeDistSlider) {
+          loupeDistSlider.disabled = isLocked;
+        }
+
+        document.querySelectorAll('.loupe-shape-btn').forEach(btn => {
+          const active = btn.dataset.shape === state.loupe.shape;
+          btn.className = `loupe-shape-btn bevel-raised py-1.5 px-1 font-bold text-[11px] cursor-pointer ${active ? 'bg-blue-100 text-blue-900 border border-blue-500' : 'bg-gray-100 text-gray-800 hover:bg-white'}`;
+        });
+
+        document.querySelectorAll('.loupe-pos-btn').forEach(btn => {
+          const active = btn.dataset.pos === state.loupe.position;
+          btn.className = `loupe-pos-btn bevel-raised py-1 px-1 font-bold text-[10px] cursor-pointer ${active ? 'bg-blue-100 text-blue-900 border border-blue-500' : 'bg-gray-100 text-gray-800 hover:bg-white'}`;
+        });
+
+        document.querySelectorAll('.loupe-coords-btn').forEach(btn => {
+          const active = btn.dataset.cpos === state.loupe.coordsPos;
+          btn.className = `loupe-coords-btn bevel-raised py-1 px-1 font-bold text-[10px] cursor-pointer ${active ? 'bg-blue-100 text-blue-900 border border-blue-500' : 'bg-gray-100 text-gray-800 hover:bg-white'}`;
+        });
+      }
+
+      if (actionLoupeSettings) {
+        actionLoupeSettings.addEventListener('click', () => {
+          closeAllOverlays();
+          syncLoupeSettingsUI();
+          if (modalLoupeSettings) modalLoupeSettings.classList.remove('hidden');
+        });
+      }
+
+      if (btnCloseLoupeModal) btnCloseLoupeModal.addEventListener('click', () => modalLoupeSettings.classList.add('hidden'));
+      if (btnDoneLoupeModal) btnDoneLoupeModal.addEventListener('click', () => modalLoupeSettings.classList.add('hidden'));
+
+      if (loupeEnableCheckbox) {
+        loupeEnableCheckbox.addEventListener('change', (e) => {
+          state.loupe.enabled = e.target.checked;
+          applyLoupeAppearance();
+          saveLoupePrefs();
+        });
+      }
+
+      if (loupeSizeSlider) {
+        loupeSizeSlider.addEventListener('input', (e) => {
+          state.loupe.size = parseInt(e.target.value, 10);
+          if (loupeSizeVal) loupeSizeVal.textContent = `${state.loupe.size} px`;
+          applyLoupeAppearance();
+          saveLoupePrefs();
+        });
+      }
+
+      if (loupeDistSlider) {
+        loupeDistSlider.addEventListener('input', (e) => {
+          state.loupe.distance = parseInt(e.target.value, 10);
+          if (loupeDistVal) loupeDistVal.textContent = `${state.loupe.distance} px`;
+          saveLoupePrefs();
+        });
+      }
+
+      document.querySelectorAll('.loupe-shape-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          state.loupe.shape = btn.dataset.shape;
+          applyLoupeAppearance();
+          syncLoupeSettingsUI();
+          saveLoupePrefs();
+        });
+      });
+
+      document.querySelectorAll('.loupe-pos-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          state.loupe.position = btn.dataset.pos;
+          syncLoupeSettingsUI();
+          saveLoupePrefs();
+        });
+      });
+
+      document.querySelectorAll('.loupe-coords-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          state.loupe.coordsPos = btn.dataset.cpos;
+          applyLoupeAppearance();
+          syncLoupeSettingsUI();
+          saveLoupePrefs();
+        });
+      });
+
+      if (btnResetLoupe) {
+        btnResetLoupe.addEventListener('click', () => {
+          state.loupe = {
+            enabled: true,
+            size: 104,
+            shape: 'circle',
+            position: 'above',
+            distance: 28,
+            coordsPos: 'top'
+          };
+          applyLoupeAppearance();
+          syncLoupeSettingsUI();
+          saveLoupePrefs();
+        });
+      }
+
+      loadLoupePrefs();
+      applyLoupeAppearance();
 
       // Load saved projects from storage on startup
       loadSavedProjectsFromStorage();
